@@ -46,9 +46,9 @@ export function markBriefed(id) {
   ]);
 }
 
-export function saveStep(id, stepIndex) {
+export function saveStep(id, stepIndex, key = 'lastStep') {
   ensureScenario(id);
-  set(`progress.${id}.lastStep`, Number(stepIndex) || 0);
+  set(`progress.${id}.${key}`, Number(stepIndex) || 0);
 }
 
 export function recordFlag(id, ok) {

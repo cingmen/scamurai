@@ -21,6 +21,7 @@ export async function render(root, { params }) {
   const isVn = scenario.type === 'vn';
   const hasProgress = progress && (progress.status === 'berjalan' || progress.status === 'selesai');
   const rules = scenario.brief?.rules || meta.learning || [];
+  const lansia = get('settings.mode', 'standar') === 'lansia' && scenario.simplify === true;
 
   clear(root);
 
@@ -49,6 +50,12 @@ export async function render(root, { params }) {
           h('strong', null, 'Misi kamu'),
           h('p', { class: 'u-small u-mt-2' }, scenario.brief?.goal || 'Kenali red flag dan pilih langkah terbaik.'),
         ),
+        lansia ? h('div', { class: 'c-panel c-panel--warn u-mt-3' },
+          h('strong', null, 'Mode Lansia aktif'),
+          h('p', { class: 'u-small u-mt-2' },
+            `Versi sederhana: ${scenario.lansiaSteps?.length || 0} langkah, maksimal dua pilihan per layar, tanpa timer.`,
+          ),
+        ) : null,
       ),
     ),
     h('section', { class: 'c-card' },

@@ -15,6 +15,118 @@
     ],
     "saldoAwal": 5000000
   },
+  "simplify": true,
+  "lansiaSteps": [
+    {
+      "type": "sms",
+      "app": "sms",
+      "header": { "title": "Pesan", "sub": "SMS masuk" },
+      "messages": [
+        {
+          "sender": "Bank Jayakarta",
+          "time": "19.42",
+          "danger": true,
+          "text": "Transaksi Rp 4.750.000 berhasil. Bukan Anda? Telepon 0812-3399-1122. Rekening dibekukan 10 menit."
+        }
+      ],
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "hint": "Ketuk tiga tanda bahaya sebelum menelepon.",
+      "blocks": [
+        { "text": "Bank Jayakarta · 19.42", "head": true },
+        { "text": "Transaksi Rp 4.750.000 ke BUDI SANTOSO berhasil." },
+        { "text": "Bukan Anda? Telepon 0812-3399-1122. Rekening dibekukan 10 menit." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "bo-nomor",
+          "x": 70,
+          "y": 78,
+          "title": "Nomor ponsel, bukan call center resmi",
+          "why": "Bank memakai nomor resmi di aplikasi atau belakang kartu, bukan nomor ponsel biasa.",
+          "do": "Tutup SMS, buka aplikasi bank, dan hubungi call center dari sana."
+        },
+        {
+          "flagId": "bo-urgensi",
+          "x": 64,
+          "y": 88,
+          "title": "Ancaman rekening dibekukan dalam 10 menit",
+          "why": "Urgensi dibuat agar kamu tidak memverifikasi. Pembekuan tidak dilakukan lewat SMS.",
+          "do": "Berhenti saat dipaksa cepat, lalu cek mutasi di aplikasi resmi."
+        },
+        {
+          "flagId": "bo-transaksi",
+          "x": 40,
+          "y": 35,
+          "title": "Nominal besar yang tidak kamu lakukan",
+          "why": "Pesan transaksi palsu dirancang membuat panik dengan nominal besar.",
+          "do": "Cek mutasi di aplikasi bank, bukan dari pesan."
+        }
+      ]
+    },
+    {
+      "type": "call",
+      "app": "call",
+      "header": { "title": "Telepon", "sub": "Panggilan masuk" },
+      "caller": "Petugas Bank Jayakarta",
+      "number": "+62 812-3399-1122",
+      "autoAccept": true,
+      "beats": [
+        { "speaker": "Penelepon", "text": "Saya Rudi dari Bank Jayakarta. Ada transaksi Rp 4.750.000 di rekening Anda." },
+        { "speaker": "Penelepon", "text": "Saya bantu batalkan. Jangan tutup telepon. Bacakan kode OTP yang masuk." }
+      ],
+      "choices": [
+        { "id": "ikuti", "label": "Ikuti instruksi petugas", "goto": 3 },
+        { "id": "tutup", "label": "Tutup telepon & buka aplikasi bank", "hint": "Jalur paling aman", "goto": 6 }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "balance",
+      "header": { "title": "Bank Jayakarta", "sub": "Pembatalan transaksi" },
+      "data": {
+        "title": "Pembatalan transaksi",
+        "entries": [
+          { "name": "Transaksi ditahan", "detail": "Rp 4.750.000 ke BUDI SANTOSO", "date": "19.41", "amount": -4750000 },
+          { "name": "Saldo tersedia", "detail": "SIMULASI", "date": "19.42", "amount": 5000000 }
+        ]
+      },
+      "button": { "label": "Lanjut ke verifikasi", "goto": 4 }
+    },
+    {
+      "type": "input-otp",
+      "app": "bank",
+      "header": { "title": "Bank Jayakarta", "sub": "Verifikasi OTP" },
+      "prompt": "Petugas meminta kode OTP. Kamu bisa mengirimnya, atau menolak.",
+      "digits": 6,
+      "submitLabel": "Kirim kode ke petugas",
+      "submitGoto": 5,
+      "rejectGoto": 6,
+      "rejectLabel": "Tolak & tutup telepon"
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "Saldo keluar dalam hitungan detik",
+      "text": "Kamu membacakan kode. Petugas menutup telepon, dan saldo rekeningmu kosong. Bank tidak pernah meminta OTP lewat telepon."
+    },
+    {
+      "type": "lesson",
+      "title": "Yang seharusnya dilakukan",
+      "body": "Tutup telepon. Buka aplikasi bank dari ikon di ponsel, bukan dari tautan. Periksa mutasi. Jika ada transaksi tak dikenal, hubungi call center di aplikasi atau belakang kartu. Bank tidak akan marah kamu menutup telepon; penipu yang akan panik.",
+      "refDex": "Bank & OTP",
+      "goto": 7
+    },
+    {
+      "type": "consequence",
+      "endingId": "teguh",
+      "title": "Kamu menutup pintu OTP",
+      "text": "Kamu menutup telepon dan menghubungi call center resmi dari aplikasi. Transaksi palsu itu tidak pernah ada, dan tidak ada uang yang keluar."
+    }
+  ],
   "steps": [
     {
       "type": "sms",

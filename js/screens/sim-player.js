@@ -37,6 +37,7 @@ export async function render(root, { params }) {
   clear(root);
   const startedAt = Date.now();
   const engine = createSimEngine(scenario);
+  const simplified = scenario.simplify === true && get('settings.mode', 'standar') === 'lansia';
 
   const flagPill = h('span', { class: 'c-sim-hud__pill c-sim-hud__pill--flag', 'aria-live': 'polite' }, '⚑ 0');
   const progress = progressBar({
@@ -56,7 +57,7 @@ export async function render(root, { params }) {
     h('a', { class: 'c-btn c-btn--quiet c-btn--sm', href: '#/skenario' }, '← Dojo'),
     h('div', null,
       h('div', { class: 'c-sim-topbar__title' }, meta.title),
-      h('div', { class: 'c-sim-topbar__meta' }, `${meta.modus} · ${RHYTHM_LABEL[getRhythm()] || 'Normal'}`),
+      h('div', { class: 'c-sim-topbar__meta' }, `${meta.modus} · ${RHYTHM_LABEL[getRhythm()] || 'Normal'}${simplified ? ' · Versi lansia' : ''}`),
     ),
     progress.el,
     flagPill,

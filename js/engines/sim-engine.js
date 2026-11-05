@@ -8,8 +8,15 @@ import { recordFlag, saveStep, finishScenario } from '../core/progress.js';
  * @returns objek mesin untuk sim-player
  */
 export function createSimEngine(scenario) {
-  const steps = Array.isArray(scenario.steps) ? scenario.steps : [];
-  const saved = Number(get(`progress.${scenario.id}.lastStep`, 0)) || 0;
+  const simplified = scenario.simplify === true
+    && Array.isArray(scenario.lansiaSteps)
+    && scenario.lansiaSteps.length > 0
+    && get('settings.mode', 'standar') === 'lansia';
+  const steps = simplified
+    ? scenario.lansiaSteps
+    : (Array.isArray(scenario.steps) ? scenario.steps : []);
+  const stepKey = simplified ? 'lansiaLastStep' : 'lastStep';
+  const saved = Number(get(`progress.${scenario.id}.${stepKey}`, 0)) || 0;
   let index = saved >= 0 && saved < steps.length ? saved : 0;
 
   const ctx = {
@@ -46,7 +53,7 @@ export function createSimEngine(scenario) {
       return;
     }
     index = safe;
-    saveStep(scenario.id, index);
+    saveStep(scenario.id, index, stepKey);
     emitStep();
   }
 
@@ -125,7 +132,7 @@ export function createSimEngine(scenario) {
       missedFlags: missed,
     });
 
-    saveStep(scenario.id, 0);
+    saveStep(scenario.id, 0, stepKey);
     ctx.result = {
       endingId,
       ending,

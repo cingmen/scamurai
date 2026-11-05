@@ -120,6 +120,55 @@ function checkSim(file, scenario, steps) {
     if (!reached.has(id)) fail(file, `ending "${id}" tidak punya langkah consequence`);
     else if (!reachable.has(id)) fail(file, `ending "${id}" tidak dapat dicapai dari langkah pertama`);
   });
+
+  checkLansiaVariant(file, scenario);
+}
+
+/** Varian Mode Lansia: subset langkah, maksimal dua opsi, ending tetap terjangkau. */
+function checkLansiaVariant(file, scenario) {
+  if (scenario.simplify !== true) return;
+  const steps = scenario.lansiaSteps;
+  checks += 1;
+  if (!Array.isArray(steps) || steps.length < 6) {
+    fail(file, 'simplify: true tetapi lansiaSteps tidak ada atau kurang dari 6 langkah');
+    return;
+  }
+
+  steps.forEach((step, index) => {
+    checks += 1;
+    if (!VALID_STEP_TYPES.has(step.type)) fail(file, `langkah lansia ${index}: tipe "${step.type}" tidak dikenal`);
+    checkGoto(file, `langkah lansia ${index}`, step.goto, steps.length);
+    if (step.button) checkGoto(file, `langkah lansia ${index} button`, step.button.goto, steps.length);
+    if (step.submitGoto !== undefined) checkGoto(file, `langkah lansia ${index} submitGoto`, step.submitGoto, steps.length);
+    if (step.rejectGoto !== undefined) checkGoto(file, `langkah lansia ${index} rejectGoto`, step.rejectGoto, steps.length);
+
+    if (step.type === 'choice' || step.type === 'timer-choice') {
+      if (!Array.isArray(step.options) || step.options.length < 2) {
+        fail(file, `langkah lansia ${index}: pilihan minimal 2`);
+      } else if (step.options.length > 2) {
+        fail(file, `langkah lansia ${index}: maksimal 2 pilihan, ditemukan ${step.options.length}`);
+      }
+      (step.options || []).forEach((option) => {
+        checkGoto(file, `langkah lansia ${index} opsi "${option.id}"`, option.goto, steps.length);
+      });
+    }
+    if (step.type === 'call') {
+      (step.choices || []).forEach((choice) => {
+        checkGoto(file, `langkah lansia ${index} panggilan "${choice.id}"`, choice.goto, steps.length);
+      });
+    }
+    if (step.type === 'flag-tap') checkFlagSpots(file, `langkah lansia ${index}`, step.hotspots);
+    if (step.type === 'consequence' && !scenario.endings?.[step.endingId]) {
+      fail(file, `langkah lansia ${index}: ending "${step.endingId}" tidak ada di endings`);
+    }
+  });
+
+  const endings = new Set(steps.filter((step) => step.type === 'consequence').map((step) => step.endingId));
+  if (endings.size < 2) fail(file, `varian lansia hanya punya ${endings.size} ending, minimal 2`);
+  const reachable = reachableEndings(steps);
+  endings.forEach((id) => {
+    if (!reachable.has(id)) fail(file, `ending lansia "${id}" tidak dapat dicapai dari langkah pertama`);
+  });
 }
 
 /** Telusuri graf langkah dari indeks 0; kumpulkan ending yang bisa dicapai. */
