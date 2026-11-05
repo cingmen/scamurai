@@ -56,8 +56,7 @@ function initAudioUnlock() {
 function initServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   if (location.protocol !== 'http:' && location.protocol !== 'https:') return;
-
-  const register = async () => {
+  window.addEventListener('load', async () => {
     try {
       const reg = await navigator.serviceWorker.register('./sw.js');
       reg.addEventListener('updatefound', () => {
@@ -81,23 +80,7 @@ function initServiceWorker() {
     } catch (err) {
       console.warn('[sw] registrasi gagal:', err);
     }
-  };
-
-  const begin = () => {
-    // On a first visit, let the shell and home screen finish their network work
-    // before precaching 100 offline assets. Repeat visits already have a cache.
-    if (navigator.serviceWorker.controller) {
-      register();
-      return;
-    }
-    setTimeout(() => {
-      if ('requestIdleCallback' in window) requestIdleCallback(register, { timeout: 2000 });
-      else register();
-    }, 2500);
-  };
-
-  if (document.readyState === 'complete') begin();
-  else window.addEventListener('load', begin, { once: true });
+  });
 }
 
 async function maybeOnboard() {
