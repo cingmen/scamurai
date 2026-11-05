@@ -116,6 +116,7 @@ async function boot() {
   });
 
   await startRouter();
+  document.body.classList.add('is-booted');
   await maybeOnboard();
 
   window.addEventListener('pagehide', persist);

@@ -176,6 +176,9 @@ body.is-immersive .c-dojo-stage {
   flex-direction: column;
 }
 
+/* Footer baru ditampilkan setelah layar pertama selesai dirender agar tidak
+   ikut bergeser dari bawah viewport saat konten SPA masuk. */
+body:not(.is-booted) .c-dojo-footer { display: none; }
 .c-dojo-footer {
   border-top: var(--s-border-w) solid var(--s-line);
   padding: var(--s-sp-5) var(--s-sp-4);
