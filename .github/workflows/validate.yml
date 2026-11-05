@@ -1,0 +1,32 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate content data
+        run: node scripts/validate-data.mjs
+
+      - name: Parse every JS module
+        run: |
+          set -e
+          for file in js/*.js js/*/*.js sw.js scripts/*.mjs; do
+            node --check "$file"
+          done
+          echo "All modules parsed."

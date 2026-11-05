@@ -1,0 +1,11 @@
+{
+  "name": "scamurai",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dojo simulasi anti-penipuan berbahasa Indonesia — statis, offline, tanpa akun.",
+  "scripts": {
+    "validate": "node scripts/validate-data.mjs",
+    "check": "node scripts/validate-data.mjs && node --check sw.js && node --check js/main.js && node --check js/router.js"
+  }
+}
