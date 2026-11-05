@@ -16,7 +16,6 @@ const ROUTES = [
     name: 'main',
     pattern: /^\/main\/([\w-]+)\/?$/,
     load: () => import('./screens/sim-player.js'),
-    styles: ['./assets/css/screens/sim.css'],
     guard: ({ params }) => {
       const id = params[0];
       const p = get(`progress.${id}`);
@@ -28,11 +27,10 @@ const ROUTES = [
     name: 'vn',
     pattern: /^\/vn\/([\w-]+)\/?$/,
     load: () => import('./screens/vn-player.js'),
-    styles: ['./assets/css/screens/vn.css'],
     guard: ({ params }) => params[0] === 'love-scam',
     guardFail: { to: '#/skenario', message: 'Cerita itu belum tersedia.' },
   },
-  { name: 'grup', pattern: /^\/grup\/?$/, load: () => import('./screens/minigame-wa.js'), styles: ['./assets/css/screens/minigame.css'] },
+  { name: 'grup', pattern: /^\/grup\/?$/, load: () => import('./screens/minigame-wa.js') },
   {
     name: 'debrief',
     pattern: /^\/debrief\/([\w-]+)\/?$/,
@@ -40,12 +38,11 @@ const ROUTES = [
     guard: ({ params }) => Boolean(get(`progress.${params[0]}`)),
     guardFail: { to: '#/skenario', message: 'Mainkan skenarionya dulu untuk membuka debrief.' },
   },
-  { name: 'scamdex', pattern: /^\/scamdex\/?$/, load: () => import('./screens/scamdex.js'), styles: ['./assets/css/screens/scamdex.css'] },
+  { name: 'scamdex', pattern: /^\/scamdex\/?$/, load: () => import('./screens/scamdex.js') },
   {
     name: 'ujian',
     pattern: /^\/ujian\/?$/,
     load: () => import('./screens/exam.js'),
-    styles: ['./assets/css/screens/exam.css'],
     guard: () => completedCount() >= 4,
     guardFail: { to: '#/skenario', message: 'Selesaikan 4 skenario dulu untuk membuka ujian.' },
   },
@@ -53,15 +50,14 @@ const ROUTES = [
     name: 'sertifikat',
     pattern: /^\/sertifikat\/?$/,
     load: () => import('./screens/certificate.js'),
-    styles: ['./assets/css/screens/exam.css'],
     guard: () => Boolean(get('exam.passed')),
     guardFail: { to: '#/ujian', message: 'Lulus ujian akhir dulu untuk membuat sertifikat.' },
   },
-  { name: 'bantuan', pattern: /^\/bantuan\/?$/, load: () => import('./screens/bantuan.js'), styles: ['./assets/css/screens/bantuan.css'] },
+  { name: 'bantuan', pattern: /^\/bantuan\/?$/, load: () => import('./screens/bantuan.js') },
   { name: 'tentang', pattern: /^\/tentang\/?$/, load: () => import('./screens/about.js') },
-  { name: 'pengaturan', pattern: /^\/pengaturan\/?$/, load: () => import('./screens/settings.js'), styles: ['./assets/css/screens/bantuan.css'] },
-  { name: 'sekolah', pattern: /^\/sekolah\/?$/, load: () => import('./screens/sekolah.js'), styles: ['./assets/css/screens/bantuan.css', './assets/css/screens/sekolah.css'] },
-  { name: 'guru', pattern: /^\/sekolah\/guru\/?$/, load: () => import('./screens/sekolah.js'), params: ['guru'], styles: ['./assets/css/screens/bantuan.css', './assets/css/screens/sekolah.css'] },
+  { name: 'pengaturan', pattern: /^\/pengaturan\/?$/, load: () => import('./screens/settings.js') },
+  { name: 'sekolah', pattern: /^\/sekolah\/?$/, load: () => import('./screens/sekolah.js') },
+  { name: 'guru', pattern: /^\/sekolah\/guru\/?$/, load: () => import('./screens/sekolah.js'), params: ['guru'] },
   { name: 'latihan', pattern: /^\/latihan\/?$/, external: PHISQUEST_URL },
 ];
 
@@ -87,30 +83,6 @@ const NAV_MAP = {
 let appEl = null;
 let cleanup = null;
 let currentName = null;
-const styleLoads = new Map();
-
-function ensureStyles(hrefs = []) {
-  return Promise.all(hrefs.map((href) => {
-    if (styleLoads.has(href)) return styleLoads.get(href);
-    if (document.querySelector(`link[rel="stylesheet"][href="${href}"]`)) return Promise.resolve();
-
-    const promise = new Promise((resolve) => {
-      const link = h('link', {
-        rel: 'stylesheet',
-        href,
-        'data-route-style': href,
-        onload: resolve,
-        onerror: () => {
-          console.warn('[router] stylesheet gagal dimuat:', href);
-          resolve();
-        },
-      });
-      document.head.append(link);
-    });
-    styleLoads.set(href, promise);
-    return promise;
-  }));
-}
 
 function completedCount() {
   return Object.values(all().progress || {}).filter((p) => p.status === 'selesai').length;
@@ -194,7 +166,7 @@ async function navigate(force = false) {
   window.scrollTo({ top: 0, behavior: 'auto' });
 
   try {
-    const [module] = await Promise.all([matched.load(), ensureStyles(matched.styles)]);
+    const module = await matched.load();
     const result = await module.render(appEl, { params, path });
     cleanup = typeof result === 'function' ? result : null;
     emit('route:change', { from: previous, to: matched.name, path });
