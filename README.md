@@ -31,14 +31,55 @@ Semua path relatif, jadi aplikasi juga berjalan dari subfolder GitHub Pages (`/s
 ```bash
 node scripts/validate-data.mjs   # konten: goto, flag, ending, debrief, soal ujian
 node --check js/main.js          # sintaks modul (Node ≥ 20, package.json type=module)
+npm run verify:pwa -- http://localhost:4173/ bank-otp   # offline + metrik (Chrome/CDP)
 ```
 
 CI menjalankan keduanya pada setiap push dan pull request (`.github/workflows/validate.yml`). Validator memeriksa:
 
 - setiap `goto` menunjuk langkah yang ada dan setiap ending dapat dicapai dari langkah pertama;
-- minimal 3 red flag non-decoy, 2 ending, dan 3 langkah pemulihan per skenario;
+- setiap skenario simulasi minimal 14 langkah, dengan minimal 3 red flag non-decoy, 2 ending, dan 3 langkah pemulihan;
 - struktur VN (node, choice, endingRules), minigame ≥ 40 beat, pool ujian ≥ 40 soal;
 - tidak ada `TODO`/placeholder di data inti.
+
+## Verifikasi PWA & performa
+
+`scripts/verify-pwa.mjs` menjalankan Chrome headless lewat Chrome DevTools Protocol tanpa dependensi. Skrip mengisi cache service worker, mengukur navigasi, mematikan jaringan, lalu memuat ulang shell dan rute inti. Permintaan lintas-origin dipakai sebagai bukti jaringan benar-benar mati.
+
+```bash
+npm run verify:pwa -- http://localhost:4173/ bank-otp
+CHROME_PATH="/path/to/chrome" npm run verify:pwa -- https://cingmen.github.io/scamurai/ bank-otp
+```
+
+Hasil 5 November 2026 pada https://cingmen.github.io/scamurai/ (Chrome 150, Lighthouse 13.6.0, emulasi mobile bawaan Lighthouse):
+
+| Metrik | Nilai |
+| --- | --- |
+| Performance | 65 |
+| Accessibility | 96 |
+| Best Practices | 100 |
+| SEO | 100 |
+| First Contentful Paint | 1,3 s |
+| Largest Contentful Paint | 2,0 s |
+| Total Blocking Time | 1.090 ms |
+| Cumulative Layout Shift | 0,176 |
+| Speed Index | 4,7 s |
+| Time to Interactive | 2,9 s |
+| TTFB | 270 ms |
+| Total transfer | 164 KiB |
+
+Angka dicatat apa adanya. CLS dan TBT masih di atas ambang "baik"; audit Lighthouse menunjuk biaya style/layout, font, dan long task di main thread. Optimasi performa bukan bagian dari perubahan konten ini.
+
+Perintah Lighthouse yang dipakai (jalur Chrome disesuaikan dengan sistem):
+
+```bash
+npx --yes lighthouse https://cingmen.github.io/scamurai/ \
+  --chrome-path="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --only-categories=performance,accessibility,best-practices,seo \
+  --chrome-flags="--headless=new --no-sandbox" \
+  --output=json --output-path=/tmp/scamurai-lighthouse.json
+```
+
+Uji offline pada origin live: cache `scamurai-v1.2.0` berisi 100 entri; permintaan lintas-origin gagal, tetapi `#/`, pengantar skenario 15 langkah, `#/bantuan`, data JSON, dan CSS tetap termuat tanpa error console.
 
 ## Struktur
 
