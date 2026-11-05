@@ -159,7 +159,7 @@
 - [ ] QA penuh checklist `app-logic.md` §15 + uji perangkat: Android kelas bawah, iOS Safari ≥ 15, desktop 2 browser.
 - [ ] Review konten oleh 1 praktisi keamanan/komunitas + uji kegunaan 5 lansia & 5 remaja; catat & perbaiki temuan kritis.
 - [x] Konten final: glosarium beranda, README (cara kontribusi, disclaimer etika), halaman Tentang (kredit, lisensi MIT, sumber statistik), `404.html`.
-- [ ] Rilis v1.0.0: tag git + catatan rilis; umumkan ke komunitas (termasuk PhisQuest cross-link balik). **Ditahan: F7 belum 100% (performa 89; review/uji manusia belum), jadi tag v1.0.0 belum dibuat.**
+- [ ] Rilis v1.0.0: tag git + catatan rilis; umumkan ke komunitas (termasuk PhisQuest cross-link balik). **Ditahan: F7 belum 100% (performa 89; review/uji manusia belum). Tag `v1.0.0` lama sudah ada di `c0ab2c1`; tag publik itu tidak dipindahkan karena memindahkannya destruktif, dan catatan rilis/pengumuman belum dibuat.**
 
 **Catatan audit performa 5 November 2026 (baseline `923c80e`):**
 - Lighthouse live bersih: **89/96/100/100**, FCP 1,2 s, LCP 1,8 s, TBT 400 ms, CLS 0.

@@ -68,7 +68,7 @@ Hasil 5 November 2026 pada https://cingmen.github.io/scamurai/ (Chrome 150, Ligh
 | TTFB | 340 ms |
 | Total transfer | 165 KiB |
 
-Angka dicatat apa adanya dari satu run bersih tanpa proses Chrome lain. Performa naik dari 65, CLS dari 0,176 ke 0, dan TBT dari 1.090 ms ke 400 ms, tetapi **89 masih satu poin di bawah target roadmap ≥90**. Trace baseline menunjukkan satu long task 381 ms dan layout pertama 173 ms untuk 330 objek. Tiga percobaan optimasi berikutnya — CSS lazy, penundaan precache service worker, dan `content-visibility` pada grid — menghasilkan live 80 dan 88, sehingga semuanya direvert. Review praktisi, uji kegunaan 5 lansia/5 remaja, dan uji perangkat fisik belum dijalankan, jadi F7 belum dapat ditandai 100%; tag v1.0.0 juga belum dibuat karena gerbang rilis belum terpenuhi.
+Angka dicatat apa adanya dari satu run bersih tanpa proses Chrome lain. Performa naik dari 65, CLS dari 0,176 ke 0, dan TBT dari 1.090 ms ke 400 ms, tetapi **89 masih satu poin di bawah target roadmap ≥90**. Trace baseline menunjukkan satu long task 381 ms dan layout pertama 173 ms untuk 330 objek. Tiga percobaan optimasi berikutnya — CSS lazy, penundaan precache service worker, dan `content-visibility` pada grid — menghasilkan live 80 dan 88, sehingga semuanya direvert. Review praktisi, uji kegunaan 5 lansia/5 remaja, dan uji perangkat fisik belum dijalankan, jadi F7 belum dapat ditandai 100%. Tag `v1.0.0` yang sudah ada di repo menunjuk commit lama `c0ab2c1`; tag publik itu tidak dipindahkan karena gerbang rilis belum terpenuhi dan memindahkannya bersifat destruktif.
 
 Perintah Lighthouse yang dipakai (jalur Chrome disesuaikan dengan sistem):
 
