@@ -129,6 +129,23 @@ export async function render(root) {
     ),
   );
 
+  const glossary = h('section', { class: 'c-card' },
+    h('h2', { class: 'section-title' }, 'Glosarium singkat'),
+    h('p', { class: 'u-small u-muted u-mb-4' }, 'Istilah yang muncul di skenario, dalam bahasa sehari-hari.'),
+    h('div', { class: 'c-glossary' },
+      ...[['Phishing', 'Pesan atau halaman yang menyamar sebagai pihak resmi untuk mengambil data atau uang.'],
+        ['OTP', 'Kode sekali pakai yang menyelesaikan transaksi. Tidak pernah dibagikan, termasuk kepada “petugas bank”.'],
+        ['Escrow', 'Dana ditahan platform sampai barang diterima. Transaksi di luar platform kehilangan perlindungan ini.'],
+        ['Money mule', 'Orang yang meminjamkan rekening untuk menerima dan meneruskan uang kejahatan.'],
+        ['Pinjol ilegal', 'Pinjaman online tanpa izin OJK, sering meminta akses kontak dan meneror saat penagihan.'],
+        ['Red flag', 'Tanda bahaya dalam pesan atau situasi yang sebaiknya diperiksa sebelum bertindak.']]
+        .map(([term, definition]) => h('div', { class: 'c-glossary__item' },
+          h('strong', null, term),
+          h('p', null, definition),
+        )),
+    ),
+  );
+
   const privacy = h('section', { class: 'c-privacy' },
     h('span', { 'aria-hidden': 'true', style: { fontSize: '20px' } }, '⛨'),
     h('div', null,
@@ -156,6 +173,7 @@ export async function render(root) {
     stats,
     scenarioSection,
     quickGrid,
+    glossary,
     kenjiNote,
     privacy,
   ));

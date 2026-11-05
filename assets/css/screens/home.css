@@ -1,3 +1,23 @@
+.c-glossary {
+  display: grid;
+  gap: var(--s-sp-4);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.c-glossary__item {
+  border-top: 1px solid var(--s-line);
+  padding-top: var(--s-sp-3);
+}
+.c-glossary__item strong {
+  display: block;
+  color: var(--s-gold);
+  margin-bottom: 4px;
+}
+.c-glossary__item p {
+  font-size: var(--s-fs-300);
+  color: var(--s-ink-soft);
+  line-height: 1.5;
+}
+
 /* Layar beranda & galeri skenario */
 .scr-home { display: flex; flex-direction: column; gap: var(--s-sp-6); }
 

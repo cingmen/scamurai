@@ -1,6 +1,6 @@
 // Service Worker — offline penuh (app-logic.md §11).
 // Naikkan CACHE_VERSION setiap rilis agar cache lama tergantikan.
-const CACHE_VERSION = 'scamurai-v1.1.0';
+const CACHE_VERSION = 'scamurai-v1.1.1';
 
 const SHELL = [
   './',
@@ -83,6 +83,7 @@ const SHELL = [
   './js/screens/exam.js',
   './js/screens/certificate.js',
   './js/screens/bantuan.js',
+  './js/screens/about.js',
   './js/screens/settings.js',
   './js/screens/sekolah.js',
   './js/components/phone-frame.js',
