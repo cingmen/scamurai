@@ -113,7 +113,16 @@
 .c-quick__sub { font-size: var(--s-fs-300); color: var(--s-ink-faint); }
 .c-quick--danger { border-color: color-mix(in srgb, var(--s-accent) 45%, transparent); background: var(--s-accent-soft); }
 
-.c-scn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--s-sp-4); }
+.c-scn-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--s-sp-4);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1800px;
+}
+@media (min-width: 780px) {
+  .c-scn-grid { contain-intrinsic-size: auto 760px; }
+}
 .c-card-scn {
   display: flex;
   flex-direction: column;
