@@ -2,6 +2,8 @@
 
 > Rencana kerja dari nol sampai rilis penuh untuk implementasi vanilla HTML/CSS/JS di GitHub Pages (tanpa framework, tanpa build step). Setiap fase punya: tujuan, daftar tugas, file yang dibuat/ubah, kriteria selesai (Definition of Done), dan target persentase kemajuan total. Estimasi durasi mengasumsikan **1 developer** dengan ritme santai (±2–4 jam/hari); kalikan/dibagi sesuai jumlah orang.
 
+> **Status implementasi 5 November 2026.** F0–F6 sudah diimplementasikan dan ter-deploy. F7 sudah mencakup PWA offline, precache 100 entri, README/About/404, CI, dan GitHub Pages; Lighthouse live **89/96/100/100** (target performa ≥90 belum tercapai). Review praktisi, uji kegunaan 5 lansia/5 remaja, dan uji perangkat fisik belum dijalankan, sehingga F7 sengaja belum dicentang penuh.
+
 ## 0. Cara Membaca Roadmap
 
 - **Persentase** = kemajuan total proyek v1.0 yang bisa didemokan, bukan jumlah baris kode. Fase hanya dianggap selesai bila seluruh **DoD**-nya lolos.
@@ -138,7 +140,7 @@
 **Tugas:**
 - [ ] `data/exam/final-exam.json` ≥ 40 soal (3 tipe) + tag skenario; layar `exam` (sampling anti-repetisi, timer nyata-only).
 - [ ] Sertifikat: input nama, kode deterministik (app-logic §9.2), render canvas 1200×850, share/unduh; disclaimer "bukan sertifikasi resmi".
-- [ ] Mode Lansia: aturan paksaan settings (app-logic §10), versi disederhanakan Bank & OTP (subset JSON `simplify: true`), tanpa timer, 2-oppsi.
+- [x] Mode Lansia: aturan paksaan settings (app-logic §10), versi disederhanakan Bank & OTP (subset JSON `simplify: true`), tanpa timer, 2-oppsi.
 - [ ] Mode Sekolah: paket 45 menit, layar `#/sekolah`, lembar guru print-friendly, kartu kemajuan siswa (canvas).
 - [ ] `data/bantuan.json` + layar `bantuan` (alur "baru saja kena", tabel kanal resmi: cekrekening.id, lapor.go.id, 122, OJK 157 + tanggal verifikasi).
 - [ ] Route `#/latihan` → kartu integrasi PhisQuest (tautan dua arah sudah diminta ke repo PhisQuest via issue/PR README).
@@ -152,11 +154,11 @@
 ## F7 — PWA, QA, Review Konten, Rilis (92 → 100%)
 
 **Tugas:**
-- [ ] `sw.js` precache penuh (shell + data + aset kunci), strategi per jenis (app-logic §11), banner "versi baru tersedia".
-- [ ] Audit performa: gambar WebP/AVIF final, audio < 20 KB/berkas, bundle inti < 150 KB gzip; Lighthouse ≥ 90/95/95/100 (perf/a11y/best-practice/seo) di halaman utama.
+- [x] `sw.js` precache penuh (shell + data + aset kunci), strategi per jenis (app-logic §11), banner "versi baru tersedia".
+- [ ] Audit performa: gambar WebP/AVIF final, audio < 20 KB/berkas, bundle inti < 150 KB gzip; Lighthouse ≥ 90/95/95/100 (perf/a11y/best-practice/seo) di halaman utama. **Catatan 5 Nov 2026: live 89/96/100/100; CLS 0, TBT 400 ms — satu poin performa masih di bawah target.**
 - [ ] QA penuh checklist `app-logic.md` §15 + uji perangkat: Android kelas bawah, iOS Safari ≥ 15, desktop 2 browser.
 - [ ] Review konten oleh 1 praktisi keamanan/komunitas + uji kegunaan 5 lansia & 5 remaja; catat & perbaiki temuan kritis.
-- [ ] Konten final: glosarium beranda, README (cara kontribusi, disclaimer etika), halaman Tentang (kredit, lisensi MIT, sumber statistik), `404.html`.
+- [x] Konten final: glosarium beranda, README (cara kontribusi, disclaimer etika), halaman Tentang (kredit, lisensi MIT, sumber statistik), `404.html`.
 - [ ] Rilis v1.0.0: tag git + catatan rilis; umumkan ke komunitas (termasuk PhisQuest cross-link balik).
 
 **DoD rilis:**
@@ -168,18 +170,18 @@
 ## 9. Ringkasan Cek Progress (copy ke issue tracking)
 
 ```text
-[ ] F0  Fondasi & kerangka                      (10%)
-[ ] F1  Core loop + Task Scam                   (25%)
-[ ] F2  VN + Love Scam                          (38%)
-[ ] F3  Grup WA + Tap Red Flag                  (48%)
-[ ] F4  ScamDEX, sabuk, saldo, pengaturan       (58%)
-[ ] F5a Bank & OTP                              (65%)
-[ ] F5b Phishing + link PhisQuest               (71%)
-[ ] F5c Marketplace                             (76%)
-[ ] F5d Pinjol                                  (79%)
-[ ] F5e Kerja LN + Money Mule                   (82%)
-[ ] F6  Ujian, sertifikat, lansia, sekolah, bantuan (92%)
-[ ] F7  PWA, QA, review, rilis v1.0             (100%)
+[x] F0  Fondasi & kerangka                      (10%)
+[x] F1  Core loop + Task Scam                   (25%)
+[x] F2  VN + Love Scam                          (38%)
+[x] F3  Grup WA + Tap Red Flag                  (48%)
+[x] F4  ScamDEX, sabuk, saldo, pengaturan       (58%)
+[x] F5a Bank & OTP                              (65%)
+[x] F5b Phishing + link PhisQuest               (71%)
+[x] F5c Marketplace                             (76%)
+[x] F5d Pinjol                                  (79%)
+[x] F5e Kerja LN + Money Mule                   (82%)
+[x] F6  Ujian, sertifikat, lansia, sekolah, bantuan (92%)
+[ ] F7  PWA, QA, review, rilis v1.0             (belum: Lighthouse 89; review & uji pengguna belum)
 ```
 
 ## 10. Backlog Pasca-v1.0 (di luar 100% roadmap ini)

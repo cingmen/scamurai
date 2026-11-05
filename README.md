@@ -11,7 +11,7 @@ Dojo simulasi anti-penipuan berbahasa Indonesia. Kamu memainkan penipuan sungguh
 - **ScamDEX:** 8 kartu modus + varian yang terbuka dari ending tertentu.
 - **Ujian akhir:** pool 40 soal, 20 soal per percobaan, tiga tipe soal, lulus ≥ 80.
 - **Sertifikat:** canvas 1200×850, kode deterministik, unduh/bagikan. Bukti edukasi komunitas, bukan sertifikasi resmi.
-- **Mode Lansia & Sekolah:** teks besar tanpa timer, paket 45 menit, lembar guru siap cetak, kartu kemajuan siswa.
+- **Mode Lansia & Sekolah:** teks besar tanpa timer, varian Bank & OTP 8 langkah dengan maksimal dua pilihan per layar, paket 45 menit, lembar guru siap cetak, kartu kemajuan siswa.
 - **Pusat Bantuan:** alur "baru saja kena", kanal resmi, dan langkah pemulihan — bisa dibuka offline.
 - **PWA:** service worker, cache data, dan progres lokal di `scamurai.v1`.
 
@@ -37,7 +37,8 @@ npm run verify:pwa -- http://localhost:4173/ bank-otp   # offline + metrik (Chro
 CI menjalankan keduanya pada setiap push dan pull request (`.github/workflows/validate.yml`). Validator memeriksa:
 
 - setiap `goto` menunjuk langkah yang ada dan setiap ending dapat dicapai dari langkah pertama;
-- setiap skenario simulasi minimal 14 langkah, dengan minimal 3 red flag non-decoy, 2 ending, dan 3 langkah pemulihan;
+- setiap skenario simulasi versi penuh minimal 14 langkah, dengan minimal 3 red flag non-decoy, 2 ending, dan 3 langkah pemulihan;
+- varian Mode Lansia memakai 8 langkah, maksimal dua pilihan per layar, dan semua ending-nya dapat dicapai;
 - struktur VN (node, choice, endingRules), minigame ≥ 40 beat, pool ujian ≥ 40 soal;
 - tidak ada `TODO`/placeholder di data inti.
 
@@ -54,20 +55,20 @@ Hasil 5 November 2026 pada https://cingmen.github.io/scamurai/ (Chrome 150, Ligh
 
 | Metrik | Nilai |
 | --- | --- |
-| Performance | 65 |
+| Performance | 89 |
 | Accessibility | 96 |
 | Best Practices | 100 |
 | SEO | 100 |
-| First Contentful Paint | 1,3 s |
-| Largest Contentful Paint | 2,0 s |
-| Total Blocking Time | 1.090 ms |
-| Cumulative Layout Shift | 0,176 |
-| Speed Index | 4,7 s |
-| Time to Interactive | 2,9 s |
-| TTFB | 270 ms |
-| Total transfer | 164 KiB |
+| First Contentful Paint | 1,2 s |
+| Largest Contentful Paint | 1,8 s |
+| Total Blocking Time | 400 ms |
+| Cumulative Layout Shift | 0 |
+| Speed Index | 3,4 s |
+| Time to Interactive | 1,8 s |
+| TTFB | 340 ms |
+| Total transfer | 165 KiB |
 
-Angka dicatat apa adanya. CLS dan TBT masih di atas ambang "baik"; audit Lighthouse menunjuk biaya style/layout, font, dan long task di main thread. Optimasi performa bukan bagian dari perubahan konten ini.
+Angka dicatat apa adanya dari satu run bersih tanpa proses Chrome lain. Performa naik dari 65, CLS dari 0,176 ke 0, dan TBT dari 1.090 ms ke 400 ms, tetapi **89 masih satu poin di bawah target roadmap ≥90**; sisa biaya ada di style/layout render pertama pada emulasi CPU 4×. Review praktisi, uji kegunaan 5 lansia/5 remaja, dan uji perangkat fisik belum dijalankan, jadi F7 belum dapat ditandai 100%.
 
 Perintah Lighthouse yang dipakai (jalur Chrome disesuaikan dengan sistem):
 
@@ -79,7 +80,7 @@ npx --yes lighthouse https://cingmen.github.io/scamurai/ \
   --output=json --output-path=/tmp/scamurai-lighthouse.json
 ```
 
-Uji offline pada origin live: cache `scamurai-v1.2.0` berisi 100 entri; permintaan lintas-origin gagal, tetapi `#/`, pengantar skenario 15 langkah, `#/bantuan`, data JSON, dan CSS tetap termuat tanpa error console.
+Uji offline pada origin live: cache `scamurai-v1.3.3` berisi 100 entri; permintaan lintas-origin gagal, tetapi `#/`, pengantar skenario 15 langkah, `#/bantuan`, data JSON, dan CSS tetap termuat tanpa error console.
 
 ## Struktur
 
