@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Scamurai — asah intuisi, tumpas penipuan">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#221B2A"/>
+      <stop offset="1" stop-color="#121016"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#D9A441"/>
+      <stop offset="1" stop-color="#C93A3A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1020" cy="120" r="240" fill="#D9A441" opacity=".10"/>
+  <circle cx="120" cy="560" r="200" fill="#C93A3A" opacity=".10"/>
+  <g stroke="#F2EEE7" stroke-opacity=".05">
+    <path d="M0 470 L1200 300 M0 560 L1200 390 M0 380 L1200 210"/>
+  </g>
+  <text x="80" y="150" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#D9A441" letter-spacing="4">DOJO ANTI-PENIPUAN</text>
+  <text x="76" y="275" font-family="system-ui, sans-serif" font-size="104" font-weight="800" fill="#C93A3A">Scam<tspan fill="#F2EEE7">urai</tspan></text>
+  <text x="80" y="345" font-family="system-ui, sans-serif" font-size="34" font-weight="600" fill="#F2EEE7">Asah intuisi, tumpas penipuan.</text>
+  <text x="80" y="400" font-family="system-ui, sans-serif" font-size="23" fill="#C9C2B6">8 simulasi penipuan. Semua uang palsu, semua aman.</text>
+  <rect x="80" y="440" width="300" height="64" rx="14" fill="url(#gold)"/>
+  <text x="230" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="23" font-weight="800" fill="#1B1820">Mulai latihan gratis</text>
+  <g transform="translate(830 90) rotate(6)">
+    <rect width="280" height="470" rx="38" fill="#0C0A10" stroke="#3A3342" stroke-width="6"/>
+    <rect x="14" y="14" width="252" height="442" rx="26" fill="#F4F1EA"/>
+    <rect x="14" y="14" width="252" height="64" rx="26" fill="#0F8A6B"/>
+    <circle cx="48" cy="48" r="16" fill="#ffffff" opacity=".25"/>
+    <text x="76" y="55" font-family="system-ui, sans-serif" font-size="17" font-weight="700" fill="#ffffff">ChatRiang</text>
+    <rect x="30" y="104" width="190" height="54" rx="14" fill="#ffffff"/>
+    <text x="44" y="128" font-family="system-ui, sans-serif" font-size="12" fill="#22201E">Komisi Rp15.000 per like,</text>
+    <text x="44" y="146" font-family="system-ui, sans-serif" font-size="12" fill="#22201E">tugas ringan saja!</text>
+    <rect x="72" y="180" width="190" height="46" rx="14" fill="#D6E7D4"/>
+    <text x="86" y="208" font-family="system-ui, sans-serif" font-size="12" fill="#22201E">Aku ikut, gratis kan?</text>
+    <rect x="30" y="246" width="220" height="70" rx="14" fill="#ffffff"/>
+    <text x="44" y="270" font-family="system-ui, sans-serif" font-size="12" fill="#22201E">Sekarang deposit Rp250.000</text>
+    <text x="44" y="288" font-family="system-ui, sans-serif" font-size="12" fill="#B33939" font-weight="700">dulu untuk paket beruntun.</text>
+    <text x="44" y="306" font-family="system-ui, sans-serif" font-size="11" fill="#6B675F">Sisa 15 menit!</text>
+    <rect x="30" y="344" width="220" height="48" rx="12" fill="#FBF3E2" stroke="#E4D4AE"/>
+    <text x="44" y="366" font-family="system-ui, sans-serif" font-size="11" fill="#7A5410" font-weight="700">Kenji: Ada yang belum</text>
+    <text x="44" y="382" font-family="system-ui, sans-serif" font-size="11" fill="#7A5410" font-weight="700">kamu periksa?</text>
+  </g>
+  <text x="80" y="570" font-family="system-ui, sans-serif" font-size="19" fill="#8D867C">Gratis · tanpa akun · tanpa data pribadi · bisa offline</text>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Kenji si Kucing Tebas">
+  <g stroke="#1B1820" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- katana di belakang -->
+    <path d="M34 170 L158 40" stroke="#B7AEA0" stroke-width="6"/>
+    <path d="M150 33 L166 33 L158 46 Z" fill="#E8DFCE"/>
+    <path d="M34 170 L26 184" stroke="#7A4C2A" stroke-width="7"/>
+    <!-- badan jubah -->
+    <path d="M62 178 Q100 150 138 178 L146 196 L54 196 Z" fill="#2A2530"/>
+    <path d="M78 172 L100 196 L122 172" fill="#3A3342"/>
+    <!-- kepala -->
+    <path d="M52 96 Q52 52 100 52 Q148 52 148 96 Q148 142 100 148 Q52 142 52 96 Z" fill="#F2EEE7"/>
+    <!-- telinga -->
+    <path d="M62 68 L54 38 L86 52" fill="#F2EEE7"/>
+    <path d="M138 68 L146 38 L114 52" fill="#F2EEE7"/>
+    <path d="M64 60 L60 46 L78 54" fill="#E6B8B4" stroke="none"/>
+    <path d="M136 60 L140 46 L122 54" fill="#E6B8B4" stroke="none"/>
+    <!-- ikat kepala -->
+    <path d="M52 80 Q100 64 148 80 L148 92 Q100 76 52 92 Z" fill="#C93A3A"/>
+    <circle cx="100" cy="82" r="7" fill="#D9A441"/>
+    <path d="M146 84 L168 74 L162 92 L166 104 L144 94" fill="#C93A3A"/>
+    <!-- mata -->
+    <ellipse cx="82" cy="106" rx="6" ry="7" fill="#1B1820" stroke="none"/>
+    <ellipse cx="118" cy="106" rx="6" ry="7" fill="#1B1820" stroke="none"/>
+    <circle cx="84" cy="103" r="2" fill="#F2EEE7" stroke="none"/>
+    <circle cx="120" cy="103" r="2" fill="#F2EEE7" stroke="none"/>
+    <!-- moncong -->
+    <path d="M96 118 L100 122 L104 118" fill="#C9736E" stroke="none"/>
+    <path d="M100 122 Q94 130 90 126 M100 122 Q106 130 110 126" fill="none"/>
+    <!-- kumis -->
+    <path d="M64 116 L46 112 M64 122 L46 124 M136 116 L154 112 M136 122 L154 124" stroke-width="2.2"/>
+    <path d="M80 138 Q100 146 120 138" fill="none"/>
+  </g>
+</svg>

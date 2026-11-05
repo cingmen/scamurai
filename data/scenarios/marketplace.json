@@ -1,0 +1,319 @@
+{
+  "id": "marketplace",
+  "type": "sim",
+  "title": "Harga di Bawah Pasar",
+  "modus": "Marketplace",
+  "difficulty": 1,
+  "app": "marketplace",
+  "brief": {
+    "goal": "Kamera incaranmu dijual 40% lebih murah. Penjualnya ramah, tapi buru-buru ingin pindah dari platform. Ikuti alurnya dan putuskan kapan kamu berhenti.",
+    "rules": [
+      "Harga yang terlalu bagus adalah alasan untuk memeriksa lebih teliti, bukan untuk bergegas.",
+      "Penjual yang mendesak keluar platform menghindari perlindungan pembeli.",
+      "Gunakan escrow atau pembayaran di dalam aplikasi.",
+      "Semua toko dan rekening di sini fiktif."
+    ],
+    "saldoAwal": 5000000
+  },
+  "steps": [
+    {
+      "type": "app-ui",
+      "app": "marketplace",
+      "view": "product",
+      "header": { "title": "LakuPasar", "sub": "Cari: kamera mirrorless" },
+      "data": {
+        "search": "⌕ kamera mirrorless",
+        "promo": "Promo hari ini: gratis ongkir + cicilan 0% untuk pembelian di aplikasi.",
+        "products": [
+          { "name": "Sony A6400 body only — mulus", "price": 5500000, "seller": "Andi_Store99 · tanpa badge", "badge": "", "glyph": "▣" },
+          { "name": "Sony A6400 + kit 16-50mm", "price": 9400000, "seller": "KameraResmi · Resmi", "badge": "Toko Resmi", "glyph": "▣" },
+          { "name": "Fujifilm X-T30 body", "price": 8700000, "seller": "RajaKamera · terverifikasi", "badge": "Terverifikasi", "glyph": "▣" },
+          { "name": "Canon M50 mark II", "price": 6900000, "seller": "SnapStore", "badge": "", "glyph": "▣" }
+        ]
+      },
+      "button": { "label": "Buka listing termurah", "goto": 1 }
+    },
+    {
+      "type": "app-ui",
+      "app": "marketplace",
+      "view": "product",
+      "header": { "title": "LakuPasar", "sub": "Detail produk" },
+      "data": {
+        "detail": {
+          "title": "Sony A6400 body only — mulus, full box",
+          "lines": [
+            "Harga: Rp 5.500.000 (pasar ± Rp 9.000.000)",
+            "Penjual: Andi_Store99 · baru 3 hari · 0 ulasan",
+            "Pengiriman: dari luar kota, 1–2 hari",
+            "Pembayaran: transfer bank / e-wallet"
+          ],
+          "seller": "“Barang masih ada kak, bisa kirim hari ini. Chat saya ya.”"
+        }
+      },
+      "button": { "label": "Chat penjual", "goto": 2 }
+    },
+    {
+      "type": "chat",
+      "app": "marketplace",
+      "header": { "title": "LakuPasar", "sub": "Chat dengan Andi_Store99" },
+      "from": "them",
+      "sender": "Andi_Store99",
+      "time": "10.12",
+      "text": "Halo kak, barang masih ada. Kondisi 95%, full box. Bisa kirim hari ini kalau dibayar sekarang.",
+      "auto": false
+    },
+    {
+      "type": "chat",
+      "app": "marketplace",
+      "from": "them",
+      "sender": "Andi_Store99",
+      "time": "10.13",
+      "text": "Biar cepat, pindah ke WhatsApp ya kak. Di sini aku jarang buka. Nomor 0812-7788-9900. Nanti aku kirim link checkout resmi.",
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "app": "marketplace",
+      "header": { "title": "LakuPasar", "sub": "Chat dengan Andi_Store99" },
+      "hint": "Periksa percakapan dan listing sebelum melanjutkan.",
+      "blocks": [
+        { "text": "Andi_Store99 · 10.13", "head": true },
+        { "text": "Barang masih ada kak, kondisi 95%, full box. Bisa kirim hari ini kalau dibayar sekarang." },
+        { "text": "Biar cepat, pindah ke WhatsApp ya kak. Nanti aku kirim link checkout resmi. Nomor 0812-7788-9900." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "mp-pindah",
+          "x": 54,
+          "y": 72,
+          "title": "Diminta pindah ke WhatsApp",
+          "why": "Transaksi di luar platform menghilangkan perlindungan pembeli, escrow, dan riwayat chat yang bisa dipakai sebagai bukti.",
+          "do": "Tolak pindah platform. Gunakan fitur chat dan pembayaran resmi."
+        },
+        {
+          "flagId": "mp-harga",
+          "x": 52,
+          "y": 42,
+          "title": "Harga 40% di bawah pasar",
+          "why": "Barang laris dengan harga jauh di bawah pasar adalah umpan. Penjual asli tidak perlu menjual rugi untuk barang yang mudah terjual.",
+          "do": "Bandingkan dengan penjual terverifikasi dan cek harga pasar."
+        },
+        {
+          "flagId": "mp-akun",
+          "x": 34,
+          "y": 18,
+          "title": "Akun baru tanpa ulasan",
+          "why": "Toko baru tanpa riwayat bisa dibuat dalam hitungan menit dan ditinggalkan setelah korban pertama.",
+          "do": "Cek usia akun, ulasan, dan badge resmi."
+        },
+        {
+          "flagId": "mp-stok",
+          "x": 30,
+          "y": 32,
+          "title": "“Barang masih ada”",
+          "decoy": true,
+          "why": "Menyatakan stok tersedia adalah hal normal dalam jual beli. Kalimat ini sendiri tidak menipu.",
+          "do": "Fokus pada permintaan pindah platform dan metode pembayaran."
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "prompt": "Penjual menunggu. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        { "id": "wa", "label": "Pindah ke WhatsApp dan minta link checkout", "goto": 6 },
+        { "id": "escrow", "label": "Tetap di platform dan minta pembayaran escrow", "goto": 10 },
+        { "id": "stop", "label": "Batalkan dan cari penjual lain", "goto": 13 }
+      ]
+    },
+    {
+      "type": "chat",
+      "app": "chatriang",
+      "header": { "title": "ChatRiang", "sub": "+62 812-7788-9900" },
+      "from": "them",
+      "sender": "Andi Store",
+      "time": "10.17",
+      "text": "Ini link checkout resmi LakuPasar ya kak, biar aman: https://laku-pasar-pay.xz/checkout/a6400. Isi data pengiriman dan bayar, nanti langsung aku kirim.",
+      "auto": false
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": { "title": "BrowserMini", "sub": "Checkout" },
+      "url": "https://laku-pasar-pay.xz/checkout/a6400",
+      "secure": false,
+      "page": {
+        "logo": "LakuPasar Pay",
+        "lines": [
+          "Sony A6400 body only — Rp 5.500.000",
+          "Pembayaran langsung ke penjual. Barang dikirim setelah pembayaran dikonfirmasi.",
+          "Sisa waktu pembayaran 09.58."
+        ],
+        "form": [
+          { "placeholder": "Nama penerima", "label": "Nama penerima" },
+          { "placeholder": "Alamat lengkap", "label": "Alamat" },
+          { "placeholder": "Nomor telepon", "label": "Telepon" }
+        ],
+        "countdown": "Sisa waktu 09.58",
+        "foot": "LakuPasar Pay bukan bagian dari aplikasi LakuPasar. Tidak ada perlindungan pembeli."
+      },
+      "inspect": {
+        "real": "lakupasar.co.id",
+        "notes": [
+          "Domain memakai tanda hubung dan akhiran .xz — bukan domain resmi marketplace.",
+          "Halaman tidak menampilkan nomor pesanan atau rekening escrow.",
+          "Pembayaran diarahkan ke rekening pribadi, bukan rekening perusahaan."
+        ]
+      },
+      "hint": "Halaman checkout ini terlihat resmi. Periksa detailnya.",
+      "hotspots": [
+        {
+          "flagId": "mp-domain",
+          "x": 50,
+          "y": 28,
+          "title": "Domain laku-pasar-pay.xz",
+          "why": "Domain resmi marketplace bukan gabungan kata dengan tanda hubung dan akhiran acak. Ini domain baru yang dibuat mirip.",
+          "do": "Buka aplikasi marketplace dan lanjutkan checkout di sana."
+        },
+        {
+          "flagId": "mp-rekening",
+          "x": 54,
+          "y": 63,
+          "title": "Bayar langsung ke penjual",
+          "why": "Transfer langsung ke penjual menghilangkan escrow. Jika barang tidak dikirim, uang tidak bisa ditarik kembali.",
+          "do": "Gunakan pembayaran di dalam platform yang menahan dana sampai barang diterima."
+        },
+        {
+          "flagId": "mp-hitung",
+          "x": 66,
+          "y": 84,
+          "title": "Hitung mundur pembayaran",
+          "why": "Batas waktu palsu mencegahmu memeriksa domain dan metode pembayaran.",
+          "do": "Tutup halaman dan cek melalui aplikasi resmi."
+        },
+        {
+          "flagId": "mp-logo",
+          "x": 28,
+          "y": 14,
+          "title": "Logo bertuliskan LakuPasar",
+          "decoy": true,
+          "why": "Logo mudah ditiru. Keberadaan logo tidak membuktikan halaman itu resmi.",
+          "do": "Periksa alamat dan metode pembayaran, bukan logonya."
+        }
+      ],
+      "button": { "label": "Lanjut ke pembayaran", "goto": 8 }
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": { "title": "Bank Jayakarta", "sub": "Transfer baru" },
+      "data": {
+        "title": "Transfer ke penjual",
+        "recipient": "Andi Pratama",
+        "account": "8812 3344 5566",
+        "amount": 5500000,
+        "fee": 6500,
+        "note": "Pembelian kamera A6400",
+        "warning": "Rekening tujuan adalah rekening pribadi, bukan rekening perusahaan marketplace. Dana tidak dilindungi escrow."
+      },
+      "button": { "label": "Transfer sekarang", "goto": 9 }
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "Uang terkirim, penjual menghilang",
+      "text": "Kamu mentransfer Rp 5.500.000 ke rekening pribadi. Penjual berjanji mengirim resi, lalu berhenti membalas. Nomornya tidak aktif dan listingnya hilang. Tidak ada perlindungan pembeli karena transaksi terjadi di luar platform."
+    },
+    {
+      "type": "chat",
+      "app": "marketplace",
+      "header": { "title": "LakuPasar", "sub": "Chat dengan Andi_Store99" },
+      "from": "them",
+      "sender": "Andi_Store99",
+      "time": "10.20",
+      "text": "Kalau lewat aplikasi kena potongan 15%, aku rugi kak. Transfer langsung aja, aku kirim bukti resi sebelum kirim barang. Percaya aku ya.",
+      "auto": false
+    },
+    {
+      "type": "choice",
+      "prompt": "Penjual menolak escrow dan tetap mendesak transfer langsung.",
+      "critical": true,
+      "options": [
+        { "id": "langsung", "label": "Transfer langsung ke rekening pribadi", "goto": 8 },
+        { "id": "escrow-tegas", "label": "Tetap minta escrow atau batalkan", "goto": 12 },
+        { "id": "lapor", "label": "Laporkan listing dan blokir penjual", "goto": 14 }
+      ]
+    },
+    {
+      "type": "consequence",
+      "endingId": "escrow",
+      "title": "Kamu memilih perlindungan pembeli",
+      "text": "Penjual menolak escrow dan berhenti membalas. Kamu tidak kehilangan uang, tetapi kehilangan barang murah itu — yang ternyata tidak pernah ada. Platform menandai akunnya setelah beberapa laporan lain masuk."
+    },
+    {
+      "type": "consequence",
+      "endingId": "batal",
+      "title": "Kamu mundur sebelum transfer",
+      "text": "Kamu menutup listing dan memilih penjual dengan riwayat serta badge resmi. Harga sedikit lebih mahal, tetapi uangmu aman dan barangnya bisa dikembalikan bila bermasalah."
+    },
+    {
+      "type": "consequence",
+      "endingId": "batal",
+      "title": "Listing dilaporkan",
+      "text": "Kamu melaporkan listing dan memblokir penjual. Beberapa jam kemudian, akun itu hilang dari platform. Laporanmu membantu calon pembeli lain yang hampir tertipu."
+    }
+  ],
+  "endings": {
+    "kena": {
+      "label": "Transfer langsung, penjual kabur",
+      "saldoDelta": -5500000,
+      "rank": 0,
+      "tone": "bad"
+    },
+    "batal": {
+      "label": "Batal, blokir, dan lapor",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good"
+    },
+    "escrow": {
+      "label": "Checkout resmi & escrow",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      { "t": "10.05", "judul": "Harga umpan", "naskah": "A6400 mulus, Rp 5.500.000, pasar Rp 9.000.000.", "tujuanPenipu": "Membuat korban mengabaikan risiko karena takut kehilangan kesempatan." },
+      { "t": "10.13", "judul": "Pindah platform", "naskah": "Biar cepat, pindah ke WhatsApp ya kak.", "tujuanPenipu": "Keluar dari perlindungan pembeli dan riwayat transaksi platform." },
+      { "t": "10.17", "judul": "Tautan checkout palsu", "naskah": "Ini link checkout resmi LakuPasar.", "tujuanPenipu": "Menampilkan halaman yang mirip untuk mengambil data dan mengarahkan transfer." },
+      { "t": "10.19", "judul": "Rekening pribadi", "naskah": "Transfer langsung saja, aku kirim resi.", "tujuanPenipu": "Memastikan uang masuk ke rekening yang bisa langsung ditarik." },
+      { "t": "10.30", "judul": "Hilang", "naskah": "Nomor tidak aktif, listing dihapus.", "tujuanPenipu": "Menghilang sebelum korban menyadari tidak ada barang." }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran uang marketplace: korban transfer ke rekening pribadi lalu ditarik",
+      "nodes": [
+        { "id": "korban", "label": "Kamu · transfer Rp 5.500.000" },
+        { "id": "rekening", "label": "Rekening pribadi penjual", "tone": "danger" },
+        { "id": "tarik", "label": "Ditarik tunai / e-wallet dalam menit" },
+        { "id": "hilang", "label": "Akun dan listing dihapus", "tone": "danger" }
+      ],
+      "edges": [
+        { "from": "korban", "to": "rekening", "label": "di luar escrow" },
+        { "from": "rekening", "to": "tarik", "label": "cepat" },
+        { "from": "tarik", "to": "hilang", "label": "sulit dilacak" }
+      ]
+    },
+    "pulihkan": [
+      "Laporkan transaksi ke bank; minta penahanan bila baru beberapa menit.",
+      "Laporkan penjual dan listing ke platform dengan bukti chat.",
+      "Lapor ke cekrekening.id, 122, dan lapor.go.id.",
+      "Simpan tautan, tangkapan layar, dan bukti transfer.",
+      "Jangan percaya tawaran “bantuan pengembalian dana” dari pihak yang mengaku kenal penjual."
+    ],
+    "linkPhisquest": true
+  }
+}

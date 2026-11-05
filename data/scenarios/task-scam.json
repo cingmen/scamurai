@@ -1,0 +1,359 @@
+{
+  "id": "task-scam",
+  "type": "sim",
+  "title": "Pesanan yang Menggugah",
+  "modus": "Task Scam",
+  "difficulty": 1,
+  "app": "chatriang",
+  "brief": {
+    "goal": "Kamu menerima tawaran kerja paruh waktu: like dan komentar dibayar. Uji instingmu — sampai di titik mana kamu berhenti?",
+    "rules": [
+      "Ketuk elemen yang mencurigakan sebelum mengambil keputusan besar.",
+      "Komisi kecil yang benar-benar dibayar bukan bukti bahwa sistemnya aman.",
+      "Tidak ada batas waktu. Kamu boleh berhenti kapan saja.",
+      "Semua uang, rekening, dan nama di sini fiktif."
+    ],
+    "saldoAwal": 5000000
+  },
+  "steps": [
+    {
+      "type": "chat",
+      "dir": "narator",
+      "text": "Selasa, 09.12",
+      "delayMs": 700
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Admin Rekrutmen",
+      "time": "09.13",
+      "text": "Halo kak! Aku dari tim resmi Media Sosial X. Kami buka lowongan part-time: like & komentar dibayar Rp 15.000 per tugas.",
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "hint": "Periksa pesan ini. Ketuk bagian yang membuatmu ragu.",
+      "blocks": [
+        { "text": "Admin Rekrutmen · 09.13", "head": true },
+        { "text": "Halo kak! Aku dari tim resmi Media Sosial X. Kami buka lowongan part-time: like & komentar dibayar Rp 15.000 per tugas." },
+        { "text": "Cukup 10 menit sehari, bisa dari HP. Mau coba 3 tugas gratis dulu? Nanti kita lanjut di grup Telegram ya." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "ts-komisi",
+          "x": 60,
+          "y": 40,
+          "title": "Komisi Rp 15.000 hanya untuk like",
+          "why": "Like dan komentar tidak menghasilkan uang sebesar itu. Upah tinggi untuk kerja sepele adalah umpan agar kamu percaya dan mau melakukan langkah berikutnya.",
+          "do": "Tanyakan model bisnisnya: siapa yang membayar, dan dari mana untungnya?"
+        },
+        {
+          "flagId": "ts-admin",
+          "x": 27,
+          "y": 16,
+          "title": "Mengaku tim resmi tanpa bukti identitas",
+          "why": "Akun resmi punya kanal verifikasi, bukan nomor pribadi di chat. Siapa pun bisa menulis “tim resmi” di nama profil.",
+          "do": "Cari lowongan di kanal karier resmi platform, bukan dari chat pribadi."
+        },
+        {
+          "flagId": "ts-telegram",
+          "x": 58,
+          "y": 72,
+          "title": "Diminta pindah ke grup Telegram",
+          "why": "Memindahkan percakapan ke platform lain membuat bukti sulit dilacak dan menghindarkan penipu dari moderasi.",
+          "do": "Tetap di platform asal; desakan pindah adalah alasan untuk berhenti."
+        },
+        {
+          "flagId": "ts-sapaan",
+          "x": 19,
+          "y": 10,
+          "title": "Sapaan yang ramah",
+          "decoy": true,
+          "why": "Sapaan sopan adalah hal wajar dan bukan bukti penipuan. Penipu memang ramah, tetapi keramahan saja tidak cukup untuk menilai.",
+          "do": "Nilai isi tawarannya, bukan gaya bicaranya."
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "prompt": "Apa yang kamu lakukan?",
+      "options": [
+        { "id": "ikut", "label": "Ikuti dulu — gratis, kan?", "hint": "Kerjakan tiga tugas pembuka", "goto": 4 },
+        { "id": "tanya", "label": "Tanya dulu kenapa mereka membayar untuk like", "goto": 6 },
+        { "id": "blokir", "label": "Blokir dan abaikan", "hint": "Tidak ada komisi, tidak ada risiko", "goto": 20 }
+      ]
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Admin Rekrutmen",
+      "time": "09.15",
+      "text": "Siap! Tugas 1–3: like tiga postingan ini, lalu kirim tangkapan layar. Setelah dicek, komisi langsung masuk.",
+      "attach": { "type": "file", "label": "Daftar tugas 1–3.pdf", "meta": "3 like + 3 komentar · SIMULASI" },
+      "auto": false
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Admin Rekrutmen",
+      "time": "09.31",
+      "text": "Sudah dicek ✅ Komisi Rp 45.000 sudah ditransfer ke rekeningmu. Makasih ya, kamu cepat!",
+      "goto": 7,
+      "auto": false
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Admin Rekrutmen",
+      "time": "09.16",
+      "text": "Kami tim afiliasi resmi kak. Sistem otomatis membayar per interaksi. Kalau masih ragu, coba 3 tugas gratis dulu — tidak dipungut biaya sama sekali.",
+      "goto": 4,
+      "auto": false
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "mutasi",
+      "header": { "title": "Bank Jayakarta", "sub": "Mutasi masuk" },
+      "data": {
+        "title": "Mutasi terakhir",
+        "entries": [
+          { "name": "TRANSFER MASUK", "detail": "Admin Rekrutmen", "date": "Hari ini 09.31", "amount": 45000 },
+          { "name": "Saldo awal", "detail": "SIMULASI", "date": "Hari ini 00.00", "amount": 4955000 }
+        ]
+      },
+      "button": { "label": "Kembali ke ChatRiang", "goto": 8 }
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Admin Rekrutmen",
+      "time": "13.58",
+      "text": "Kak, ada paket beruntun! 10 tugas sekaligus, komisi Rp 250.000. Tapi sistem butuh deposit Rp 250.000 yang nanti dikembalikan bersama komisi.",
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "hint": "Ini momen penting. Periksa pesan sebelum menjawab.",
+      "blocks": [
+        { "text": "PAKET BERUNTUN · 13.58", "head": true },
+        { "text": "Kak, slot kamu sudah dibuka. Paket 10 tugas: komisi Rp 250.000. Sistem butuh deposit Rp 250.000 yang dikembalikan bersama komisi." },
+        { "text": "Transfer ke rekening a.n. Andi Pratama (pribadi). Slot hangus dalam 15 menit ya kak." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "ts-deposit",
+          "x": 56,
+          "y": 42,
+          "title": "Deposit sebelum dibayar",
+          "why": "Pekerjaan sah tidak meminta pekerja membayar lebih dulu. Begitu uang keluar, posisi tawar kamu hilang.",
+          "do": "Tolak semua permintaan deposit, apa pun alasannya."
+        },
+        {
+          "flagId": "ts-urgensi",
+          "x": 66,
+          "y": 74,
+          "title": "Slot hangus dalam 15 menit",
+          "why": "Batas waktu palsu mencegahmu berpikir dan bertanya kepada orang lain. Urgensi adalah alat utama penipu.",
+          "do": "Justru saat dikejar waktu, berhenti dan verifikasi."
+        },
+        {
+          "flagId": "ts-rekening-pribadi",
+          "x": 40,
+          "y": 64,
+          "title": "Rekening pribadi, bukan perusahaan",
+          "why": "Pembayaran ke rekening pribadi menghilangkan jejak perusahaan dan menyulitkan pemulihan dana.",
+          "do": "Cek nama penerima di cekrekening.id sebelum transfer apa pun."
+        },
+        {
+          "flagId": "ts-paket-nama",
+          "x": 24,
+          "y": 15,
+          "title": "Nama “paket beruntun”",
+          "decoy": true,
+          "why": "Nama paket tidak menentukan apa pun. Yang menentukan adalah aliran uangnya: kamu diminta membayar lebih dulu.",
+          "do": "Fokus pada siapa yang membayar siapa, bukan pada namanya."
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "prompt": "Admin menunggu jawabanmu.",
+      "critical": true,
+      "options": [
+        { "id": "transfer", "label": "Transfer deposit Rp 250.000", "hint": "Percaya karena komisi pertama sudah masuk", "goto": 11 },
+        { "id": "tanya-deposit", "label": "Tanya kenapa harus deposit dulu", "goto": 12 },
+        { "id": "stop", "label": "Berhenti dan simpan bukti", "hint": "Tidak mengirim uang lagi", "goto": 17 }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": { "title": "Bank Jayakarta", "sub": "Transfer baru" },
+      "data": {
+        "title": "Transfer baru",
+        "recipient": "Andi Pratama",
+        "account": "8812 3344 5566",
+        "amount": 250000,
+        "fee": 6500,
+        "note": "Deposit paket beruntun",
+        "warning": "Rekening tujuan adalah rekening pribadi. Bank tidak bisa membatalkan transfer yang sudah dikonfirmasi."
+      },
+      "button": { "label": "Transfer sekarang", "goto": 13 }
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Admin Rekrutmen",
+      "time": "14.02",
+      "text": "Deposit itu jaminan kak, biar kami tahu kamu serius. Nanti kembali bersama komisi Rp 500.000. Kalau tidak ambil, slotnya saya kasih ke orang lain ya.",
+      "goto": 10,
+      "auto": false
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Admin Rekrutmen",
+      "time": "14.09",
+      "text": "Kak, sistem error. Dana deposit belum terbaca. Transfer sekali lagi Rp 250.000 untuk sinkronisasi, nanti dua-duanya dikembalikan.",
+      "auto": false
+    },
+    {
+      "type": "choice",
+      "prompt": "Pesan terakhir membuat perutmu mulas.",
+      "critical": true,
+      "options": [
+        { "id": "transfer-lagi", "label": "Transfer lagi supaya dana pertama kembali", "hint": "Jebakan biaya tenggelam", "goto": 16 },
+        { "id": "minta", "label": "Minta uangmu dikembalikan sekarang", "goto": 15 },
+        { "id": "lapor", "label": "Berhenti, tangkap layar, dan cari cara melapor", "goto": 17 }
+      ]
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Admin Rekrutmen",
+      "time": "14.12",
+      "text": "Kalau berhenti di tengah, deposit hangus dan akun kamu kena denda Rp 500.000 sesuai perjanjian. Jangan bikin susah kak.",
+      "goto": 14,
+      "auto": false
+    },
+    {
+      "type": "consequence",
+      "endingId": "cair",
+      "title": "Saldo terkuras, grup menghilang",
+      "text": "Kamu mengirim uang sekali lagi. Tidak lama kemudian admin menghapus chat, mengeluarkanmu dari grup, dan nomornya tidak aktif. Tidak ada komisi yang pernah benar-benar ada — hanya tiga pembayaran kecil untuk membuatmu percaya."
+    },
+    {
+      "type": "lesson",
+      "title": "Pola yang baru saja kamu alami",
+      "body": "Komisi kecil dibayar → tugas naik → deposit → “sistem error” → deposit lagi. Setiap kali kamu membayar, penipu menambah alasan agar kamu membayar sekali lagi untuk menyelamatkan uang sebelumnya. Ini namanya sunk cost: rasa sayang pada uang yang sudah keluar. Satu-satunya cara berhenti adalah berhenti sekarang.",
+      "refDex": "Task Scam"
+    },
+    {
+      "type": "choice",
+      "prompt": "Tidak ada uang yang bisa ditarik kembali. Apa langkahmu?",
+      "options": [
+        { "id": "lapor-baik", "label": "Tangkap layar, blokir, dan laporkan ke kanal resmi", "goto": 19 },
+        { "id": "diam", "label": "Diamkan saja, malu kalau sampai ketahuan", "hint": "Penipu akan mengulangi ke orang lain", "goto": 20 }
+      ]
+    },
+    {
+      "type": "consequence",
+      "endingId": "melapor",
+      "title": "Kamu memutus rantainya",
+      "text": "Kamu menyimpan tangkapan layar, nomor rekening, dan mutasi. Laporanmu masuk ke kanal resmi, dan rekening penerima ditandai. Uang mungkin tidak kembali, tetapi kamu menghentikan aliran berikutnya — dan punya bukti bila ada korban lain."
+    },
+    {
+      "type": "consequence",
+      "endingId": "cabut",
+      "title": "Kamu berhenti sebelum terlambat",
+      "text": "Kamu menutup chat dan memblokir admin. Tiga komisi kecil itu tetap ada di saldo simulasimu, tetapi kamu tidak pernah mengirim deposit. Kerugian terbesarmu hanyalah waktu — dan itu jauh lebih murah daripada pelajaran yang sama dengan uang sungguhan."
+    }
+  ],
+  "endings": {
+    "cair": {
+      "label": "Terkuras: deposit berulang",
+      "saldoDelta": -1500000,
+      "rank": 0,
+      "tone": "bad",
+      "dexVariant": null
+    },
+    "cabut": {
+      "label": "Cabut tepat waktu",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good",
+      "dexVariant": null
+    },
+    "melapor": {
+      "label": "Melapor dengan bukti",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best",
+      "dexVariant": null
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      {
+        "t": "Hari 1 · 09.13",
+        "judul": "Umpan dengan upah tidak wajar",
+        "naskah": "Like & komentar dibayar Rp 15.000 per tugas.",
+        "tujuanPenipu": "Menyaring orang yang mau bekerja untuk uang cepat dan menciptakan rasa penasaran."
+      },
+      {
+        "t": "Hari 1 · 09.31",
+        "judul": "Pembayaran kecil sebagai bukti",
+        "naskah": "Komisi Rp 45.000 sudah ditransfer, makasih ya!",
+        "tujuanPenipu": "Rp 45.000 adalah biaya akuisisi korban. Setelah dibayar, otak menganggap sistemnya nyata."
+      },
+      {
+        "t": "Hari 1 · 13.58",
+        "judul": "Naik kelas ke “paket beruntun”",
+        "naskah": "Komisi Rp 250.000, tapi sistem butuh deposit yang dikembalikan.",
+        "tujuanPenipu": "Mengubah korban dari pekerja menjadi pemberi dana."
+      },
+      {
+        "t": "Hari 1 · 14.02",
+        "judul": "Tekanan dan kelangkaan",
+        "naskah": "Slotnya saya kasih ke orang lain ya.",
+        "tujuanPenipu": "Mencegah korban bertanya kepada orang lain atau mencari informasi."
+      },
+      {
+        "t": "Hari 1 · 14.09",
+        "judul": "“Sistem error”",
+        "naskah": "Transfer sekali lagi untuk sinkronisasi.",
+        "tujuanPenipu": "Memeras pembayaran kedua dengan janji mengembalikan yang pertama."
+      },
+      {
+        "t": "Hari 1 · 14.12",
+        "judul": "Ancaman denda",
+        "naskah": "Deposit hangus dan akun kena denda Rp 500.000.",
+        "tujuanPenipu": "Membuat korban takut berhenti, padahal tidak ada perjanjian apa pun."
+      }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran uang task scam: korban ke rekening mule, lalu penadah, lalu luar negeri",
+      "nodes": [
+        { "id": "korban", "label": "Kamu · transfer deposit" },
+        { "id": "mule", "label": "Rekening mule · a.n. Andi Pratama", "tone": "danger" },
+        { "id": "penadah", "label": "Penadah · dipecah ke banyak rekening" },
+        { "id": "luar", "label": "Diambil tunai / dikirim ke luar negeri", "tone": "danger" }
+      ],
+      "edges": [
+        { "from": "korban", "to": "mule", "label": "transfer" },
+        { "from": "mule", "to": "penadah", "label": "dalam hitungan menit" },
+        { "from": "penadah", "to": "luar", "label": "sulit dilacak" }
+      ]
+    },
+    "pulihkan": [
+      "Hubungi bank sekarang dan minta pemblokiran rekening penerima serta penahanan transaksi.",
+      "Simpan tangkapan layar chat, nomor rekening, nominal, dan waktu transfer.",
+      "Lapor ke lapor.go.id dan hotline 122; sertakan bukti dan kronologi.",
+      "Cek dan laporkan rekening penerima di cekrekening.id.",
+      "Jangan mengirim uang tambahan dengan janji “biaya pencairan” atau “denda”."
+    ],
+    "linkPhisquest": true
+  }
+}

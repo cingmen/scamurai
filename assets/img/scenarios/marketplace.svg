@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Ilustrasi skenario Harga di Bawah Pasar">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7A3A12"/><stop offset="1" stop-color="#24120A"/></linearGradient>
+    <pattern id="grid" width="38" height="38" patternUnits="userSpaceOnUse"><path d="M38 0H0V38" fill="none" stroke="#ffffff" stroke-opacity=".06"/></pattern>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <rect width="640" height="360" fill="url(#grid)"/>
+  <circle cx="520" cy="56" r="130" fill="#ffffff" opacity=".05"/>
+  <text x="52" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="2.5" fill="#E08A3C">MARKETPLACE</text>
+  <text x="50" y="116" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Harga di Bawah</text>
+  <text x="50" y="154" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Pasar</text>
+  <path d="M70 288 L150 288 L160 360 L60 360 Z" fill="#ffffff" opacity=".16" stroke="#ffffff" stroke-opacity=".45" stroke-width="2"/><path d="M88 288 Q88 260 110 260 Q132 260 132 288" fill="none" stroke="#ffffff" stroke-opacity=".6" stroke-width="3"/><circle cx="94" cy="326" r="5" fill="#E08A3C"/><circle cx="126" cy="326" r="5" fill="#E08A3C"/>
+  <g transform="translate(392 34) rotate(7)">
+    <rect width="186" height="316" rx="28" fill="#0B0910" opacity=".65"/>
+    <rect x="8" y="8" width="170" height="300" rx="22" fill="#F4F1EA"/>
+    <rect x="8" y="8" width="170" height="46" rx="22" fill="#E08A3C"/>
+    <circle cx="32" cy="31" r="11" fill="#ffffff" opacity=".35"/>
+    <rect x="50" y="24" width="72" height="7" rx="3.5" fill="#ffffff" opacity=".85"/>
+    <rect x="50" y="35" width="46" height="5" rx="2.5" fill="#ffffff" opacity=".5"/>
+    <rect x="20" y="72" width="104" height="30" rx="10" fill="#ffffff"/>
+    <rect x="20" y="108" width="82" height="22" rx="9" fill="#ffffff"/>
+    <rect x="56" y="140" width="104" height="30" rx="10" fill="#D6E7D4"/>
+    <rect x="20" y="180" width="128" height="44" rx="10" fill="#ffffff"/>
+    <rect x="20" y="232" width="96" height="22" rx="9" fill="#ffffff"/>
+    <rect x="20" y="262" width="132" height="30" rx="8" fill="#FBF3E2"/>
+  </g>
+  <g transform="translate(48 330)"><rect width="128" height="18" rx="9" fill="#ffffff" opacity=".12"/><text x="10" y="13" font-family="system-ui, sans-serif" font-size="9" font-weight="700" letter-spacing="1" fill="#ffffff" opacity=".75">SIMULASI · FIKTIF</text></g>
+  <text x="452" y="344" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff" opacity=".35">scamurai</text>
+</svg>

@@ -1,0 +1,585 @@
+{
+  "id": "love-scam",
+  "type": "vn",
+  "title": "Cinta di Balik Layar",
+  "modus": "Love Scam",
+  "difficulty": 3,
+  "app": "chatriang",
+  "brief": {
+    "goal": "Jalani lima bab hubungan dengan “Bagas”. Tidak ada pilihan yang langsung terasa salah — seperti penipuan romantis sungguhan. Perhatikan apa yang berubah, dan kapan kamu berhenti.",
+    "rules": [
+      "Setiap pilihan membangun kepercayaan atau kewaspadaan; tidak ada penilaian moral.",
+      "Kamu bisa keluar cerita kapan saja dari tombol keluar di pojok layar.",
+      "Riwayat dialog dan dua slot simpan manual tersedia.",
+      "Semua tokoh, foto, dan nomor adalah fiktif. Tidak ada adegan romantis eksplisit."
+    ],
+    "saldoAwal": 5000000
+  },
+  "vars": {
+    "trust": 20,
+    "awareness": 20,
+    "sentMoney": 0,
+    "verified": 0,
+    "deepfakeSeen": 0
+  },
+  "chapters": [
+    {
+      "id": "bab1",
+      "title": "Bab 1 · Perkenalan",
+      "subtitle": "Minggu 1–2",
+      "nodes": [
+        {
+          "id": "bab1-01",
+          "speaker": "narator",
+          "time": "21.04",
+          "text": "Kamu mengunggah foto kopi di kafe favoritmu. Malam itu, sebuah pesan dari akun asing masuk."
+        },
+        {
+          "id": "bab1-02",
+          "speaker": "bagas",
+          "time": "21.07",
+          "text": "Hai, maaf mengganggu. Aku lihat fotomu di jelajah — kafe itu favoritku juga. Kopinya memang beda, ya.",
+          "choices": [
+            { "id": "a", "label": "Balas dengan hangat", "effects": { "trustDelta": 8 }, "goto": "bab1-03" },
+            { "id": "b", "label": "Tanya dari mana dia tahu akunmu", "effects": { "awarenessDelta": 6, "trustDelta": 3 }, "goto": "bab1-04" },
+            { "id": "c", "label": "Abaikan pesannya", "effects": { "awarenessDelta": 4 }, "goto": "bab1-05" }
+          ]
+        },
+        {
+          "id": "bab1-03",
+          "speaker": "bagas",
+          "time": "21.10",
+          "text": "Syukurlah dibalas. Aku Bagas, kerja di proyek energi di Malaysia. Shift malam bikin susah tidur, jadi aku sering buka ponsel."
+        },
+        {
+          "id": "bab1-04",
+          "speaker": "bagas",
+          "time": "21.09",
+          "text": "Dari rekomendasi jelajah, kok. Profilmu menarik, tidak seperti akun lain. Aku jarang kepo, tapi ini beda."
+        },
+        {
+          "id": "bab1-05",
+          "speaker": "narator",
+          "time": "23.40",
+          "text": "Kamu tidak membalas. Dua hari kemudian, pesan lain masuk: “Masih ingat kafe itu? Aku baru pulang shift.”"
+        },
+        {
+          "id": "bab1-06",
+          "speaker": "bagas",
+          "time": "22.15",
+          "text": "Kalau tidak keberatan, boleh kita kenalan lebih dekat? Di sini aku sering kesepian. Tidak banyak yang bisa diajak bicara.",
+          "choices": [
+            { "id": "a", "label": "Ceritakan harimu", "effects": { "trustDelta": 8 }, "goto": "bab1-07" },
+            { "id": "b", "label": "Tanya detail pekerjaannya", "effects": { "awarenessDelta": 8, "trustDelta": 4 }, "goto": "bab1-08" },
+            { "id": "c", "label": "Minta video call sekarang", "effects": { "awarenessDelta": 10 }, "goto": "bab1-09" }
+          ]
+        },
+        {
+          "id": "bab1-07",
+          "speaker": "bagas",
+          "time": "22.31",
+          "text": "Kamu baik. Aku merasa bisa cerita apa saja ke kamu. Jangan bosan dengar ceritaku ya."
+        },
+        {
+          "id": "bab1-08",
+          "speaker": "bagas",
+          "time": "22.20",
+          "text": "Aku engineer kontrak. Perusahaannya di Dubai, tapi aku di site Malaysia. Ribet kalau dijelaskan lewat chat, nanti aku cerita kalau kita video call.",
+          "effectsNote": "Jawaban yang samar dan berpindah topik adalah pola, bukan bukti tunggal."
+        },
+        {
+          "id": "bab1-09",
+          "speaker": "bagas",
+          "time": "22.18",
+          "text": "Nanti ya, sinyal di lokasi proyek jelek. Aku lebih suka chat. Kamu jangan marah ya."
+        },
+        {
+          "id": "bab1-10",
+          "speaker": "narator",
+          "time": "Minggu 2",
+          "text": "Dua minggu kemudian, kalian mengobrol setiap malam. Bagas mengirim foto profilnya dari “lokasi proyek”.",
+          "attach": {
+            "type": "image",
+            "src": "./assets/img/scenarios/love-scam/bagas.svg",
+            "alt": "Potret abstrak pria yang mengaku Bagas, karakter fiktif"
+          }
+        },
+        {
+          "id": "bab1-11",
+          "speaker": "bagas",
+          "time": "23.02",
+          "text": "Ini aku waktu di site. Jangan ditertawakan ya. Aku tidak suka foto, tapi kamu penasaran katanya.",
+          "choices": [
+            { "id": "a", "label": "Puji fotonya", "effects": { "trustDelta": 8 }, "goto": "bab1-12" },
+            { "id": "b", "label": "Cari foto ini dengan pencarian gambar terbalik", "effects": { "awarenessDelta": 12, "verified": 1 }, "goto": "bab1-13" },
+            { "id": "c", "label": "Minta foto lain", "effects": { "awarenessDelta": 6 }, "goto": "bab1-14" }
+          ]
+        },
+        {
+          "id": "bab1-12",
+          "speaker": "bagas",
+          "time": "23.10",
+          "text": "Kamu manis. Aku senang kamu percaya. Aku tidak sabar menunjukkan tempatku kalau kamu ke sini nanti."
+        },
+        {
+          "id": "bab1-13",
+          "speaker": "narator",
+          "time": "23.24",
+          "text": "Hasil pencarian gambar: foto yang sama muncul di portofolio seorang fotografer stok dari negara lain. Kamu menyimpan tangkapan layarnya."
+        },
+        {
+          "id": "bab1-14",
+          "speaker": "bagas",
+          "time": "23.06",
+          "text": "Nanti aku kirim lagi. Kamu jangan curiga terus ya, aku jadi sedih."
+        },
+        {
+          "id": "bab1-15",
+          "speaker": "narator",
+          "time": "23.30",
+          "text": "Kamu punya bukti kecil bahwa fotonya bukan miliknya. Tapi ceritanya masih masuk akal, dan kamu masih ingin percaya.",
+          "choices": [
+            { "id": "a", "label": "Konfrontasi sekarang", "effects": { "awarenessDelta": 10 }, "goto": "bab1-16" },
+            { "id": "b", "label": "Amati dulu tanpa bilang", "effects": { "awarenessDelta": 8 }, "goto": "bab2-01" },
+            { "id": "c", "label": "Pura-pura tidak tahu", "effects": { "trustDelta": 2, "awarenessDelta": -4 }, "goto": "bab2-01" }
+          ]
+        },
+        {
+          "id": "bab1-16",
+          "speaker": "bagas",
+          "time": "23.42",
+          "text": "Itu foto lama, banyak orang pakai. Kamu terlalu berpikir negatif. Aku kecewa kamu langsung menuduh.",
+          "goto": "bab2-01"
+        }
+      ]
+    },
+    {
+      "id": "bab2",
+      "title": "Bab 2 · Pemanasan",
+      "subtitle": "Minggu 3–5",
+      "nodes": [
+        {
+          "id": "bab2-01",
+          "speaker": "narator",
+          "time": "Minggu 3",
+          "text": "Bagas mulai memanggilmu dengan nama sayang. Ia mengirim pesan pagi dan malam, lebih sering daripada siapa pun."
+        },
+        {
+          "id": "bab2-02",
+          "speaker": "bagas",
+          "time": "22.48",
+          "text": "Aku tidak pernah merasa seperti ini pada siapa pun. Kamu mau jadi pacarku? Aku serius. Bukan main-main.",
+          "choices": [
+            { "id": "a", "label": "Terima", "effects": { "trustDelta": 12 }, "goto": "bab2-03" },
+            { "id": "b", "label": "Minta waktu untuk mengenal lebih jauh", "effects": { "awarenessDelta": 10, "trustDelta": 2 }, "goto": "bab2-04" },
+            { "id": "c", "label": "Tanya masa lalunya", "effects": { "awarenessDelta": 8 }, "goto": "bab2-05" }
+          ]
+        },
+        {
+          "id": "bab2-03",
+          "speaker": "bagas",
+          "time": "22.52",
+          "text": "Aku akan ke Indonesia. Kita mulai hidup bersama. Aku sudah membayangkan dapur kecil kita. Kamu mau, kan?"
+        },
+        {
+          "id": "bab2-04",
+          "speaker": "bagas",
+          "time": "22.50",
+          "text": "Aku mengerti. Aku akan sabar menunggu. Kamu satu-satunya orang yang mau mengerti aku."
+        },
+        {
+          "id": "bab2-05",
+          "speaker": "bagas",
+          "time": "22.51",
+          "text": "Mantan? Tidak ada yang serius. Kamu yang pertama kuperkenalkan ke keluargaku. Itu artinya sesuatu."
+        },
+        {
+          "id": "bab2-06",
+          "speaker": "bagas",
+          "time": "23.15",
+          "text": "Sebelum itu, aku mau minta sesuatu. Kirim foto kamu yang lebih... pribadi? Biar aku tidak kesepian di sini.",
+          "choices": [
+            { "id": "a", "label": "Kirim foto pribadi", "effects": { "trustDelta": 8, "awarenessDelta": -4 }, "goto": "bab2-07" },
+            { "id": "b", "label": "Tolak dengan halus", "effects": { "awarenessDelta": 10, "trustDelta": -2 }, "goto": "bab2-08" },
+            { "id": "c", "label": "Alihkan topik tanpa menjawab", "effects": { "awarenessDelta": 6 }, "goto": "bab2-08" }
+          ]
+        },
+        {
+          "id": "bab2-07",
+          "speaker": "bagas",
+          "time": "23.20",
+          "text": "Kamu luar biasa. Aku simpan baik-baik, hanya untukku. Jangan kirim ke siapa pun ya."
+        },
+        {
+          "id": "bab2-08",
+          "speaker": "bagas",
+          "time": "23.18",
+          "text": "Maaf, aku terlalu jauh. Aku hanya kangen. Kamu tahu kan aku tidak bermaksud buruk."
+        },
+        {
+          "id": "bab2-09",
+          "speaker": "bagas",
+          "time": "Minggu 4",
+          "text": "Oh iya, temanmu Mira sepertinya tidak suka aku. Dia bilang apa tentang aku? Aku tidak nyaman kalau ada yang menghasut.",
+          "choices": [
+            { "id": "a", "label": "Ceritakan semua yang Mira bilang", "effects": { "awarenessDelta": -4, "trustDelta": 4 }, "goto": "bab2-10" },
+            { "id": "b", "label": "Bilang Mira hanya peduli padaku", "effects": { "awarenessDelta": 8 }, "goto": "bab2-11" },
+            { "id": "c", "label": "Tidak membahas Mira", "effects": { "awarenessDelta": 4 }, "goto": "bab2-11" }
+          ]
+        },
+        {
+          "id": "bab2-10",
+          "speaker": "bagas",
+          "time": "20.40",
+          "text": "Dia tidak mengenalku. Hati-hati, orang seperti dia bisa merusak hubungan kita. Aku hanya ingin kamu bahagia."
+        },
+        {
+          "id": "bab2-11",
+          "speaker": "bagas",
+          "time": "20.38",
+          "text": "Aku tidak akan membatasi kamu. Aku hanya takut kehilangan. Kamu mengerti kan?"
+        },
+        {
+          "id": "bab2-12",
+          "speaker": "narator",
+          "time": "Minggu 5",
+          "text": "Minggu kelima. Larut malam, panggilan video dari Bagas masuk — hanya beberapa detik."
+        }
+      ]
+    },
+    {
+      "id": "bab3",
+      "title": "Bab 3 · Krisis palsu",
+      "subtitle": "Minggu 6–7",
+      "nodes": [
+        {
+          "id": "bab3-01",
+          "speaker": "bagas",
+          "time": "01.12",
+          "text": "Aku ada masalah. Proyekku kena denda, tabunganku diblokir sementara. Aku tidak bisa tidur."
+        },
+        {
+          "id": "bab3-02",
+          "speaker": "bagas",
+          "time": "01.14",
+          "text": "Kamu masih di sana? Aku butuh seseorang malam ini. Jangan tinggalkan aku.",
+          "choices": [
+            { "id": "a", "label": "Tenangkan dia", "effects": { "trustDelta": 6 }, "goto": "bab3-03" },
+            { "id": "b", "label": "Tanya detail masalahnya", "effects": { "awarenessDelta": 8 }, "goto": "bab3-04" }
+          ]
+        },
+        {
+          "id": "bab3-03",
+          "speaker": "bagas",
+          "time": "01.16",
+          "text": "Makasih. Aku tahu kamu berbeda. Aku akan melewati ini karena kamu."
+        },
+        {
+          "id": "bab3-04",
+          "speaker": "bagas",
+          "time": "01.15",
+          "text": "Ribet, perusahaan menahan dana. Aku tidak bisa jelaskan sekarang. Kamu percaya aku kan?"
+        },
+        {
+          "id": "bab3-05",
+          "type": "videocall",
+          "speaker": "bagas",
+          "time": "01.20",
+          "text": "Panggilan video masuk · 00:11",
+          "next": "bab3-06"
+        },
+        {
+          "id": "bab3-06",
+          "speaker": "narator",
+          "time": "01.20",
+          "text": "Wajahnya terlihat, tapi gambar patah-patah dan suaranya putus. Sebelas detik kemudian panggilan berakhir.",
+          "choices": [
+            { "id": "a", "label": "Percaya — dia terlihat asli", "effects": { "trustDelta": 8 }, "goto": "bab3-07" },
+            { "id": "b", "label": "Catat: panggilan selalu singkat", "effects": { "awarenessDelta": 12, "deepfakeSeen": 1 }, "goto": "bab3-08" },
+            { "id": "c", "label": "Minta panggilan panjang besok", "effects": { "awarenessDelta": 10, "deepfakeSeen": 1 }, "goto": "bab3-09" }
+          ]
+        },
+        {
+          "id": "bab3-07",
+          "speaker": "bagas",
+          "time": "01.23",
+          "text": "Sinyal di sini memang buruk. Kamu percaya kan? Aku tidak mau kehilangan kamu karena prasangka."
+        },
+        {
+          "id": "bab3-08",
+          "speaker": "bagas",
+          "time": "01.24",
+          "text": "Nanti kita video call lagi kalau jaringan bagus. Janji. Sekarang aku harus istirahat."
+        },
+        {
+          "id": "bab3-09",
+          "speaker": "bagas",
+          "time": "01.24",
+          "text": "Nanti ya, aku sedang di jalan. Sinyal di sini benar-benar payah."
+        },
+        {
+          "id": "bab3-10",
+          "speaker": "mira",
+          "time": "Minggu 6",
+          "text": "Aku lihat foto profil Bagas di situs stok foto. Kamu sudah cek? Aku tidak mau ikut campur, tapi ini aneh."
+        },
+        {
+          "id": "bab3-10b",
+          "speaker": "narator",
+          "time": "Minggu 6",
+          "text": "Mira mengirim tautan portofolio fotografer. Wajah yang sama, nama berbeda, lokasi berbeda.",
+          "choices": [
+            { "id": "a", "label": "Sudah kucek, aku simpan buktinya", "effects": { "awarenessDelta": 8 }, "goto": "bab3-11" },
+            { "id": "b", "label": "Jangan ikut campur, aku yang tahu dia", "effects": { "trustDelta": 4, "awarenessDelta": -6 }, "goto": "bab3-12" },
+            { "id": "c", "label": "Cek lagi sekarang", "effects": { "awarenessDelta": 12, "verified": 1 }, "goto": "bab3-13" }
+          ]
+        },
+        {
+          "id": "bab3-11",
+          "speaker": "narator",
+          "time": "Minggu 6",
+          "text": "Kamu membandingkan foto dan mulai melihat pola: cerita yang berpindah-pindah, panggilan yang selalu pendek, dan kemarahan halus saat kamu bertanya."
+        },
+        {
+          "id": "bab3-12",
+          "speaker": "narator",
+          "time": "Minggu 6",
+          "text": "Kamu menjauh dari Mira. Bagas senang kamu memilihnya. Perlahan, hanya dia yang tersisa untuk diajak bicara."
+        },
+        {
+          "id": "bab3-13",
+          "speaker": "narator",
+          "time": "Minggu 6",
+          "text": "Pencarian gambar mengonfirmasi: foto itu dipakai di beberapa profil dengan nama berbeda. Kamu menyimpan semuanya."
+        }
+      ]
+    },
+    {
+      "id": "bab4",
+      "title": "Bab 4 · Permintaan pertama",
+      "subtitle": "Minggu 8",
+      "nodes": [
+        {
+          "id": "bab4-01",
+          "speaker": "bagas",
+          "time": "20.05",
+          "text": "Aku akan ke Indonesia bulan depan. Tapi ada bea pengeluaran Rp 2.500.000 yang harus kubayar dulu. Tabunganku masih diblokir. Kamu bisa bantu?",
+          "choices": [
+            { "id": "a", "label": "Kirim penuh Rp 2.500.000", "effects": { "sentMoneyDelta": 1, "saldoDelta": -2500000, "trustDelta": 8 }, "goto": "bab4-02" },
+            { "id": "b", "label": "Kirim sebagian Rp 500.000", "effects": { "sentMoneyDelta": 1, "saldoDelta": -500000, "trustDelta": 4, "awarenessDelta": 4 }, "goto": "bab4-03" },
+            { "id": "c", "label": "Tolak dan tanya kenapa kamu yang membayar", "effects": { "awarenessDelta": 15 }, "goto": "bab4-04" },
+            { "id": "d", "label": "Minta video call panjang dulu", "effects": { "awarenessDelta": 10 }, "goto": "bab4-05" }
+          ]
+        },
+        {
+          "id": "bab4-02",
+          "speaker": "bagas",
+          "time": "20.12",
+          "text": "Kamu penyelamatku. Aku akan ganti dua kali lipat begitu danaku cair. Aku tidak akan melupakan ini."
+        },
+        {
+          "id": "bab4-03",
+          "speaker": "bagas",
+          "time": "20.11",
+          "text": "Sisanya nanti ya, aku akan usahakan. Kamu memang berbeda dari yang lain."
+        },
+        {
+          "id": "bab4-04",
+          "speaker": "bagas",
+          "time": "20.09",
+          "text": "Aku tidak menyangka kamu tega. Aku sudah menganggapmu keluarga. Kalau kamu tidak percaya, bilang saja.",
+          "choices": [
+            { "id": "a", "label": "Bertahan pada batas: tidak ada transfer", "effects": { "awarenessDelta": 12 }, "goto": "bab4-07" },
+            { "id": "b", "label": "Menyerah dan kirim penuh", "effects": { "sentMoneyDelta": 1, "saldoDelta": -2500000, "trustDelta": 4 }, "goto": "bab4-02" }
+          ]
+        },
+        {
+          "id": "bab4-05",
+          "speaker": "bagas",
+          "time": "20.07",
+          "text": "Sinyal buruk, nanti saja. Kamu tidak percaya ya? Padahal aku sudah jujur soal masalahku.",
+          "choices": [
+            { "id": "a", "label": "Tetap minta verifikasi sebelum mengirim apa pun", "effects": { "awarenessDelta": 10 }, "goto": "bab4-04" },
+            { "id": "b", "label": "Minta maaf dan kirim penuh", "effects": { "sentMoneyDelta": 1, "saldoDelta": -2500000, "trustDelta": 6 }, "goto": "bab4-02" }
+          ]
+        },
+        {
+          "id": "bab4-06",
+          "speaker": "bagas",
+          "time": "Minggu 9",
+          "text": "Tiket sudah kupesan. Tunggu aku ya. Aku akan memelukmu lama sekali."
+        },
+        {
+          "id": "bab4-07",
+          "speaker": "bagas",
+          "time": "20.18",
+          "text": "Baiklah. Aku kecewa, tapi aku mengerti. Mungkin aku memang tidak berharga untukmu."
+        },
+        {
+          "id": "bab4-08",
+          "speaker": "narator",
+          "time": "Minggu 10",
+          "text": "Tiga minggu kemudian, tiket pesawat belum pernah dipesan. Bagas mengirim pesan dari nomor baru."
+        }
+      ]
+    },
+    {
+      "id": "bab5",
+      "title": "Bab 5 · Eskalasi & akhir",
+      "subtitle": "Minggu 10",
+      "nodes": [
+        {
+          "id": "bab5-01",
+          "speaker": "bagas",
+          "time": "04.31",
+          "text": "Aku ditahan di bandara. Ada masalah visa, mereka minta denda Rp 7.500.000 atau aku dideportasi. Aku tidak tahu harus bagaimana lagi.",
+          "choices": [
+            { "id": "a", "label": "Kirim semua yang diminta", "effects": { "sentMoneyDelta": 2, "saldoDelta": -7500000, "trustDelta": 6 }, "goto": "bab5-02" },
+            { "id": "b", "label": "Berhenti dan minta bukti resmi", "effects": { "awarenessDelta": 20 }, "goto": "bab5-03" },
+            { "id": "c", "label": "Cek nomor penerbangan dan kedutaan", "effects": { "awarenessDelta": 15, "verified": 1 }, "goto": "bab5-04" }
+          ]
+        },
+        {
+          "id": "bab5-02",
+          "speaker": "bagas",
+          "time": "04.40",
+          "text": "Kamu benar-benar satu-satunya orang yang peduli. Aku akan segera keluar dan menemui kamu."
+        },
+        {
+          "id": "bab5-03",
+          "speaker": "bagas",
+          "time": "04.33",
+          "text": "Kamu tega membiarkanku di sini. Aku tidak punya siapa-siapa selain kamu.",
+          "choices": [
+            { "id": "a", "label": "Tetap berhenti dan minta bukti", "effects": { "awarenessDelta": 12 }, "goto": "bab5-06" },
+            { "id": "b", "label": "Kirim uang terakhir", "effects": { "sentMoneyDelta": 2, "saldoDelta": -7500000, "trustDelta": 2 }, "goto": "bab5-05" }
+          ]
+        },
+        {
+          "id": "bab5-04",
+          "speaker": "narator",
+          "time": "05.02",
+          "text": "Nomor penerbangan yang disebut tidak ada di jadwal mana pun. Kedutaan tidak punya catatan nama itu. Kamu menyimpan tangkapan layarnya."
+        },
+        {
+          "id": "bab5-05",
+          "speaker": "narator",
+          "time": "05.10",
+          "text": "Setelah uang terakhir terkirim, nomor Bagas tidak aktif. Profilnya hilang. Tidak ada tiket, tidak ada bandara, tidak ada Bagas."
+        },
+        {
+          "id": "bab5-06",
+          "speaker": "narator",
+          "time": "05.08",
+          "text": "Kamu memblokir nomor baru itu, menyimpan semua bukti, dan menghubungi Mira. Untuk pertama kalinya dalam berbulan-bulan, kamu tidak sendirian."
+        },
+        {
+          "id": "bab5-07",
+          "type": "ending",
+          "speaker": "narator",
+          "text": "Cerita ini berakhir, tetapi pelajarannya baru dimulai."
+        },
+        {
+          "id": "bab5-08",
+          "type": "ending",
+          "speaker": "narator",
+          "text": "Kamu keluar dari cerita dengan luka, tetapi bukan tanpa pelajaran."
+        }
+      ]
+    }
+  ],
+  "endingRules": [
+    { "when": "sentMoney>=2", "ending": "kena-total" },
+    { "when": "sentMoney>=1", "ending": "kena-sebagian" },
+    { "when": "awareness>=70 || verified>=1", "ending": "cegah-awal" },
+    { "ending": "selamat-luka" }
+  ],
+  "variantRules": [
+    { "when": "deepfakeSeen>=1 && sentMoney>=2", "variant": "var-deepfake" }
+  ],
+  "endings": {
+    "kena-total": {
+      "label": "Kena total: nomor itu tidak pernah ada",
+      "rank": 0,
+      "tone": "bad"
+    },
+    "kena-sebagian": {
+      "label": "Kena sebagian: berhenti sebelum eskalasi",
+      "rank": 1,
+      "tone": "good"
+    },
+    "selamat-luka": {
+      "label": "Selamat dengan luka",
+      "rank": 2,
+      "tone": "good"
+    },
+    "cegah-awal": {
+      "label": "Mencegah sejak awal",
+      "rank": 3,
+      "tone": "best"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      {
+        "t": "Bab 1",
+        "judul": "Perkenalan yang kebetulan",
+        "naskah": "Kafe itu favoritku juga. Profilmu menarik, tidak seperti akun lain.",
+        "tujuanPenipu": "Menciptakan kebetulan yang terasa takdir dan memuji hal kecil untuk membangun kedekatan."
+      },
+      {
+        "t": "Bab 2",
+        "judul": "Love bombing & isolasi",
+        "naskah": "Aku tidak pernah merasa seperti ini. Aku akan ke Indonesia, kita mulai hidup bersama.",
+        "tujuanPenipu": "Menaikkan intensitas lebih cepat daripada hubungan wajar, lalu menjauhkan korban dari teman yang curiga."
+      },
+      {
+        "t": "Bab 3",
+        "judul": "Krisis dan video call singkat",
+        "naskah": "Proyekku kena denda, tabunganku diblokir. Sinyal di sini buruk.",
+        "tujuanPenipu": "Membangun simpati sekaligus menghindari verifikasi identitas. Deepfake atau video lama cukup untuk meyakinkan."
+      },
+      {
+        "t": "Bab 4",
+        "judul": "Permintaan pertama",
+        "naskah": "Ada bea pengeluaran Rp 2.500.000. Kamu bisa bantu?",
+        "tujuanPenipu": "Menguji batas dengan nominal yang “masih masuk akal”. Jika berhasil, permintaan berikutnya lebih besar."
+      },
+      {
+        "t": "Bab 5",
+        "judul": "Eskalasi darurat",
+        "naskah": "Aku ditahan di bandara, denda Rp 7.500.000 atau dideportasi.",
+        "tujuanPenipu": "Menciptakan darurat agar korban mengirim uang tanpa berpikir, lalu menghilang."
+      }
+    ],
+    "manipulasi": [
+      { "chapter": "Bab 1", "taktik": "Love bombing", "penjelasan": "Perhatian intens dan pujian cepat membuat korban merasa istimewa sebelum ada bukti identitas." },
+      { "chapter": "Bab 2", "taktik": "Grooming & isolasi", "penjelasan": "Hubungan dipercepat, teman yang curiga dibuat tampak sebagai perusak kebahagiaan." },
+      { "chapter": "Bab 3", "taktik": "Verifikasi palsu", "penjelasan": "Video singkat, sinyal buruk, dan cerita krisis menutup pintu pertanyaan tanpa terlihat menolak." },
+      { "chapter": "Bab 4", "taktik": "Rasa bersalah", "penjelasan": "Penolakan dibalas dengan kekecewaan dan tekanan emosional, bukan penjelasan." },
+      { "chapter": "Bab 5", "taktik": "Urgensi", "penjelasan": "Darurat palsu di bandara memaksa keputusan dalam hitungan menit, saat korban paling rentan." }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran uang love scam: korban ke rekening pribadi, lalu mule, lalu hilang",
+      "nodes": [
+        { "id": "korban", "label": "Kamu · transfer “bea” dan “denda”" },
+        { "id": "rekening", "label": "Rekening a.n. orang lain / e-wallet", "tone": "danger" },
+        { "id": "mule", "label": "Mule · dipindah dalam menit" },
+        { "id": "hilang", "label": "Penipu menghilang, identitas palsu", "tone": "danger" }
+      ],
+      "edges": [
+        { "from": "korban", "to": "rekening", "label": "transfer" },
+        { "from": "rekening", "to": "mule", "label": "dipecah" },
+        { "from": "mule", "to": "hilang", "label": "sulit dilacak" }
+      ]
+    },
+    "pulihkan": [
+      "Berhenti mengirim uang dan jangan menanggapi ancaman atau rayuan lanjutan.",
+      "Simpan seluruh percakapan, foto profil, nomor, dan bukti transfer.",
+      "Laporkan rekening penerima ke bank dan cekrekening.id.",
+      "Lapor ke 122 dan aduankonten.id; sertakan tautan profil palsu.",
+      "Beri tahu orang terpercaya dan pertimbangkan bantuan psikologis — korban love scam bukan orang bodoh."
+    ],
+    "linkPhisquest": false
+  }
+}

@@ -1,0 +1,110 @@
+/* Scamurai — design tokens (styles.md §3) */
+:root {
+  /* Tipografi */
+  --s-font-ui: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --s-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --s-font-story: "Plus Jakarta Sans", Georgia, serif;
+
+  --s-fs-900: 2rem;
+  --s-fs-800: 1.5rem;
+  --s-fs-700: 1.25rem;
+  --s-fs-600: 1.0625rem;
+  --s-fs-500: 1rem;
+  --s-fs-400: .875rem;
+  --s-fs-300: .75rem;
+
+  /* Spasi, radius, border */
+  --s-sp-1: 4px;
+  --s-sp-2: 8px;
+  --s-sp-3: 12px;
+  --s-sp-4: 16px;
+  --s-sp-5: 24px;
+  --s-sp-6: 32px;
+  --s-sp-7: 48px;
+  --s-radius-s: 8px;
+  --s-radius-m: 14px;
+  --s-radius-l: 28px;
+  --s-border-w: 1px;
+
+  /* Motion */
+  --s-dur-fast: 120ms;
+  --s-dur-base: 200ms;
+  --s-dur-slow: 360ms;
+  --s-ease: cubic-bezier(.2, .8, .2, 1);
+
+  /* Aplikasi tiruan selalu terang */
+  --s-app-bg: #F4F1EA;
+  --s-app-ink: #22201E;
+  --s-app-ink-soft: #6B675F;
+  --s-app-surface: #FFFFFF;
+  --s-app-line: #E3DFD6;
+  --s-bubble-in: #FFFFFF;
+  --s-bubble-out: #D6E7D4;
+  --s-app-danger: #B33939;
+}
+
+:root[data-theme="sumi"] {
+  --s-bg: #17141B;
+  --s-bg-soft: #201C26;
+  --s-bg-inset: #2A2530;
+  --s-bg-dojo: #131018;
+
+  --s-ink: #F2EEE7;
+  --s-ink-soft: #C9C2B6;
+  --s-ink-faint: #8D867C;
+  --s-ink-inverse: #1B1820;
+
+  --s-accent: #C93A3A;
+  --s-accent-soft: #3A2024;
+  --s-gold: #D9A441;
+  --s-gold-soft: #3A2F1B;
+
+  --s-success: #4FA97F;
+  --s-success-soft: #1E322A;
+  --s-info: #6C93C4;
+  --s-info-soft: #1C2A38;
+  --s-warn: #D97E2B;
+  --s-warn-soft: #382A18;
+
+  --s-line: #352F3B;
+  --s-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+  --s-shadow-soft: 0 4px 14px rgba(0, 0, 0, .30);
+  --s-focus: #D9A441;
+  --s-wm: rgba(201, 58, 58, .10);
+}
+
+:root[data-theme="washi"] {
+  --s-bg: #F6F2E8;
+  --s-bg-soft: #FFFFFF;
+  --s-bg-inset: #EFE9DB;
+  --s-bg-dojo: #E9E2D2;
+
+  --s-ink: #201C26;
+  --s-ink-soft: #55503F;
+  --s-ink-faint: #7B756A;
+  --s-ink-inverse: #F6F2E8;
+
+  --s-accent: #B32E2E;
+  --s-accent-soft: #F3DDDD;
+  --s-gold: #A4741B;
+  --s-gold-soft: #F1E4C6;
+
+  --s-success: #2F7D57;
+  --s-success-soft: #DDF0E6;
+  --s-info: #2E5E8F;
+  --s-info-soft: #DFEAF5;
+  --s-warn: #A85E14;
+  --s-warn-soft: #F7E7D2;
+
+  --s-line: #D8D0BF;
+  --s-shadow: 0 8px 24px rgba(32, 28, 38, .14);
+  --s-shadow-soft: 0 4px 14px rgba(32, 28, 38, .10);
+  --s-focus: #1B4F9C;
+  --s-wm: rgba(179, 46, 46, .09);
+
+  --s-info-strong: #244A70;
+}
+
+/* Skala font global */
+html[data-fontscale="large"] { font-size: 112.5%; }
+html[data-fontscale="elder"] { font-size: 125%; }

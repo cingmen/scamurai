@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" role="img" aria-label="Potret abstrak karakter fiktif Bagas">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4A3B52"/>
+      <stop offset="1" stop-color="#221B2A"/>
+    </linearGradient>
+    <linearGradient id="figure" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8C7A86"/>
+      <stop offset="1" stop-color="#4E4050"/>
+    </linearGradient>
+  </defs>
+  <rect width="240" height="300" fill="url(#sky)"/>
+  <circle cx="184" cy="56" r="46" fill="#D9A441" opacity=".18"/>
+  <g opacity=".4" stroke="#ffffff" stroke-opacity=".18" fill="none">
+    <path d="M0 236 L240 196 M0 262 L240 222 M0 288 L240 248"/>
+  </g>
+  <ellipse cx="120" cy="118" rx="52" ry="60" fill="url(#figure)"/>
+  <path d="M58 108 Q60 44 120 42 Q180 44 182 108 Q160 82 120 80 Q80 82 58 108 Z" fill="#2E2530"/>
+  <path d="M64 130 Q64 196 120 202 Q176 196 176 130 Q176 176 120 182 Q64 176 64 130 Z" fill="#3A2F3C" opacity=".8"/>
+  <path d="M40 300 Q44 214 120 206 Q196 214 200 300 Z" fill="#2A2530"/>
+  <path d="M92 300 Q96 236 120 232 Q144 236 148 300 Z" fill="#3C3442"/>
+  <g fill="#201C26" opacity=".65">
+    <ellipse cx="100" cy="122" rx="5" ry="6"/>
+    <ellipse cx="140" cy="122" rx="5" ry="6"/>
+  </g>
+  <path d="M108 152 Q120 160 132 152" stroke="#D5B7B0" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <rect x="16" y="16" width="82" height="18" rx="9" fill="#C93A3A" opacity=".85"/>
+  <text x="26" y="29" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#ffffff" letter-spacing="1">SIMULASI</text>
+</svg>

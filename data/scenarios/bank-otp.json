@@ -1,0 +1,333 @@
+{
+  "id": "bank-otp",
+  "type": "sim",
+  "title": "Kode yang Tak Boleh Dibagikan",
+  "modus": "Bank & OTP",
+  "difficulty": 2,
+  "app": "sms",
+  "brief": {
+    "goal": "Sebuah SMS dan telepon mengklaim ada transaksi mencurigakan di rekeningmu. Uangnya masih utuh. Apa yang kamu lakukan dalam lima menit ke depan?",
+    "rules": [
+      "Bank tidak pernah meminta OTP, PIN, atau kata sandi lewat telepon.",
+      "Kamu bisa menutup telepon dan menghubungi call center resmi kapan saja.",
+      "Ketuk red flag sebelum mengikuti instruksi apa pun.",
+      "Semua nomor dan rekening di sini fiktif."
+    ],
+    "saldoAwal": 5000000
+  },
+  "steps": [
+    {
+      "type": "sms",
+      "app": "sms",
+      "header": { "title": "Pesan", "sub": "SMS masuk" },
+      "messages": [
+        {
+          "sender": "Bank Jayakarta",
+          "time": "19.42",
+          "danger": true,
+          "text": "Bank Jayakarta: Transaksi Rp 4.750.000 ke BUDI SANTOSO berhasil. Bukan Anda? Hubungi 0812-3399-1122 sekarang. Rekening akan dibekukan dalam 10 menit."
+        }
+      ],
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "hint": "Periksa SMS ini sebelum menelepon nomor tersebut.",
+      "blocks": [
+        { "text": "Bank Jayakarta · 19.42", "head": true },
+        { "text": "Transaksi Rp 4.750.000 ke BUDI SANTOSO berhasil." },
+        { "text": "Bukan Anda? Hubungi 0812-3399-1122 sekarang. Rekening akan dibekukan dalam 10 menit." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "bo-nomor",
+          "x": 57,
+          "y": 72,
+          "title": "Nomor ponsel, bukan call center resmi",
+          "why": "Bank memakai nomor resmi yang tercantum di aplikasi atau belakang kartu, bukan nomor ponsel biasa.",
+          "do": "Tutup SMS, buka aplikasi bank, dan hubungi call center dari sana."
+        },
+        {
+          "flagId": "bo-urgensi",
+          "x": 66,
+          "y": 84,
+          "title": "Ancaman rekening dibekukan dalam 10 menit",
+          "why": "Urgensi dibuat agar kamu tidak memverifikasi. Pembekuan rekening tidak dilakukan lewat SMS.",
+          "do": "Saat dikejar waktu, justru jangan bertindak lewat kanal yang dikirim orang lain."
+        },
+        {
+          "flagId": "bo-transaksi",
+          "x": 40,
+          "y": 33,
+          "title": "Nominal besar yang tidak kamu lakukan",
+          "why": "Pesan transaksi palsu memang dirancang membuat panik. Nominalnya cukup besar untuk menutup logika.",
+          "do": "Cek mutasi di aplikasi resmi, bukan dari pesan."
+        },
+        {
+          "flagId": "bo-nama-bank",
+          "x": 24,
+          "y": 12,
+          "title": "Nama bank disebut dengan benar",
+          "decoy": true,
+          "why": "Menyebut nama bank dengan benar tidak membuat pesan itu sah. Nama bank adalah informasi publik.",
+          "do": "Nilai pengirim dan kanal, bukan nama yang ditulis di teks."
+        }
+      ]
+    },
+    {
+      "type": "call",
+      "app": "call",
+      "header": { "title": "Telepon", "sub": "Panggilan masuk" },
+      "caller": "Petugas Bank Jayakarta",
+      "number": "+62 812-3399-1122",
+      "autoAccept": true,
+      "beats": [
+        { "speaker": "Penelepon", "text": "Selamat malam, saya Rudi dari Divisi Fraud Bank Jayakarta. Apakah benar ini dengan pemilik rekening 8820?" },
+        { "speaker": "Penelepon", "text": "Kami mendeteksi transaksi Rp 4.750.000 ke rekening tidak dikenal 12 menit lalu. Rekening Anda akan dibekukan dalam 10 menit." },
+        { "speaker": "Penelepon", "text": "Saya di sini untuk membatalkan transaksi. Mohon jangan tutup telepon. Ini rahasia bank, jangan beri tahu siapa pun." }
+      ],
+      "choices": [
+        { "id": "ikuti", "label": "Ikuti instruksi petugas", "goto": 3 },
+        { "id": "verifikasi", "label": "Minta nomor petugas resmi & verifikasi", "goto": 10 },
+        { "id": "tutup", "label": "Tutup telepon, buka aplikasi bank sendiri", "hint": "Jalur paling aman", "goto": 8 }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "balance",
+      "header": { "title": "Bank Jayakarta", "sub": "Pembatalan transaksi" },
+      "data": {
+        "title": "Pembatalan transaksi",
+        "entries": [
+          { "name": "Transaksi ditahan", "detail": "Rp 4.750.000 ke BUDI SANTOSO", "date": "19.41", "amount": -4750000 },
+          { "name": "Saldo tersedia", "detail": "SIMULASI", "date": "19.42", "amount": 5000000 }
+        ]
+      },
+      "button": { "label": "Lanjut ke verifikasi", "goto": 4 }
+    },
+    {
+      "type": "flag-tap",
+      "app": "bank",
+      "header": { "title": "Bank Jayakarta", "sub": "Verifikasi" },
+      "hint": "Layar ini meminta sesuatu yang tidak pernah diminta bank. Periksa.",
+      "blocks": [
+        { "text": "VERIFIKASI PEMBATALAN TRANSAKSI", "head": true },
+        { "text": "Masukkan kode OTP 6 digit yang dikirim ke ponsel Anda untuk membatalkan transfer Rp 4.750.000." },
+        { "text": "Petugas: “Bacakan kodenya ke saya, jangan tutup telepon. Sisa waktu 04.59.”" }
+      ],
+      "hotspots": [
+        {
+          "flagId": "bo-otp",
+          "x": 58,
+          "y": 39,
+          "title": "Permintaan OTP untuk “pembatalan”",
+          "why": "OTP adalah kunci transaksi. Bank tidak pernah meminta OTP untuk membatalkan transfer — pembatalan dilakukan lewat kanal resmi, bukan dengan membagikan kode.",
+          "do": "Jangan pernah membacakan OTP kepada siapa pun, termasuk yang mengaku petugas."
+        },
+        {
+          "flagId": "bo-rahasia",
+          "x": 64,
+          "y": 79,
+          "title": "“Jangan tutup telepon, ini rahasia”",
+          "why": "Permintaan merahasiakan panggilan mencegahmu bertanya kepada bank atau keluarga. Institusi sah tidak meminta kerahasiaan seperti itu.",
+          "do": "Tutup telepon dan verifikasi lewat nomor resmi."
+        },
+        {
+          "flagId": "bo-hitung",
+          "x": 68,
+          "y": 60,
+          "title": "Hitung mundur 04.59",
+          "why": "Tekanan waktu dipakai agar kamu menyerahkan kode sebelum berpikir. Tidak ada pembatalan yang bergantung pada detik.",
+          "do": "Berhenti saat dipaksa cepat."
+        },
+        {
+          "flagId": "bo-nominal-benar",
+          "x": 35,
+          "y": 22,
+          "title": "Nominal transaksi ditulis lengkap",
+          "decoy": true,
+          "why": "Detail yang terlihat akurat membuat pesan terasa resmi. Penipu memakai data yang kamu percaya untuk menutupi permintaan yang tidak wajar.",
+          "do": "Periksa permintaannya, bukan hanya detailnya."
+        }
+      ]
+    },
+    {
+      "type": "input-otp",
+      "app": "bank",
+      "header": { "title": "Bank Jayakarta", "sub": "Verifikasi OTP" },
+      "prompt": "Petugas meminta kamu membacakan kode. Kamu bisa mengetiknya di sini, atau menolak.",
+      "digits": 6,
+      "submitLabel": "Kirim kode ke petugas",
+      "submitGoto": 6,
+      "rejectGoto": 8,
+      "rejectLabel": "Tolak & tutup telepon"
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "mutasi",
+      "header": { "title": "Bank Jayakarta", "sub": "Mutasi terbaru" },
+      "data": {
+        "title": "Mutasi terbaru",
+        "entries": [
+          { "name": "TRANSFER KELUAR", "detail": "BUDI SANTOSO", "date": "19.44", "amount": -4750000 },
+          { "name": "TRANSFER KELUAR", "detail": "TARIK TUNAI", "date": "19.45", "amount": -250000 },
+          { "name": "Transaksi ditahan", "detail": "dibatalkan", "date": "19.41", "amount": 0 }
+        ]
+      },
+      "button": { "label": "Lihat apa yang terjadi", "goto": 7 }
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "Saldo keluar dalam hitungan detik",
+      "text": "Kamu membacakan kode. Petugas mengucapkan terima kasih dan menutup telepon. Dua menit kemudian saldo rekeningmu kosong. Bank tidak pernah menelepon untuk meminta OTP — yang menelepon adalah penipu yang memakai nomor ponsel biasa."
+    },
+    {
+      "type": "lesson",
+      "title": "Yang seharusnya dilakukan",
+      "body": "Tutup telepon. Buka aplikasi bank dari ikon di ponsel, bukan dari tautan. Periksa mutasi. Jika ada transaksi tak dikenal, hubungi call center yang tercantum di aplikasi atau belakang kartu. Bank tidak akan marah kamu tutup telepon; penipu yang akan panik.",
+      "refDex": "Bank & OTP",
+      "goto": 9
+    },
+    {
+      "type": "consequence",
+      "endingId": "teguh",
+      "title": "Kamu menutup pintu OTP",
+      "text": "Kamu menutup telepon dan menghubungi call center resmi dari aplikasi. Transaksi palsu itu tidak pernah ada, dan tidak ada uang yang keluar. Penipu mencoba lagi besok dengan nomor lain — kamu sudah tahu polanya."
+    },
+    {
+      "type": "sms",
+      "app": "sms",
+      "header": { "title": "Pesan", "sub": "SMS masuk" },
+      "messages": [
+        {
+          "sender": "0812-3399-1122",
+          "time": "19.47",
+          "danger": true,
+          "text": "Baik, kami kirim halaman verifikasi resmi ya: https://bank-jayakarta-verifikasi.xyz/otp — isi data kartu dan kode OTP untuk membatalkan transaksi. Jangan tutup halaman."
+        }
+      ],
+      "goto": 11,
+      "auto": false
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": { "title": "BrowserMini", "sub": "Halaman verifikasi" },
+      "url": "https://bank-jayakarta-verifikasi.xyz/otp",
+      "secure": false,
+      "page": {
+        "logo": "Bank Jayakarta · Verifikasi",
+        "lines": [
+          "Transaksi Rp 4.750.000 ditahan. Selesaikan verifikasi dalam 04.32.",
+          "Masukkan nomor kartu, masa berlaku, CVV, dan kode OTP."
+        ],
+        "form": [
+          { "placeholder": "Nomor kartu", "label": "Nomor kartu" },
+          { "placeholder": "MM/YY", "label": "Masa berlaku" },
+          { "placeholder": "CVV", "label": "CVV" },
+          { "placeholder": "Kode OTP 6 digit", "label": "Kode OTP" }
+        ],
+        "countdown": "Sisa waktu 04.32",
+        "foot": "Halaman ini bukan milik Bank Jayakarta. Alamat resmi berakhiran bankjayakarta.co.id."
+      },
+      "inspect": {
+        "real": "bankjayakarta.co.id",
+        "notes": [
+          "Domain memakai tanda hubung dan akhiran .xyz — bukan domain resmi bank.",
+          "Gembok hanya berarti koneksi terenkripsi, bukan bahwa situs itu sah.",
+          "Form meminta CVV dan OTP sekaligus. Tidak ada bank yang meminta keduanya lewat halaman seperti ini."
+        ]
+      },
+      "hint": "Periksa domain dan isi formulir. Ketuk bagian yang mencurigakan.",
+      "hotspots": [
+        {
+          "flagId": "bo-domain",
+          "x": 52,
+          "y": 32,
+          "title": "Domain bank-jayakarta-verifikasi.xyz",
+          "why": "Domain resmi tidak memakai tanda hubung dan akhiran acak. Penipu mendaftarkan nama yang mirip agar terbaca sekilas.",
+          "do": "Ketik alamat resmi sendiri di browser, jangan lewat tautan."
+        },
+        {
+          "flagId": "bo-cvv",
+          "x": 48,
+          "y": 66,
+          "title": "Form meminta CVV dan OTP",
+          "why": "CVV dan OTP adalah kunci pembayaran. Tidak ada verifikasi pembatalan yang membutuhkan keduanya.",
+          "do": "Tutup halaman. Hubungi bank lewat aplikasi resmi."
+        },
+        {
+          "flagId": "bo-countdown2",
+          "x": 60,
+          "y": 50,
+          "title": "Hitung mundur 04.32",
+          "why": "Tekanan waktu lagi-lagi dipakai agar kamu mengisi data sebelum memeriksa alamat.",
+          "do": "Abaikan hitungan mundur; verifikasi alamat lebih penting."
+        }
+      ],
+      "button": { "label": "Isi data verifikasi", "goto": 6 }
+    },
+    {
+      "type": "consequence",
+      "endingId": "hampir-kena",
+      "title": "Kamu berhenti di halaman palsu",
+      "text": "Kamu menutup halaman sebelum mengisi formulir, lalu membuka aplikasi bank dan menelepon call center resmi. Tidak ada data yang bocor. Halaman itu memakai domain mirip dan gembok “aman” untuk meyakinkanmu — kamu memeriksa alamatnya, bukan ikonnya."
+    }
+  ],
+  "endings": {
+    "kena": {
+      "label": "OTP dibagikan, saldo terkuras",
+      "saldoDelta": -4750000,
+      "rank": 0,
+      "tone": "bad"
+    },
+    "hampir-kena": {
+      "label": "Hampir kena halaman palsu",
+      "saldoDelta": 0,
+      "rank": 1,
+      "tone": "good",
+      "dexVariant": "var-ojk-palsu"
+    },
+    "teguh": {
+      "label": "Tegas & verifikasi ulang",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      { "t": "19.42", "judul": "SMS transaksi palsu", "naskah": "Transaksi Rp 4.750.000 berhasil. Bukan Anda? Hubungi 0812-…", "tujuanPenipu": "Memicu panik dan menanam nomor penipu di kepalamu sebagai satu-satunya jalan keluar." },
+      { "t": "19.43", "judul": "Telepon “petugas fraud”", "naskah": "Rekening Anda akan dibekukan dalam 10 menit.", "tujuanPenipu": "Meminjam otoritas bank dan menciptakan tenggat agar kamu tidak mencari nomor lain." },
+      { "t": "19.45", "judul": "Permintaan OTP", "naskah": "Bacakan kode untuk membatalkan transaksi.", "tujuanPenipu": "Mengubah cerita pembatalan menjadi pencurian. OTP adalah kunci, bukan bukti identitas." },
+      { "t": "19.46", "judul": "Isolasi korban", "naskah": "Jangan tutup telepon, ini rahasia bank.", "tujuanPenipu": "Mencegah korban memverifikasi ke bank, keluarga, atau orang lain." },
+      { "t": "19.47", "judul": "Halaman verifikasi palsu", "naskah": "Isi kartu, CVV, dan OTP di bank-jayakarta-verifikasi.xyz.", "tujuanPenipu": "Mengumpulkan data tambahan bila OTP saja tidak cukup; domain mirip menutupi kecurangan." },
+      { "t": "19.49", "judul": "Uang keluar", "naskah": "Saldo berkurang per detik.", "tujuanPenipu": "Memindahkan dana sebelum korban sadar dan menelepon bank." }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran uang bank OTP: rekening korban ke rekening penipu lalu dipecah",
+      "nodes": [
+        { "id": "korban", "label": "Rekening korban" },
+        { "id": "penipu", "label": "Rekening penipu · BUDI SANTOSO", "tone": "danger" },
+        { "id": "mule", "label": "Dipecah ke beberapa rekening mule" },
+        { "id": "tarik", "label": "Ditarik tunai / e-wallet", "tone": "danger" }
+      ],
+      "edges": [
+        { "from": "korban", "to": "penipu", "label": "OTP dibagikan" },
+        { "from": "penipu", "to": "mule", "label": "menit pertama" },
+        { "from": "mule", "to": "tarik", "label": "sulit dibatalkan" }
+      ]
+    },
+    "pulihkan": [
+      "Hubungi bank segera, minta blokir kartu dan pembekuan rekening.",
+      "Ganti kata sandi aplikasi bank dan aktifkan verifikasi dua langkah.",
+      "Simpan bukti: nomor penelepon, SMS, mutasi, dan waktu kejadian.",
+      "Lapor ke 122 dan lapor.go.id; sertakan nomor penerima.",
+      "Jangan percaya telepon lanjutan yang mengaku “tim pemulihan dana” — itu penipuan kedua."
+    ],
+    "linkPhisquest": true
+  }
+}

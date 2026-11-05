@@ -1,0 +1,246 @@
+{
+  "id": "pinjol",
+  "type": "sim",
+  "title": "Cepat Cair, Selamanya Merunduk",
+  "modus": "Pinjol Ilegal",
+  "difficulty": 2,
+  "app": "pinjol",
+  "brief": {
+    "goal": "Kamu butuh Rp 3.000.000 hari ini. Sebuah aplikasi menjanjikan cair lima menit, bunga 0%, tanpa jaminan. Baca syaratnya sebelum menekan “Setuju”.",
+    "rules": [
+      "Pinjol legal terdaftar dan diawasi OJK; cek nomornya di kontak OJK 157.",
+      "Izin kontak dan galeri adalah alat penagihan, bukan kebutuhan pinjaman.",
+      "Bunga 0% sering berarti biaya admin dan denda yang tidak disebut di depan.",
+      "Semua aplikasi dan nomor di sini fiktif."
+    ],
+    "saldoAwal": 5000000
+  },
+  "steps": [
+    {
+      "type": "app-ui",
+      "app": "pinjol",
+      "view": "offer",
+      "header": { "title": "CairDuit", "sub": "Cair dalam 5 menit" },
+      "data": {
+        "tagline": "Butuh dana cepat?",
+        "amount": 3000000,
+        "tenor": "Tenor 14 hari · bunga 0% · tanpa jaminan",
+        "badge": "TANPA JAMINAN",
+        "stats": [
+          { "value": "2 mnt", "label": "Rata-rata cair" },
+          { "value": "97%", "label": "Disetujui" },
+          { "value": "24/7", "label": "Layanan" }
+        ],
+        "note": "Dengan menekan Setuju, kamu menyetujui syarat dan ketentuan yang dapat berubah sewaktu-waktu."
+      },
+      "button": { "label": "Ajukan Rp 3.000.000", "goto": 1 }
+    },
+    {
+      "type": "flag-tap",
+      "app": "pinjol",
+      "header": { "title": "CairDuit", "sub": "Ajukan pinjaman" },
+      "hint": "Periksa tawaran ini sebelum melanjutkan.",
+      "blocks": [
+        { "text": "CAIRDUIT · TANPA JAMINAN", "head": true },
+        { "text": "Pinjam Rp 3.000.000. Tenor 14 hari. Bunga 0%." },
+        { "text": "Disetujui 97% · cair rata-rata 2 menit · layanan 24 jam." },
+        { "text": "Dengan menekan Setuju, kamu menyetujui syarat yang dapat berubah sewaktu-waktu." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "pj-bunga",
+          "x": 54,
+          "y": 38,
+          "title": "Bunga 0% tanpa rincian biaya",
+          "why": "Pinjaman tanpa bunga tetap bisa memuat biaya admin, biaya layanan, dan denda harian. Yang tidak disebut di depan biasanya yang paling mahal.",
+          "do": "Minta rincian total yang harus dibayar, bukan hanya persentase bunga."
+        },
+        {
+          "flagId": "pj-stats",
+          "x": 52,
+          "y": 58,
+          "title": "“97% disetujui” tanpa sumber",
+          "why": "Angka persetujuan dan kecepatan pencairan adalah iklan, bukan bukti legalitas. Tidak ada nama badan usaha atau nomor izin.",
+          "do": "Cek izin di OJK, bukan statistik di halaman depan."
+        },
+        {
+          "flagId": "pj-syarat",
+          "x": 56,
+          "y": 84,
+          "title": "Syarat “dapat berubah sewaktu-waktu”",
+          "why": "Klausul ini memberi aplikasi ruang mengubah biaya dan aturan setelah kamu terikat.",
+          "do": "Jangan setuju sebelum membaca syarat lengkap dan total pengembalian."
+        },
+        {
+          "flagId": "pj-tenor",
+          "x": 38,
+          "y": 44,
+          "title": "Tenor 14 hari",
+          "decoy": true,
+          "why": "Tenor pendek adalah hal biasa pada pinjaman jangka pendek. Yang perlu diperiksa adalah total biaya dan konsekuensi gagal bayar.",
+          "do": "Fokus pada rincian biaya dan izin aplikasi."
+        }
+      ]
+    },
+    {
+      "type": "permission",
+      "app": "pinjol",
+      "header": { "title": "CairDuit", "sub": "Izin aplikasi" },
+      "title": "Izinkan CairDuit mengakses:",
+      "note": "Aplikasi meminta izin ini sebelum pinjaman disetujui.",
+      "items": [
+        { "label": "Kontak & riwayat panggilan", "risk": "Seluruh daftar kontakmu bisa dihubungi saat penagihan.", "on": true, "riskHigh": true },
+        { "label": "Galeri & media", "risk": "Foto pribadi bisa dipakai menekan kamu.", "on": true, "riskHigh": true },
+        { "label": "Lokasi presisi", "risk": "Penagih bisa mendatangi rumah atau tempat kerja.", "on": true, "riskHigh": true },
+        { "label": "SMS", "risk": "Kode OTP dan pesan bank bisa terbaca.", "on": true, "riskHigh": true }
+      ],
+      "button": { "label": "Izinkan & lanjut", "goto": 3 }
+    },
+    {
+      "type": "app-ui",
+      "app": "pinjol",
+      "view": "approved",
+      "header": { "title": "CairDuit", "sub": "Pinjaman disetujui" },
+      "data": {
+        "tagline": "Selamat! Dana kamu siap cair.",
+        "amount": 3000000,
+        "badge": "DISETUJUI",
+        "stats": [
+          { "value": "Rp 3.000.000", "label": "Dana diterima" },
+          { "value": "Rp 4.650.000", "label": "Total tagihan" },
+          { "value": "14 hari", "label": "Jatuh tempo" }
+        ],
+        "note": "Biaya admin Rp 450.000 dan biaya layanan Rp 1.200.000 dipotong di muka. Denda keterlambatan 0,5% per hari."
+      },
+      "button": { "label": "Lanjut", "goto": 4 }
+    },
+    {
+      "type": "choice",
+      "prompt": "Dana belum cair. Total tagihan Rp 4.650.000 dari pinjaman Rp 3.000.000. Apa keputusanmu?",
+      "critical": true,
+      "options": [
+        { "id": "batalkan", "label": "Batalkan sebelum dana cair & cabut izin", "hint": "Masih bisa mundur", "goto": 9 },
+        { "id": "lunas", "label": "Terima, lalu bayar penuh tepat waktu", "goto": 8 },
+        { "id": "nanti", "label": "Terima dan bayar nanti", "goto": 5 },
+        { "id": "ojk", "label": "Tutup aplikasi, cari pinjol berizin OJK", "hint": "Jalur paling aman", "goto": 10 }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "pinjol",
+      "view": "collection",
+      "header": { "title": "CairDuit", "sub": "Pengingat" },
+      "data": {
+        "tagline": "Jatuh tempo lewat 1 hari",
+        "amount": 4673250,
+        "badge": "DENDA BERJALAN",
+        "stats": [
+          { "value": "0,5%", "label": "Denda per hari" },
+          { "value": "Rp 23.250", "label": "Denda hari ini" },
+          { "value": "Kontak", "label": "Akan dihubungi" }
+        ],
+        "note": "Kami akan menghubungi kontak darurat dan seluruh kontak yang kamu izinkan untuk mengingatkan pembayaran."
+      },
+      "button": { "label": "Lihat apa yang terjadi", "goto": 6 }
+    },
+    {
+      "type": "app-ui",
+      "app": "pinjol",
+      "view": "collection",
+      "header": { "title": "CairDuit", "sub": "Penagihan" },
+      "data": {
+        "tagline": "Pesan dari tim penagihan",
+        "amount": 4720000,
+        "badge": "TEROR",
+        "stats": [
+          { "value": "42", "label": "Kontak dihubungi" },
+          { "value": "3", "label": "Foto diedit" },
+          { "value": "1", "label": "Pesan ke atasan" }
+        ],
+        "note": "“Bayar sekarang atau fotomu kami sebar ke semua kontak. Kami tahu kamu kerja di mana.”"
+      },
+      "button": { "label": "Lanjut", "goto": 7 }
+    },
+    {
+      "type": "consequence",
+      "endingId": "terjebak",
+      "title": "Pinjaman kecil, tekanan besar",
+      "text": "Kamu tidak bisa membayar tepat waktu. Denda berjalan setiap hari, seluruh kontakmu dihubungi, dan fotomu diedit lalu disebar. Aplikasi ilegal itu tidak punya kantor yang bisa didatangi; satu-satunya yang tersisa adalah utang yang terus tumbuh."
+    },
+    {
+      "type": "consequence",
+      "endingId": "lunas",
+      "title": "Lunas, tetapi harganya mahal",
+      "text": "Kamu membayar Rp 4.650.000 untuk pinjaman Rp 3.000.000 — 55% lebih besar dalam 14 hari. Tidak ada teror karena kamu membayar tepat waktu, tetapi kamu tetap kehilangan uang dan data kontakmu sudah ada di tangan mereka."
+    },
+    {
+      "type": "consequence",
+      "endingId": "batal",
+      "title": "Kamu mundur sebelum dana cair",
+      "text": "Kamu membatalkan pengajuan dan mencabut semua izin aplikasi, lalu menghapusnya. Tidak ada utang, tidak ada data kontak yang diunggah. Kebutuhan mendesak itu kamu selesaikan lewat jalur lain yang tidak mempertaruhkan seluruh daftar kontakmu."
+    },
+    {
+      "type": "consequence",
+      "endingId": "ojk",
+      "title": "Kamu memilih jalur berizin",
+      "text": "Kamu menutup CairDuit dan mengecek daftar pinjol berizin di OJK. Alternatif yang legal memiliki biaya lebih jelas dan tidak meminta akses kontak. Prosesnya lebih lambat, tetapi tidak ada teror yang menunggu di belakang."
+    }
+  ],
+  "endings": {
+    "terjebak": {
+      "label": "Terjerat pinjol ilegal",
+      "saldoDelta": -1650000,
+      "rank": 0,
+      "tone": "bad"
+    },
+    "lunas": {
+      "label": "Lunas dengan biaya 55%",
+      "saldoDelta": -1650000,
+      "rank": 1,
+      "tone": "good"
+    },
+    "batal": {
+      "label": "Batal sebelum dana cair",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good"
+    },
+    "ojk": {
+      "label": "Pilih pinjol berizin OJK",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      { "t": "Hari 1", "judul": "Iklan “cair 5 menit”", "naskah": "Tanpa jaminan, bunga 0%, disetujui 97%.", "tujuanPenipu": "Menjual kecepatan dan menghilangkan rasa risiko." },
+      { "t": "Hari 1", "judul": "Izin berlebihan", "naskah": "Kontak, galeri, lokasi, SMS.", "tujuanPenipu": "Mengumpulkan alat tekanan sebelum pinjaman diberikan." },
+      { "t": "Hari 1", "judul": "Biaya di muka", "naskah": "Total tagihan Rp 4.650.000 dari pinjaman Rp 3.000.000.", "tujuanPenipu": "Menyamarkan bunga tinggi sebagai “biaya admin” dan “biaya layanan”." },
+      { "t": "Hari 15", "judul": "Denda harian", "naskah": "0,5% per hari, kontak akan dihubungi.", "tujuanPenipu": "Membuat utang tumbuh lebih cepat daripada kemampuan membayar." },
+      { "t": "Hari 16", "judul": "Teror kontak", "naskah": "Foto diedit, pesan ke atasan, ancaman sebar data.", "tujuanPenipu": "Menghukum dan mempermalukan korban agar membayar, sekaligus menakuti orang lain." }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran pinjol ilegal: dana pinjaman masuk lalu biaya dan denda mengalir kembali",
+      "nodes": [
+        { "id": "aplikasi", "label": "Aplikasi ilegal" },
+        { "id": "korban", "label": "Kamu · terima Rp 3.000.000" },
+        { "id": "biaya", "label": "Biaya & denda Rp 1.650.000+", "tone": "danger" },
+        { "id": "data", "label": "Kontak & foto sebagai jaminan", "tone": "danger" }
+      ],
+      "edges": [
+        { "from": "aplikasi", "to": "korban", "label": "pencairan" },
+        { "from": "korban", "to": "biaya", "label": "14 hari" },
+        { "from": "aplikasi", "to": "data", "label": "izin kontak" }
+      ]
+    },
+    "pulihkan": [
+      "Cabut semua izin aplikasi di pengaturan ponsel, lalu hapus aplikasinya.",
+      "Jangan membayar ke rekening pribadi di luar aplikasi; simpan semua bukti transfer.",
+      "Lapor ke Satgas PASTI dan OJK 157; sertakan nama aplikasi, nomor, dan tangkapan layar.",
+      "Beri tahu keluarga dan atasan bahwa datamu mungkin disalahgunakan, agar mereka tidak ikut tertipu.",
+      "Jika diteror, laporkan ke polisi dan simpan bukti pesan; teror adalah tindak pidana."
+    ],
+    "linkPhisquest": false
+  }
+}

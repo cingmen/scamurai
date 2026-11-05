@@ -1,0 +1,36 @@
+/* ScamDEX */
+.scr-dex { display: flex; flex-direction: column; gap: var(--s-sp-4); }
+.c-dex-detail {
+  display: grid;
+  gap: var(--s-sp-4);
+  background: var(--s-bg-soft);
+  border: 1px solid var(--s-line);
+  border-radius: var(--s-radius-l);
+  padding: var(--s-sp-5);
+}
+@media (min-width: 720px) { .c-dex-detail { grid-template-columns: 200px 1fr; } }
+.c-dex-detail__art {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--s-radius-m);
+  background: linear-gradient(150deg, var(--s-gold-soft), var(--s-bg-inset));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.c-dex-detail__art img { width: 70%; height: 70%; object-fit: contain; }
+.c-dex-detail h1 { font-size: var(--s-fs-800); margin-bottom: 4px; }
+.c-dex-section { margin-top: var(--s-sp-4); }
+.c-dex-section h2 { font-size: var(--s-fs-400); text-transform: uppercase; letter-spacing: .08em; color: var(--s-ink-faint); }
+.c-dex-section p { font-size: var(--s-fs-400); color: var(--s-ink-soft); margin-top: 4px; }
+.c-dex-list { list-style: none; padding: 0; margin-top: 6px; display: flex; flex-direction: column; gap: 6px; }
+.c-dex-list li { font-size: var(--s-fs-400); display: flex; gap: 8px; }
+.c-dex-list li::before { content: "▸"; color: var(--s-accent); }
+.c-dex-variants { display: flex; flex-wrap: wrap; gap: var(--s-sp-2); margin-top: var(--s-sp-2); }
+.c-dex-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--s-sp-3);
+  font-size: var(--s-fs-400);
+  color: var(--s-ink-soft);
+}
+.c-dex-progress b { font-size: var(--s-fs-700); color: var(--s-ink); }

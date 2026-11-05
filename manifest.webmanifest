@@ -1,0 +1,22 @@
+{
+  "name": "Scamurai — Dojo Anti-Penipuan",
+  "short_name": "Scamurai",
+  "description": "Simulasi interaktif anti-penipuan berbahasa Indonesia. Semua data fiktif, semua progres tersimpan lokal.",
+  "lang": "id",
+  "start_url": "./index.html#/",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#17141B",
+  "theme_color": "#17141B",
+  "categories": ["education", "security"],
+  "icons": [
+    { "src": "./assets/img/icons/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./assets/img/icons/icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./assets/img/icons/icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Pusat Bantuan", "url": "./index.html#/bantuan", "description": "Langkah darurat jika baru saja tertipu" },
+    { "name": "Mulai latihan", "url": "./index.html#/skenario", "description": "Pilih skenario simulasi" }
+  ]
+}

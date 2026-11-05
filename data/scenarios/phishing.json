@@ -1,0 +1,300 @@
+{
+  "id": "phishing",
+  "type": "sim",
+  "title": "Tautan Terlarang",
+  "modus": "Phishing",
+  "difficulty": 2,
+  "app": "sms",
+  "brief": {
+    "goal": "SMS mengabarkan paketmu tertahan dan meminta biaya kirim Rp 12.500. Halaman yang terbuka meminta lebih dari itu. Putuskan sejauh mana kamu masuk.",
+    "rules": [
+      "Periksa domain sebelum mengetik apa pun. Gembok bukan bukti keaslian.",
+      "Kurir tidak pernah meminta nomor kartu, CVV, atau OTP.",
+      "Tautan dari SMS selalu bisa diperiksa dengan membuka aplikasi resmi.",
+      "Semua situs, nomor, dan resi di sini fiktif."
+    ],
+    "saldoAwal": 5000000
+  },
+  "steps": [
+    {
+      "type": "sms",
+      "app": "sms",
+      "header": { "title": "Pesan", "sub": "SMS masuk" },
+      "messages": [
+        {
+          "sender": "NusantaraExpress",
+          "time": "08.12",
+          "danger": true,
+          "text": "NusantaraExpress: Paket NE-8842-1190 tertahan di gudang. Alamat tidak lengkap. Konfirmasi dan bayar biaya kirim Rp 12.500 dalam 24 jam: https://nusantara-express-resi.xyz/ne8842"
+        }
+      ],
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "hint": "Periksa SMS ini sebelum menyentuh tautannya.",
+      "blocks": [
+        { "text": "NusantaraExpress · 08.12", "head": true },
+        { "text": "Paket NE-8842-1190 tertahan di gudang. Alamat tidak lengkap." },
+        { "text": "Konfirmasi dan bayar biaya kirim Rp 12.500 dalam 24 jam: https://nusantara-express-resi.xyz/ne8842" }
+      ],
+      "hotspots": [
+        {
+          "flagId": "ph-domain",
+          "x": 58,
+          "y": 78,
+          "title": "Domain nusantara-express-resi.xyz",
+          "why": "Domain resmi kurir bukan gabungan kata dengan tanda hubung dan akhiran .xyz. Penipu mendaftarkan nama yang terbaca mirip.",
+          "do": "Jangan ketuk. Buka aplikasi kurir resmi dan masukkan nomor resi di sana."
+        },
+        {
+          "flagId": "ph-biaya",
+          "x": 52,
+          "y": 68,
+          "title": "Biaya kirim Rp 12.500 diminta lewat tautan",
+          "why": "Nominal kecil dipilih agar kamu merasa risikonya sepele. Justru dari situ data kartu diambil.",
+          "do": "Kurir resmi tidak menagih biaya tambahan lewat tautan SMS."
+        },
+        {
+          "flagId": "ph-waktu",
+          "x": 66,
+          "y": 63,
+          "title": "Batas 24 jam",
+          "why": "Tenggat membuat kamu bertindak sebelum memeriksa. Paket yang tertahan tidak hilang dalam 24 jam karena alamat kurang lengkap.",
+          "do": "Abaikan tenggat dan verifikasi lewat kanal resmi."
+        },
+        {
+          "flagId": "ph-nama",
+          "x": 26,
+          "y": 12,
+          "title": "Nama kurir ditulis dengan benar",
+          "decoy": true,
+          "why": "Nama kurir adalah informasi publik. Menyebutnya dengan benar tidak membuat SMS itu berasal dari mereka.",
+          "do": "Nilai pengirim dan tautannya, bukan namanya."
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "prompt": "Apa yang kamu lakukan dengan SMS ini?",
+      "critical": true,
+      "options": [
+        { "id": "buka", "label": "Buka tautan untuk melihat paket", "goto": 3 },
+        { "id": "resmi", "label": "Cek resi di aplikasi kurir resmi", "hint": "Jalur paling aman", "goto": 8 },
+        { "id": "lapor", "label": "Hapus SMS dan laporkan nomornya", "goto": 9 }
+      ]
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": { "title": "BrowserMini", "sub": "Lacak paket" },
+      "url": "https://nusantara-express-resi.xyz/ne8842",
+      "secure": true,
+      "page": {
+        "logo": "NusantaraExpress · Lacak Paket",
+        "lines": [
+          "Resi NE-8842-1190 · status: tertahan di gudang",
+          "Alamat penerima tidak lengkap. Lengkapi data dalam 23.41.08.",
+          "Biaya pengiriman ulang: Rp 12.500."
+        ],
+        "form": [
+          { "placeholder": "Nama lengkap penerima", "label": "Nama penerima" },
+          { "placeholder": "Alamat lengkap", "label": "Alamat" },
+          { "placeholder": "Nomor telepon", "label": "Telepon" }
+        ],
+        "countdown": "Sisa waktu 23.41.08",
+        "foot": "Halaman pihak ketiga. NusantaraExpress tidak meminta data kartu melalui halaman resi."
+      },
+      "inspect": {
+        "real": "nusantaraexpress.co.id",
+        "notes": [
+          "Alamat memakai tanda hubung dan akhiran .xyz — bukan domain resmi kurir.",
+          "Gembok hanya menandakan koneksi terenkripsi; situs penipu juga bisa memilikinya.",
+          "Halaman meminta alamat dan telepon sebelum menampilkan paket. Pelacakan resmi tidak begitu."
+        ]
+      },
+      "hint": "Ketuk bagian halaman yang mencurigakan sebelum mengisi formulir.",
+      "hotspots": [
+        {
+          "flagId": "ph-domain2",
+          "x": 54,
+          "y": 30,
+          "title": "Domain nusantara-express-resi.xyz",
+          "why": "Domain mirip dengan tanda hubung dan akhiran murah adalah ciri khas phishing. Alamat resmi tidak berbentuk seperti ini.",
+          "do": "Tutup halaman dan buka aplikasi resmi."
+        },
+        {
+          "flagId": "ph-data",
+          "x": 48,
+          "y": 62,
+          "title": "Form meminta alamat dan telepon sebelum paket ditampilkan",
+          "why": "Data pribadi dikumpulkan lebih dulu. Penipu menjual atau memakainya untuk serangan berikutnya.",
+          "do": "Jangan isi. Lacak resi lewat aplikasi tanpa menyerahkan data baru."
+        },
+        {
+          "flagId": "ph-gembok",
+          "x": 30,
+          "y": 18,
+          "title": "Ikon gembok “aman”",
+          "decoy": true,
+          "why": "Gembok berarti koneksi terenkripsi, bukan bahwa pemilik situs bisa dipercaya. Situs penipu pun memakai HTTPS.",
+          "do": "Periksa nama domain, bukan ikon gembok."
+        }
+      ],
+      "button": { "label": "Lengkapi data & bayar Rp 12.500", "goto": 4 }
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": { "title": "BrowserMini", "sub": "Pembayaran" },
+      "url": "https://nusantara-express-resi.xyz/pay/ne8842",
+      "secure": true,
+      "page": {
+        "logo": "Pembayaran Aman · NusantaraExpress",
+        "lines": [
+          "Biaya pengiriman ulang Rp 12.500.",
+          "Verifikasi kartu diperlukan untuk mencegah penyalahgunaan.",
+          "Sisa waktu 04.58."
+        ],
+        "form": [
+          { "placeholder": "Nomor kartu", "label": "Nomor kartu" },
+          { "placeholder": "Nama pada kartu", "label": "Nama kartu" },
+          { "placeholder": "MM/YY", "label": "Masa berlaku" },
+          { "placeholder": "CVV", "label": "CVV" }
+        ],
+        "countdown": "Sisa waktu 04.58",
+        "foot": "Jangan pernah mengisi CVV untuk biaya kirim. Kurir tidak memproses pembayaran kartu."
+      },
+      "inspect": {
+        "real": "nusantaraexpress.co.id",
+        "notes": [
+          "Domain masih sama, hanya berpindah halaman.",
+          "Biaya Rp 12.500 diminta bersama data kartu lengkap — kombinasi yang tidak masuk akal.",
+          "Halaman berikutnya akan meminta OTP untuk “verifikasi”."
+        ]
+      },
+      "hint": "Periksa apa yang diminta halaman pembayaran.",
+      "hotspots": [
+        {
+          "flagId": "ph-cvv",
+          "x": 50,
+          "y": 68,
+          "title": "CVV diminta untuk biaya kirim",
+          "why": "CVV adalah kunci transaksi kartu. Tidak ada pembayaran biaya kirim yang membutuhkannya lewat halaman kurir.",
+          "do": "Tutup halaman. Hubungi bank jika sudah terlanjur mengisi."
+        },
+        {
+          "flagId": "ph-nominal",
+          "x": 40,
+          "y": 24,
+          "title": "Rp 12.500 untuk “verifikasi kartu”",
+          "why": "Nominal kecil membuat korban lengah, sementara data kartu yang diberikan jauh lebih berharga.",
+          "do": "Waspadai permintaan data kartu untuk nominal sekecil apa pun."
+        },
+        {
+          "flagId": "ph-hitung2",
+          "x": 64,
+          "y": 44,
+          "title": "Hitung mundur 04.58",
+          "why": "Tekanan waktu dipakai agar kamu mengisi formulir tanpa membaca alamat dan tujuan permintaannya.",
+          "do": "Berhenti. Tidak ada pembayaran yang harus selesai dalam lima menit."
+        }
+      ],
+      "button": { "label": "Bayar Rp 12.500", "goto": 5 }
+    },
+    {
+      "type": "input-otp",
+      "app": "browser",
+      "header": { "title": "BrowserMini", "sub": "Verifikasi kartu" },
+      "prompt": "Halaman meminta kode OTP 6 digit dari bankmu untuk “memastikan kartu ini milikmu”.",
+      "digits": 6,
+      "submitLabel": "Kirim OTP",
+      "submitGoto": 6,
+      "rejectGoto": 7,
+      "rejectLabel": "Tutup halaman & hubungi bank"
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "Kartu dibuka, saldo dikuras",
+      "text": "Kamu mengirim OTP. Tiga hari kemudian muncul transaksi Rp 3.200.000 di aplikasi bankmu untuk “langganan digital” yang tidak pernah kamu beli. Nomor kartu dan CVV sudah dijual, dan OTP membuka pintu terakhir."
+    },
+    {
+      "type": "consequence",
+      "endingId": "hampir-kena",
+      "title": "Kamu berhenti sebelum OTP",
+      "text": "Kamu menutup halaman sebelum mengirim OTP, lalu menelepon bank dari nomor di belakang kartu. Kartu diblokir dan diganti. Data kartu mungkin sudah tercatat, tetapi tanpa OTP penipu tidak bisa menyelesaikan transaksi besar."
+    },
+    {
+      "type": "consequence",
+      "endingId": "aman",
+      "title": "Resi dicek di kanal resmi",
+      "text": "Kamu membuka aplikasi kurir resmi dan memasukkan nomor resi. Paket itu memang ada, tetapi alamatnya lengkap dan tidak ada biaya tambahan. SMS tadi adalah phishing yang menumpang informasi publik."
+    },
+    {
+      "type": "consequence",
+      "endingId": "lapor",
+      "title": "SMS dilaporkan",
+      "text": "Kamu menghapus SMS, memblokir nomornya, dan melaporkannya. Beberapa hari kemudian nomor itu berhenti beroperasi. Tidak ada data yang kamu berikan, dan tidak ada uang yang berpindah."
+    }
+  ],
+  "endings": {
+    "kena": {
+      "label": "Data kartu & OTP dicuri",
+      "saldoDelta": -3200000,
+      "rank": 0,
+      "tone": "bad"
+    },
+    "hampir-kena": {
+      "label": "Berhenti sebelum OTP",
+      "saldoDelta": 0,
+      "rank": 1,
+      "tone": "good",
+      "dexVariant": "var-domain"
+    },
+    "aman": {
+      "label": "Verifikasi lewat aplikasi resmi",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best"
+    },
+    "lapor": {
+      "label": "Lapor tanpa membuka tautan",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      { "t": "08.12", "judul": "SMS paket tertahan", "naskah": "Paket NE-8842-1190 tertahan. Alamat tidak lengkap.", "tujuanPenipu": "Memakai rasa penasaran dan kekhawatiran kehilangan paket untuk membuat korban membuka tautan." },
+      { "t": "08.13", "judul": "Domain mirip", "naskah": "nusantara-express-resi.xyz", "tujuanPenipu": "Menampilkan halaman yang terlihat resmi tanpa memakai domain asli." },
+      { "t": "08.14", "judul": "Biaya kecil", "naskah": "Bayar Rp 12.500 untuk pengiriman ulang.", "tujuanPenipu": "Nominal kecil menurunkan kewaspadaan; yang diincar adalah data kartu." },
+      { "t": "08.16", "judul": "Permintaan CVV", "naskah": "Verifikasi kartu diperlukan untuk mencegah penyalahgunaan.", "tujuanPenipu": "Mengambil kunci pembayaran yang tidak pernah dibutuhkan kurir." },
+      { "t": "08.18", "judul": "Permintaan OTP", "naskah": "Masukkan kode dari bank untuk memastikan kartu milikmu.", "tujuanPenipu": "Melewati verifikasi bank dan menyelesaikan transaksi atas nama korban." },
+      { "t": "H+3", "judul": "Transaksi muncul", "naskah": "Langganan digital Rp 3.200.000.", "tujuanPenipu": "Menunda transaksi agar korban tidak menghubungkan dengan halaman resi." }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran phishing: data kartu dan OTP ke penipu lalu transaksi kartu",
+      "nodes": [
+        { "id": "sms", "label": "SMS & halaman palsu" },
+        { "id": "data", "label": "Nomor kartu, CVV, OTP", "tone": "danger" },
+        { "id": "penipu", "label": "Penipu / marketplace data" },
+        { "id": "transaksi", "label": "Transaksi kartu & langganan", "tone": "danger" }
+      ],
+      "edges": [
+        { "from": "sms", "to": "data", "label": "formulir" },
+        { "from": "data", "to": "penipu", "label": "dijual / dipakai" },
+        { "from": "penipu", "to": "transaksi", "label": "H+3" }
+      ]
+    },
+    "pulihkan": [
+      "Blokir kartu lewat aplikasi bank atau call center resmi, minta kartu pengganti.",
+      "Ubah kata sandi dan aktifkan verifikasi dua langkah di semua akun penting.",
+      "Periksa mutasi beberapa minggu ke depan; penipu sering menunda transaksi.",
+      "Laporkan domain ke layanan penyedia dan ke aduankonten.id.",
+      "Lapor ke 122 dan lapor.go.id dengan bukti SMS, tautan, dan tangkapan layar."
+    ],
+    "linkPhisquest": true
+  }
+}

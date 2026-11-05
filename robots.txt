@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# Scamurai adalah situs edukasi statis. Tidak ada data pengguna yang dikumpulkan.

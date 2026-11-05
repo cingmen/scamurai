@@ -1,0 +1,236 @@
+/* Scamurai — base & shell */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--s-bg);
+  color: var(--s-ink);
+  font-family: var(--s-font-ui);
+  font-size: var(--s-fs-500);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+ul, ol { padding-left: 1.2em; }
+img, svg, video { max-width: 100%; display: block; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration-color: var(--s-ink-faint); }
+a:hover { text-decoration-color: var(--s-gold); }
+strong, b { font-weight: 700; }
+code, kbd { font-family: var(--s-font-mono); }
+
+:focus-visible {
+  outline: 2px solid var(--s-focus);
+  outline-offset: 2px;
+  border-radius: var(--s-radius-s);
+}
+
+.u-sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.u-skip {
+  position: absolute;
+  left: var(--s-sp-4);
+  top: -100px;
+  z-index: 100;
+  background: var(--s-gold);
+  color: var(--s-ink-inverse);
+  padding: var(--s-sp-2) var(--s-sp-4);
+  border-radius: var(--s-radius-s);
+  font-weight: 700;
+}
+.u-skip:focus { top: var(--s-sp-4); }
+
+.u-row { display: flex; gap: var(--s-sp-2); align-items: center; flex-wrap: wrap; }
+.u-col { display: flex; flex-direction: column; gap: var(--s-sp-2); }
+.u-spread { display: flex; align-items: center; justify-content: space-between; gap: var(--s-sp-3); }
+.u-center { text-align: center; }
+.u-mt-2 { margin-top: var(--s-sp-2); }
+.u-mt-3 { margin-top: var(--s-sp-3); }
+.u-mt-4 { margin-top: var(--s-sp-4); }
+.u-mt-5 { margin-top: var(--s-sp-5); }
+.u-mt-6 { margin-top: var(--s-sp-6); }
+.u-mb-2 { margin-bottom: var(--s-sp-2); }
+.u-mb-4 { margin-bottom: var(--s-sp-4); }
+.u-muted { color: var(--s-ink-soft); }
+.u-faint { color: var(--s-ink-faint); }
+.u-small { font-size: var(--s-fs-400); }
+.u-mono { font-family: var(--s-font-mono); }
+.u-nowrap { white-space: nowrap; }
+.u-hidden { display: none !important; }
+.u-grow { flex: 1 1 auto; }
+
+/* ——— Rangka dojo ——— */
+.c-dojo-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--s-bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: var(--s-border-w) solid var(--s-line);
+}
+.c-dojo-header__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--s-sp-3) var(--s-sp-4);
+  display: flex;
+  align-items: center;
+  gap: var(--s-sp-4);
+  flex-wrap: wrap;
+}
+.c-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-sp-2);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: var(--s-fs-700);
+  letter-spacing: -.02em;
+}
+.c-brand__mark { width: 34px; height: 34px; }
+.c-brand__scam { color: var(--s-accent); }
+.c-brand__urai { color: var(--s-ink); }
+.c-brand__tag {
+  display: block;
+  font-size: var(--s-fs-300);
+  font-weight: 500;
+  color: var(--s-ink-faint);
+  letter-spacing: 0;
+}
+.c-nav {
+  display: flex;
+  gap: var(--s-sp-1);
+  flex: 1 1 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.c-nav::-webkit-scrollbar { display: none; }
+.c-nav a {
+  padding: 10px var(--s-sp-3);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  font-size: var(--s-fs-400);
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--s-ink-soft);
+  white-space: nowrap;
+}
+.c-nav a:hover { background: var(--s-bg-soft); color: var(--s-ink); }
+.c-nav a[aria-current="page"] { background: var(--s-gold-soft); color: var(--s-gold); }
+
+.c-dojo-status {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--s-sp-2);
+}
+.c-saldo {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1.15;
+  padding: 6px 12px;
+  border: var(--s-border-w) solid var(--s-line);
+  border-radius: var(--s-radius-m);
+  background: var(--s-bg-soft);
+  text-align: right;
+}
+.c-saldo__label { font-size: var(--s-fs-300); color: var(--s-ink-faint); }
+.c-saldo__value { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.c-dojo-stage {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--s-sp-5) var(--s-sp-4) var(--s-sp-6);
+  flex: 1 1 auto;
+}
+
+body.is-immersive .c-dojo-header,
+body.is-immersive .c-dojo-footer { display: none; }
+body.is-immersive .c-dojo-stage {
+  max-width: none;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.c-dojo-footer {
+  border-top: var(--s-border-w) solid var(--s-line);
+  padding: var(--s-sp-5) var(--s-sp-4);
+  font-size: var(--s-fs-400);
+  color: var(--s-ink-faint);
+}
+.c-dojo-footer__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  gap: var(--s-sp-3);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Judul & seksi */
+.scr-head { margin-bottom: var(--s-sp-5); }
+.scr-head__eyebrow {
+  font-size: var(--s-fs-300);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-weight: 700;
+  color: var(--s-gold);
+}
+.scr-head h1 { font-size: var(--s-fs-900); line-height: 1.15; letter-spacing: -.02em; margin-top: 4px; }
+.scr-head p { color: var(--s-ink-soft); margin-top: var(--s-sp-2); max-width: 62ch; }
+
+.section-title {
+  font-size: var(--s-fs-700);
+  margin-bottom: var(--s-sp-3);
+  display: flex;
+  align-items: center;
+  gap: var(--s-sp-2);
+}
+.section-title small { font-size: var(--s-fs-400); color: var(--s-ink-faint); font-weight: 500; }
+
+@media (min-width: 720px) {
+  .c-nav { flex: 0 1 auto; }
+}
+
+/* Kurangi animasi */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Cetak (lembar guru) */
+@media print {
+  :root { --s-bg: #fff; --s-bg-soft: #fff; --s-bg-inset: #fff; --s-ink: #111; --s-ink-soft: #333; --s-ink-faint: #555; }
+  body { background: #fff; color: #111; }
+  .c-dojo-header, .c-dojo-footer, .no-print, .c-toast-region { display: none !important; }
+  .c-dojo-stage { max-width: none; padding: 0; }
+  a { text-decoration: none; color: #111; }
+}

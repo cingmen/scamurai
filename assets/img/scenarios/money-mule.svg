@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Ilustrasi skenario Rekening Sewa">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3A2B1B"/><stop offset="1" stop-color="#171008"/></linearGradient>
+    <pattern id="grid" width="38" height="38" patternUnits="userSpaceOnUse"><path d="M38 0H0V38" fill="none" stroke="#ffffff" stroke-opacity=".06"/></pattern>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <rect width="640" height="360" fill="url(#grid)"/>
+  <circle cx="520" cy="56" r="130" fill="#ffffff" opacity=".05"/>
+  <text x="52" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="2.5" fill="#D9A441">MONEY MULE</text>
+  <text x="50" y="116" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Rekening</text>
+  <text x="50" y="154" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Sewa</text>
+  <rect x="60" y="276" width="60" height="44" rx="6" fill="#ffffff" opacity=".18" stroke="#ffffff" stroke-opacity=".4"/><rect x="146" y="320" width="60" height="44" rx="6" fill="#ffffff" opacity=".18" stroke="#ffffff" stroke-opacity=".4"/><path d="M124 296 C160 288 176 300 176 318" fill="none" stroke="#D9A441" stroke-width="3"/><path d="M176 318 l-7 -4 M176 318 l-2 -8" stroke="#D9A441" stroke-width="3" stroke-linecap="round"/><path d="M142 348 C106 356 90 344 90 326" fill="none" stroke="#D9A441" stroke-width="3"/><path d="M90 326 l7 4 M90 326 l2 8" stroke="#D9A441" stroke-width="3" stroke-linecap="round"/>
+  <g transform="translate(392 34) rotate(7)">
+    <rect width="186" height="316" rx="28" fill="#0B0910" opacity=".65"/>
+    <rect x="8" y="8" width="170" height="300" rx="22" fill="#F4F1EA"/>
+    <rect x="8" y="8" width="170" height="46" rx="22" fill="#D9A441"/>
+    <circle cx="32" cy="31" r="11" fill="#ffffff" opacity=".35"/>
+    <rect x="50" y="24" width="72" height="7" rx="3.5" fill="#ffffff" opacity=".85"/>
+    <rect x="50" y="35" width="46" height="5" rx="2.5" fill="#ffffff" opacity=".5"/>
+    <rect x="20" y="72" width="104" height="30" rx="10" fill="#ffffff"/>
+    <rect x="20" y="108" width="82" height="22" rx="9" fill="#ffffff"/>
+    <rect x="56" y="140" width="104" height="30" rx="10" fill="#D6E7D4"/>
+    <rect x="20" y="180" width="128" height="44" rx="10" fill="#ffffff"/>
+    <rect x="20" y="232" width="96" height="22" rx="9" fill="#ffffff"/>
+    <rect x="20" y="262" width="132" height="30" rx="8" fill="#FBF3E2"/>
+  </g>
+  <g transform="translate(48 330)"><rect width="128" height="18" rx="9" fill="#ffffff" opacity=".12"/><text x="10" y="13" font-family="system-ui, sans-serif" font-size="9" font-weight="700" letter-spacing="1" fill="#ffffff" opacity=".75">SIMULASI · FIKTIF</text></g>
+  <text x="452" y="344" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff" opacity=".35">scamurai</text>
+</svg>

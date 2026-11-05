@@ -1,0 +1,232 @@
+{
+  "id": "money-mule",
+  "type": "sim",
+  "title": "Rekening Sewa",
+  "modus": "Money Mule",
+  "difficulty": 2,
+  "app": "bank",
+  "brief": {
+    "goal": "Seorang kenalan menawarkan komisi hanya untuk menerima dan meneruskan transfer. Uangnya bukan milikmu, tetapi namamu yang tercatat sebagai pemilik rekening.",
+    "rules": [
+      "Menyewakan atau meminjamkan rekening adalah tindak pidana pencucian uang.",
+      "Uang yang masuk tanpa sumber jelas harus dilaporkan, bukan diteruskan.",
+      "Komisi besar untuk pekerjaan “tinggal transfer” adalah tanda uang kotor.",
+      "Semua nama, rekening, dan transaksi di sini fiktif."
+    ],
+    "saldoAwal": 5000000
+  },
+  "steps": [
+    {
+      "type": "chat",
+      "app": "chatriang",
+      "header": { "title": "ChatRiang", "sub": "+62 812-6655-4433" },
+      "from": "them",
+      "sender": "Rio (teman SMA)",
+      "time": "13.04",
+      "text": "Bro, rekeningmu masih aktif? Aku butuh bantuan terima transfer dari klien luar. Kamu tinggal terima, terus kirim ke rekening lain. Komisi 5%, sekali jalan dapat Rp 600 ribu. Gampang banget.",
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "app": "chatriang",
+      "header": { "title": "ChatRiang", "sub": "+62 812-6655-4433" },
+      "hint": "Periksa tawaran ini sebelum menjawab.",
+      "blocks": [
+        { "text": "Rio (teman SMA) · 13.04", "head": true },
+        { "text": "Butuh bantuan terima transfer dari klien luar. Kamu tinggal terima, lalu kirim ke rekening lain." },
+        { "text": "Komisi 5%, sekali jalan dapat Rp 600 ribu. Gampang banget." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "mm-komisi",
+          "x": 54,
+          "y": 64,
+          "title": "Komisi besar untuk “tinggal transfer”",
+          "why": "Tidak ada pekerjaan sah yang membayar ratusan ribu hanya untuk meneruskan uang. Komisi itu upah karena kamu menanggung risiko hukum.",
+          "do": "Tolak. Rekening yang dipakai menampung uang kotor akan ikut dibekukan."
+        },
+        {
+          "flagId": "mm-sumber",
+          "x": 55,
+          "y": 42,
+          "title": "Uang dari “klien luar” tanpa identitas",
+          "why": "Sumber dana tidak dijelaskan. Justru itu intinya: kamu diminta menjadi perantara agar pelaku asli tidak terlacak.",
+          "do": "Minta kejelasan sumber dana; bila tidak masuk akal, laporkan."
+        },
+        {
+          "flagId": "mm-rekening-lain",
+          "x": 60,
+          "y": 55,
+          "title": "Diminta meneruskan ke rekening lain",
+          "why": "Pola terima-lalu-transfer adalah lapisan pencucian uang. Kamu menjadi “money mule”, meski tidak menyentuh uangnya.",
+          "do": "Jangan pernah meneruskan uang yang bukan hakmu."
+        },
+        {
+          "flagId": "mm-teman",
+          "x": 30,
+          "y": 18,
+          "title": "Pengirim adalah teman lama",
+          "decoy": true,
+          "why": "Kedekatan bukan jaminan. Akun teman bisa dibajak, atau ia sendiri sudah menjadi bagian jaringan.",
+          "do": "Verifikasi lewat panggilan suara, tetapi tetap tolak permintaan transfer."
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "prompt": "Rio menunggu jawaban. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        { "id": "ikut", "label": "Ikut sekali saja, lumayan komisinya", "goto": 3 },
+        { "id": "tanya", "label": "Tanya sumber dana & minta bukti klien", "goto": 8 },
+        { "id": "tolak", "label": "Tolak, blokir, dan laporkan", "hint": "Jalur paling aman", "goto": 9 }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "mutasi",
+      "header": { "title": "Bank Jayakarta", "sub": "Mutasi masuk" },
+      "data": {
+        "title": "Mutasi terbaru",
+        "entries": [
+          { "name": "TRANSFER MASUK", "detail": "PT CAHAYA ABADI (tidak dikenal)", "date": "13.21", "amount": 12000000 },
+          { "name": "Saldo tersedia", "detail": "SIMULASI", "date": "13.21", "amount": 17000000 }
+        ]
+      },
+      "button": { "label": "Buka chat Rio", "goto": 4 }
+    },
+    {
+      "type": "chat",
+      "app": "chatriang",
+      "header": { "title": "ChatRiang", "sub": "+62 812-6655-4433" },
+      "from": "them",
+      "sender": "Rio (teman SMA)",
+      "time": "13.22",
+      "text": "Masuk kan? Sekarang transfer ke 3 rekening ini: 900 ribu, 4 juta, dan sisanya 6,5 juta. Jangan tanya sumbernya dulu, nanti aku jelasin. Komisimu 600 ribu, ambil sendiri.",
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "app": "chatriang",
+      "header": { "title": "ChatRiang", "sub": "+62 812-6655-4433" },
+      "hint": "Periksa instruksi transfer ini.",
+      "blocks": [
+        { "text": "Rio · 13.22", "head": true },
+        { "text": "Transfer ke 3 rekening: 900 ribu, 4 juta, dan sisanya 6,5 juta." },
+        { "text": "Jangan tanya sumbernya dulu. Komisimu 600 ribu, ambil sendiri." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "mm-pecah",
+          "x": 52,
+          "y": 48,
+          "title": "Uang dipecah ke tiga rekening",
+          "why": "Pemecahan transaksi dilakukan agar tidak terdeteksi dan agar dana cepat menyebar. Ini pola pencucian uang, bukan bisnis.",
+          "do": "Jangan memproses satu transfer pun; simpan instruksinya sebagai bukti."
+        },
+        {
+          "flagId": "mm-jangan-tanya",
+          "x": 56,
+          "y": 70,
+          "title": "“Jangan tanya sumbernya”",
+          "why": "Permintaan menutup pertanyaan adalah tanda kamu tidak boleh tahu bahwa uang itu hasil kejahatan.",
+          "do": "Justru tanyakan dan laporkan; jangan lanjutkan."
+        },
+        {
+          "flagId": "mm-komisi2",
+          "x": 58,
+          "y": 82,
+          "title": "Komisi diambil dari uang yang bukan milikmu",
+          "why": "Mengambil potongan dari dana kotor membuatmu secara sadar menikmati hasil kejahatan. Itu memperkuat posisi hukummu sebagai pelaku.",
+          "do": "Tolak seluruh transaksi, bukan hanya potong komisinya."
+        }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": { "title": "Bank Jayakarta", "sub": "Transfer baru" },
+      "data": {
+        "title": "Teruskan dana",
+        "recipient": "Rekening tujuan 1",
+        "account": "5510 9988 2211",
+        "amount": 6500000,
+        "fee": 6500,
+        "note": "Transfer sesuai instruksi Rio",
+        "warning": "Dana masuk berasal dari pihak yang tidak kamu kenal. Meneruskan dana ini dapat membuatmu terlibat pencucian uang."
+      },
+      "button": { "label": "Transfer sekarang", "goto": 7 }
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "Rekening dibekukan, namamu tercatat",
+      "text": "Kamu meneruskan dana itu. Tiga hari kemudian rekeningmu diblokir dan saldomu ditahan. Penyidik menemukan aliran uang dari korban penipuan ke rekeningmu, lalu ke tiga rekening lain. Rio menghilang; namamu yang ada di berkas."
+    },
+    {
+      "type": "consequence",
+      "endingId": "hampir",
+      "title": "Kamu bertanya, Rio menghilang",
+      "text": "Kamu meminta bukti klien dan sumber dana. Rio berdalih lalu berhenti membalas, dan pesan-pesannya dihapus. Tidak ada transfer yang kamu proses. Kamu menyimpan tangkapan layar dan melaporkannya."
+    },
+    {
+      "type": "consequence",
+      "endingId": "aman",
+      "title": "Kamu menolak menjadi perantara",
+      "text": "Kamu menolak, memblokir Rio, dan melaporkan percakapan itu. Rekeningmu bersih dan tidak ada dana asing yang singgah. Teman yang benar-benar teman tidak akan meminta kamu menanggung risiko hukumnya."
+    }
+  ],
+  "endings": {
+    "kena": {
+      "label": "Rekening dibekukan, terlibat pencucian uang",
+      "saldoDelta": -600000,
+      "rank": 0,
+      "tone": "bad"
+    },
+    "hampir": {
+      "label": "Bertanya, lalu melapor",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good"
+    },
+    "aman": {
+      "label": "Menolak sejak awal",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      { "t": "13.04", "judul": "Tawaran komisi", "naskah": "Terima transfer, teruskan, dapat 5%.", "tujuanPenipu": "Mencari rekening bersih agar aliran dana kejahatan tidak langsung terlihat." },
+      { "t": "13.21", "judul": "Dana masuk", "naskah": "Rp 12.000.000 dari PT Cahaya Abadi yang tidak dikenal.", "tujuanPenipu": "Menggunakan rekening korban sebagai lapisan pertama pencucian." },
+      { "t": "13.22", "judul": "Pemecahan", "naskah": "Transfer ke tiga rekening berbeda.", "tujuanPenipu": "Memecah jejak dan mempercepat dana keluar dari jangkauan penyidik." },
+      { "t": "13.23", "judul": "Komisi", "naskah": "Ambil Rp 600.000 dari dana itu.", "tujuanPenipu": "Membuat korban menikmati hasil kejahatan sehingga sulit mengaku tidak tahu." },
+      { "t": "H+3", "judul": "Pemblokiran", "naskah": "Rekening dibekukan, saldo ditahan, nama tercatat.", "tujuanPenipu": "Pelaku asli sudah hilang; yang tersisa adalah pemilik rekening." }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran money mule: dana korban masuk ke rekening mule lalu dipecah",
+      "nodes": [
+        { "id": "korban", "label": "Korban penipuan" },
+        { "id": "mule", "label": "Rekeningmu · money mule", "tone": "danger" },
+        { "id": "tiga", "label": "Tiga rekening tujuan" },
+        { "id": "tarik", "label": "Ditarik / dipindah lagi", "tone": "danger" }
+      ],
+      "edges": [
+        { "from": "korban", "to": "mule", "label": "transfer" },
+        { "from": "mule", "to": "tiga", "label": "dipecah" },
+        { "from": "tiga", "to": "tarik", "label": "sulit dilacak" }
+      ]
+    },
+    "pulihkan": [
+      "Jangan meneruskan dana yang sudah masuk; hubungi bank dan minta panduan pemblokiran.",
+      "Simpan semua bukti chat, instruksi transfer, dan mutasi.",
+      "Laporkan ke bank, 122, dan lapor.go.id; jelaskan bahwa kamu direkrut sebagai perantara.",
+      "Jangan menghapus percakapan atau mentransfer balik ke pengirim tanpa arahan bank.",
+      "Konsultasikan dengan bantuan hukum bila rekeningmu sudah diblokir; status “korban” ditentukan penyidik."
+    ],
+    "linkPhisquest": false
+  }
+}

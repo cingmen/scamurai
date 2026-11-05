@@ -1,0 +1,94 @@
+/* Ujian & sertifikat */
+.scr-exam { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--s-sp-4); }
+.c-exam-bar { display: flex; align-items: center; gap: var(--s-sp-3); flex-wrap: wrap; }
+.c-exam-bar .c-progress { flex: 1 1 220px; }
+.c-exam-timer { font-family: var(--s-font-mono); font-weight: 700; color: var(--s-warn); }
+.c-exam-card {
+  background: var(--s-bg-soft);
+  border: 1px solid var(--s-line);
+  border-radius: var(--s-radius-m);
+  padding: var(--s-sp-5);
+}
+.c-exam-q { font-size: var(--s-fs-600); font-weight: 700; line-height: 1.4; }
+.c-exam-tag { margin-top: 6px; }
+.c-exam-options { display: flex; flex-direction: column; gap: var(--s-sp-2); margin-top: var(--s-sp-4); }
+.c-exam-option {
+  display: flex;
+  gap: var(--s-sp-3);
+  align-items: flex-start;
+  padding: 12px var(--s-sp-3);
+  min-height: 48px;
+  border: 1px solid var(--s-line);
+  border-radius: var(--s-radius-s);
+  background: var(--s-bg);
+  text-align: left;
+  font-size: var(--s-fs-400);
+  line-height: 1.45;
+}
+.c-exam-option:hover { border-color: var(--s-gold); }
+.c-exam-option.is-picked { border-color: var(--s-gold); background: var(--s-gold-soft); }
+.c-exam-option__key {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--s-bg-inset);
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 700;
+  flex: 0 0 auto;
+}
+.c-exam-option.is-picked .c-exam-option__key { background: var(--s-gold); color: var(--s-ink-inverse); }
+.c-exam-order { display: flex; flex-direction: column; gap: var(--s-sp-2); margin-top: var(--s-sp-4); }
+.c-exam-order__item {
+  display: flex;
+  gap: var(--s-sp-2);
+  align-items: center;
+  padding: 10px var(--s-sp-3);
+  border: 1px solid var(--s-line);
+  border-radius: var(--s-radius-s);
+  min-height: 48px;
+  text-align: left;
+  background: var(--s-bg);
+  font-size: var(--s-fs-400);
+}
+.c-exam-order__num { font-family: var(--s-font-mono); font-weight: 700; color: var(--s-gold); width: 20px; }
+.c-exam-order__picked .c-exam-order__num { color: var(--s-success); }
+.c-exam-hotspot-wrap { position: relative; margin-top: var(--s-sp-4); border-radius: var(--s-radius-m); overflow: hidden; border: 1px solid var(--s-line); }
+.c-exam-hotspot-area {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 44px; min-height: 44px;
+  border-radius: 8px;
+  border: 2px dashed rgba(217, 164, 65, .8);
+  background: rgba(217, 164, 65, .08);
+}
+.c-exam-hotspot-area.is-picked { background: rgba(217, 164, 65, .35); border-style: solid; }
+.c-exam-result { text-align: center; padding: var(--s-sp-5); display: flex; flex-direction: column; gap: var(--s-sp-3); align-items: center; }
+.c-exam-result__score { font-size: 3rem; font-weight: 800; letter-spacing: -.04em; line-height: 1; }
+.c-exam-result__score.is-pass { color: var(--s-success); }
+.c-exam-result__score.is-fail { color: var(--s-warn); }
+.c-exam-review { text-align: left; width: 100%; display: flex; flex-direction: column; gap: var(--s-sp-2); }
+.c-exam-review__item { border: 1px solid var(--s-line); border-radius: var(--s-radius-s); padding: var(--s-sp-3); font-size: var(--s-fs-400); }
+.c-exam-review__item.is-right { border-color: rgba(47, 125, 87, .4); background: var(--s-success-soft); }
+.c-exam-review__item.is-wrong { border-color: rgba(179, 57, 57, .35); background: var(--s-accent-soft); }
+
+/* Sertifikat */
+.scr-cert { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--s-sp-4); }
+.c-cert-preview {
+  border: 1px solid var(--s-line);
+  border-radius: var(--s-radius-m);
+  overflow: hidden;
+  background: var(--s-bg-inset);
+  padding: var(--s-sp-3);
+}
+.c-cert-preview canvas { width: 100%; height: auto; border-radius: var(--s-radius-s); box-shadow: var(--s-shadow-soft); }
+.c-cert-form { display: flex; flex-direction: column; gap: var(--s-sp-3); }
+.c-field { display: flex; flex-direction: column; gap: 6px; }
+.c-field label { font-size: var(--s-fs-400); font-weight: 700; }
+.c-field input {
+  min-height: 48px;
+  border-radius: var(--s-radius-s);
+  border: 1px solid var(--s-line);
+  background: var(--s-bg);
+  padding: 10px 12px;
+  color: var(--s-ink);
+}
+.c-field__hint { font-size: var(--s-fs-300); color: var(--s-ink-faint); }

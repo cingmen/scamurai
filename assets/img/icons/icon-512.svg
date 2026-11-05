@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Scamurai">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#241D2B"/>
+      <stop offset="1" stop-color="#121016"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="104" fill="url(#bg)"/>
+  <circle cx="400" cy="112" r="160" fill="#D9A441" opacity=".12"/>
+  <circle cx="96" cy="430" r="130" fill="#C93A3A" opacity=".10"/>
+  <g transform="translate(76 72) scale(1.8)">
+    <g stroke="#1B1820" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M52 96 Q52 52 100 52 Q148 52 148 96 Q148 142 100 148 Q52 142 52 96 Z" fill="#F2EEE7"/>
+      <path d="M62 68 L54 38 L86 52" fill="#F2EEE7"/>
+      <path d="M138 68 L146 38 L114 52" fill="#F2EEE7"/>
+      <path d="M52 80 Q100 64 148 80 L148 92 Q100 76 52 92 Z" fill="#C93A3A"/>
+      <circle cx="100" cy="82" r="7" fill="#D9A441"/>
+      <ellipse cx="82" cy="106" rx="6" ry="7" fill="#1B1820" stroke="none"/>
+      <ellipse cx="118" cy="106" rx="6" ry="7" fill="#1B1820" stroke="none"/>
+      <path d="M96 118 L100 122 L104 118" fill="#C9736E" stroke="none"/>
+      <path d="M100 122 Q94 130 90 126 M100 122 Q106 130 110 126" fill="none"/>
+    </g>
+  </g>
+  <text x="256" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="52" font-weight="800" fill="#F2EEE7">SCAMURAI</text>
+</svg>

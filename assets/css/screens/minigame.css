@@ -1,0 +1,85 @@
+/* Minigame grup Fabel Investasi */
+.scr-minigame { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.c-group { display: flex; flex-direction: column; gap: 4px; padding: var(--s-sp-2) var(--s-sp-3); }
+.c-group__date { align-self: center; font-size: 10px; background: #F0EBE0; color: #7C766B; border-radius: 999px; padding: 3px 10px; margin: 6px 0; font-weight: 600; }
+.c-group__row { display: flex; flex-direction: column; max-width: 90%; }
+.c-group__row--out { align-self: flex-end; align-items: flex-end; }
+.c-group__sender { font-size: 10.5px; font-weight: 700; margin: 0 2px 2px; }
+.c-group__sender--admin { color: #0F8A6B; }
+.c-group__sender--shill { color: #A8611B; }
+.c-group__sender--skeptic { color: #2E5E8F; }
+.c-group__sender--victim { color: #6B675F; }
+.c-group__bubble {
+  background: #fff;
+  border-radius: 12px 12px 12px 4px;
+  padding: 8px 11px;
+  font-size: 13px;
+  line-height: 1.45;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .06);
+  white-space: pre-wrap;
+}
+.c-group__row--out .c-group__bubble { background: var(--s-bubble-out); border-radius: 12px 12px 4px 12px; }
+.c-group__role {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 8.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  background: var(--s-warn-soft);
+  color: var(--s-warn);
+  border-radius: 4px;
+  padding: 1px 4px;
+  margin-left: 4px;
+  vertical-align: 1px;
+}
+.c-group__role--skeptic { background: var(--s-info-soft); color: var(--s-info); }
+.c-group__role--admin { background: var(--s-success-soft); color: var(--s-success); }
+.c-group__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.c-group__action {
+  border: 1px solid var(--s-app-line);
+  background: #fff;
+  border-radius: 8px;
+  min-height: 40px;
+  padding: 7px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+}
+.c-group__action:hover { border-color: #B9B2A4; }
+.c-group__action--danger { color: #8F2A2A; border-color: #E4C4C4; background: #FDF6F5; }
+.c-group__action--quiet { color: #6B675F; }
+.c-group__hint { font-size: 10px; color: #8B857A; text-align: center; }
+.c-group__speed {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #6B675F;
+}
+.c-group__speed button { border: 1px solid var(--s-app-line); background: #fff; border-radius: 999px; padding: 3px 8px; font-size: 10px; font-weight: 700; }
+.c-group__speed button[aria-pressed="true"] { background: #0F8A6B; color: #fff; border-color: transparent; }
+
+/* Debrief peran */
+.c-actor-list { display: flex; flex-direction: column; gap: 8px; }
+.c-actor {
+  display: flex;
+  gap: var(--s-sp-3);
+  padding: var(--s-sp-3);
+  border-radius: var(--s-radius-m);
+  border: 1px solid var(--s-line);
+  background: var(--s-bg-soft);
+}
+.c-actor__avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--s-bg-inset);
+  font-weight: 700;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+.c-actor__name { font-weight: 700; font-size: var(--s-fs-400); }
+.c-actor__role { font-size: var(--s-fs-300); color: var(--s-ink-faint); text-transform: uppercase; letter-spacing: .06em; }
+.c-actor__why { font-size: var(--s-fs-400); color: var(--s-ink-soft); margin-top: 4px; }

@@ -1,0 +1,246 @@
+{
+  "id": "kerja-luar-negeri",
+  "type": "sim",
+  "title": "Gaji Seribu Dollar",
+  "modus": "Kerja Luar Negeri",
+  "difficulty": 2,
+  "app": "chatriang",
+  "brief": {
+    "goal": "Sebuah agen menawarkan kerja di hotel luar negeri dengan gaji besar, tanpa wawancara. Surat penawaran sudah dikirim; tinggal bayar biaya visa. Periksa sebelum transfer.",
+    "rules": [
+      "Perusahaan sah tidak memungut biaya rekrutmen dari pelamar.",
+      "Cek izin penempatan agen di situs resmi, bukan dari lampiran agen.",
+      "Data paspor dan rekening hanya diberikan setelah kontrak jelas.",
+      "Semua perusahaan, agen, dan nomor di sini fiktif."
+    ],
+    "saldoAwal": 5000000
+  },
+  "steps": [
+    {
+      "type": "chat",
+      "app": "chatriang",
+      "header": { "title": "ChatRiang", "sub": "+62 813-2211-8899" },
+      "from": "them",
+      "sender": "Rekrutmen Global",
+      "time": "09.02",
+      "text": "Selamat pagi! Kami buka lowongan Customer Service Hotel di Malaysia. Gaji RM 4.500, tanpa pengalaman, tanpa wawancara. Kamu cocok berdasarkan profilmu. Mau saya kirim surat penawaran?",
+      "auto": false
+    },
+    {
+      "type": "app-ui",
+      "app": "doc",
+      "header": { "title": "Dokumen", "sub": "PDF · 1 halaman" },
+      "data": {
+        "logo": "PT. MITRA GLOBAL SEJAHTERA",
+        "title": "Surat Penawaran Kerja",
+        "meta": "No. 014/MGS/XI/2026 · SIMULASI",
+        "paragraphs": [
+          "Kepada Yth. Calon Karyawan,",
+          "Dengan ini kami menawarkan posisi Customer Service Hotel di Kuala Lumpur dengan gaji RM 4.500 per bulan, akomodasi ditanggung, dan kontrak 24 bulan.",
+          "Biaya pengurusan visa dan tiket sebesar Rp 4.500.000 ditanggung oleh pelamar dan wajib ditransfer ke rekening agen resmi kami sebelum keberangkatan.",
+          "Keberangkatan dijadwalkan 14 hari setelah pembayaran. Dokumen asli akan dikirim menyusul."
+        ],
+        "signature": "Hormat kami, Bagian Rekrutmen — tanpa tanda tangan basah"
+      },
+      "button": { "label": "Tutup dokumen", "goto": 2 }
+    },
+    {
+      "type": "flag-tap",
+      "app": "doc",
+      "header": { "title": "Dokumen", "sub": "Surat penawaran" },
+      "hint": "Periksa surat ini sebelum membalas agen.",
+      "blocks": [
+        { "text": "PT. MITRA GLOBAL SEJAHTERA", "head": true },
+        { "text": "Posisi Customer Service Hotel di Kuala Lumpur · gaji RM 4.500 · tanpa pengalaman · tanpa wawancara." },
+        { "text": "Biaya visa dan tiket Rp 4.500.000 ditanggung pelamar, ditransfer ke rekening agen." },
+        { "text": "Keberangkatan 14 hari setelah pembayaran. Dokumen asli menyusul." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "kl-biaya",
+          "x": 56,
+          "y": 60,
+          "title": "Biaya visa dibebankan ke pelamar",
+          "why": "Perusahaan dan agen resmi tidak memungut biaya rekrutmen, visa, atau tiket dari pekerja. Biaya itu adalah ciri penipuan penempatan.",
+          "do": "Jangan transfer. Laporkan tawaran yang meminta biaya di muka."
+        },
+        {
+          "flagId": "kl-tanpa-wawancara",
+          "x": 54,
+          "y": 32,
+          "title": "Diterima tanpa wawancara",
+          "why": "Pekerjaan resmi selalu melalui seleksi. Penerimaan instan dipakai agar korban merasa beruntung dan terburu-buru membayar.",
+          "do": "Waspadai tawaran yang terlalu mudah; minta proses seleksi yang jelas."
+        },
+        {
+          "flagId": "kl-dokumen",
+          "x": 60,
+          "y": 78,
+          "title": "“Dokumen asli menyusul” & tanpa tanda tangan",
+          "why": "Surat penawaran sah memuat identitas perusahaan, alamat, dan penanggung jawab yang bisa diverifikasi. Surat ini tidak punya alamat maupun tanda tangan.",
+          "do": "Minta kontrak lengkap dan verifikasi perusahaan sebelum membayar apa pun."
+        },
+        {
+          "flagId": "kl-gaji",
+          "x": 42,
+          "y": 24,
+          "title": "Gaji RM 4.500 untuk tanpa pengalaman",
+          "decoy": true,
+          "why": "Gaji tinggi sendiri bukan bukti penipuan; banyak posisi entry-level membayar layak. Yang mencurigakan adalah kombinasi tanpa seleksi dan biaya di muka.",
+          "do": "Bandingkan dengan lowongan resmi, tetapi fokus pada permintaan uang."
+        }
+      ]
+    },
+    {
+      "type": "chat",
+      "app": "chatriang",
+      "header": { "title": "ChatRiang", "sub": "+62 813-2211-8899" },
+      "from": "them",
+      "sender": "Rekrutmen Global",
+      "time": "09.20",
+      "text": "Suratnya sudah dibaca? Slot keberangkatan tinggal 2. Transfer Rp 4.500.000 ke rekening agen: BCA 7710 2233 44 a.n. Siti Rahma (pribadi). Setelah transfer kirim bukti, visa langsung diproses.",
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "app": "chatriang",
+      "header": { "title": "ChatRiang", "sub": "+62 813-2211-8899" },
+      "hint": "Periksa permintaan pembayaran ini.",
+      "blocks": [
+        { "text": "Rekrutmen Global · 09.20", "head": true },
+        { "text": "Slot keberangkatan tinggal 2. Transfer Rp 4.500.000 ke rekening agen." },
+        { "text": "BCA 7710 2233 44 a.n. Siti Rahma (pribadi). Kirim bukti, visa langsung diproses." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "kl-rekening",
+          "x": 56,
+          "y": 62,
+          "title": "Rekening pribadi, bukan rekening perusahaan",
+          "why": "Pembayaran resmi masuk ke rekening badan usaha yang namanya sama dengan perusahaan. Rekening pribadi memudahkan uang ditarik dan hilang.",
+          "do": "Jangan transfer ke rekening pribadi atas nama siapa pun."
+        },
+        {
+          "flagId": "kl-slot",
+          "x": 50,
+          "y": 36,
+          "title": "“Slot tinggal 2”",
+          "why": "Kelangkaan buatan menekan kamu untuk membayar sebelum memeriksa izin agen dan kontrak.",
+          "do": "Abaikan tekanan waktu; verifikasi dulu."
+        },
+        {
+          "flagId": "kl-visa",
+          "x": 60,
+          "y": 74,
+          "title": "Visa “langsung diproses” setelah transfer",
+          "why": "Visa kerja diproses berdasarkan kontrak dan sponsor resmi, bukan setelah transfer ke agen pribadi. Tidak ada jaminan visa dari bukti transfer.",
+          "do": "Minta nomor izin penempatan dan cek ke instansi resmi."
+        },
+        {
+          "flagId": "kl-nama-agen",
+          "x": 34,
+          "y": 22,
+          "title": "Nama agen disebut lengkap",
+          "decoy": true,
+          "why": "Nama agen mudah dibuat. Yang menentukan adalah izin resmi dan rekening perusahaan, bukan nama yang ditulis di chat.",
+          "do": "Cek izin dan rekening, bukan namanya."
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "prompt": "Agen menunggu bukti transfer. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        { "id": "bayar", "label": "Transfer biaya visa supaya tidak kehilangan slot", "goto": 6 },
+        { "id": "cek", "label": "Minta kontrak lengkap & nomor izin penempatan", "goto": 8 },
+        { "id": "lapor", "label": "Tolak, blokir, dan laporkan tawaran ini", "hint": "Jalur paling aman", "goto": 9 }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": { "title": "Bank Jayakarta", "sub": "Transfer baru" },
+      "data": {
+        "title": "Transfer biaya visa",
+        "recipient": "Siti Rahma",
+        "account": "7710 2233 44",
+        "amount": 4500000,
+        "fee": 6500,
+        "note": "Biaya visa kerja Malaysia",
+        "warning": "Rekening tujuan adalah rekening pribadi. Tidak ada kontrak atau nomor izin penempatan yang bisa diverifikasi."
+      },
+      "button": { "label": "Transfer sekarang", "goto": 7 }
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "Visa tidak pernah datang",
+      "text": "Kamu mentransfer Rp 4.500.000. Agen mengirim stiker “diproses”, lalu nomornya tidak aktif. Surat penawaran itu tidak pernah berasal dari perusahaan mana pun; alamat dan izinnya tidak ada. Uangmu masuk ke rekening pribadi dan ditarik dalam hitungan menit."
+    },
+    {
+      "type": "consequence",
+      "endingId": "hampir",
+      "title": "Kamu meminta bukti, agen menghilang",
+      "text": "Kamu meminta kontrak lengkap, alamat perusahaan, dan nomor izin penempatan. Agen berdalih “dokumen rahasia” lalu berhenti membalas. Tidak ada uang yang berpindah — dan tidak ada pekerjaan yang benar-benar ada."
+    },
+    {
+      "type": "consequence",
+      "endingId": "aman",
+      "title": "Kamu menolak dan melapor",
+      "text": "Kamu memblokir nomor itu, menyimpan bukti chat, dan melaporkannya. Tawaran kerja yang meminta biaya di muka tidak layak dipercaya, sekalipun suratnya terlihat resmi. Kamu menyelamatkan Rp 4.500.000 dan data paspormu."
+    }
+  ],
+  "endings": {
+    "kena": {
+      "label": "Biaya visa hilang",
+      "saldoDelta": -4500000,
+      "rank": 0,
+      "tone": "bad"
+    },
+    "hampir": {
+      "label": "Agen menghilang saat diminta bukti",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good"
+    },
+    "aman": {
+      "label": "Tolak, blokir, lapor",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      { "t": "Hari 1", "judul": "Tawaran tanpa seleksi", "naskah": "Gaji RM 4.500, tanpa pengalaman, tanpa wawancara.", "tujuanPenipu": "Membuat korban merasa terpilih dan menurunkan kewaspadaan." },
+      { "t": "Hari 1", "judul": "Surat penawaran tiruan", "naskah": "PT Mitra Global Sejahtera, nomor surat, tanpa alamat.", "tujuanPenipu": "Memberi kesan resmi dengan dokumen yang mudah dibuat." },
+      { "t": "Hari 2", "judul": "Biaya visa", "naskah": "Rp 4.500.000 ditanggung pelamar.", "tujuanPenipu": "Mengubah tawaran kerja menjadi aliran uang ke rekening pribadi." },
+      { "t": "Hari 2", "judul": "Kelangkaan & rekening pribadi", "naskah": "Slot tinggal 2, transfer ke a.n. Siti Rahma.", "tujuanPenipu": "Mencegah verifikasi dan memastikan uang cepat ditarik." },
+      { "t": "Hari 3", "judul": "Hilang", "naskah": "Nomor tidak aktif, visa tidak pernah ada.", "tujuanPenipu": "Menghilang sebelum korban menyadari tidak ada perusahaan." }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran uang penipuan kerja: biaya visa ke rekening pribadi lalu ditarik",
+      "nodes": [
+        { "id": "korban", "label": "Kamu · Rp 4.500.000" },
+        { "id": "rekening", "label": "Rekening pribadi agen", "tone": "danger" },
+        { "id": "tarik", "label": "Ditarik tunai / e-wallet" },
+        { "id": "hilang", "label": "Nomor & dokumen palsu hilang", "tone": "danger" }
+      ],
+      "edges": [
+        { "from": "korban", "to": "rekening", "label": "biaya visa" },
+        { "from": "rekening", "to": "tarik", "label": "menit pertama" },
+        { "from": "tarik", "to": "hilang", "label": "tanpa jejak" }
+      ]
+    },
+    "pulihkan": [
+      "Laporkan transfer ke bank segera; minta penahanan dana bila masih memungkinkan.",
+      "Simpan surat, chat, nomor rekening, dan bukti transfer.",
+      "Lapor ke 122, lapor.go.id, dan instansi ketenagakerjaan setempat.",
+      "Cek izin perusahaan penempatan pada daftar resmi; jangan percaya lampiran dari agen.",
+      "Jangan kirim paspor atau data pribadi tambahan kepada pihak yang sama."
+    ],
+    "linkPhisquest": false
+  }
+}

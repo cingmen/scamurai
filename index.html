@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="sumi" data-fontscale="normal">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Scamurai — Asah intuisi, tumpas penipuan</title>
+  <meta name="description" content="Dojo simulasi anti-penipuan berbahasa Indonesia. Rasakan sendiri alur penipuan di dalam bingkai ponsel — aman, tanpa data pribadi. Gratis, offline, tanpa akun.">
+  <meta name="theme-color" content="#17141B">
+  <meta name="color-scheme" content="dark light">
+  <meta property="og:title" content="Scamurai — Asah intuisi, tumpas penipuan">
+  <meta property="og:description" content="Tempat kamu boleh salah — sebelum salahnya mahal. 8 simulasi penipuan, debrief di balik layar penipu, ScamDEX, sertifikat.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="./assets/img/og-image.svg">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/img/icons/icon-192.svg">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./assets/fonts/fonts.css">
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  <link rel="stylesheet" href="./assets/css/screens/home.css">
+  <link rel="stylesheet" href="./assets/css/screens/sim.css">
+  <link rel="stylesheet" href="./assets/css/screens/vn.css">
+  <link rel="stylesheet" href="./assets/css/screens/minigame.css">
+  <link rel="stylesheet" href="./assets/css/screens/scamdex.css">
+  <link rel="stylesheet" href="./assets/css/screens/exam.css">
+  <link rel="stylesheet" href="./assets/css/screens/bantuan.css">
+</head>
+<body>
+  <a class="u-skip" href="#app">Langsung ke konten</a>
+
+  <header class="c-dojo-header" id="dojo-header">
+    <div class="c-dojo-header__inner">
+      <a class="c-brand" href="#/" aria-label="Scamurai, ke beranda">
+        <img class="c-brand__mark" src="./assets/img/mascot/kenji.svg" alt="" width="34" height="34">
+        <span>
+          <span class="c-brand__scam">Scam</span><span class="c-brand__urai">urai</span>
+          <span class="c-brand__tag">Asah intuisi, tumpas penipuan.</span>
+        </span>
+      </a>
+
+      <div class="c-dojo-status">
+        <span class="c-chip c-chip--gold" id="header-belt" title="Sabuk dojo">Sabuk Putih</span>
+        <span class="c-saldo">
+          <span class="c-saldo__label">Saldo Dojo</span>
+          <span class="c-saldo__value" id="header-saldo">Rp 5.000.000</span>
+        </span>
+      </div>
+
+      <nav class="c-nav" id="main-nav" aria-label="Navigasi utama">
+        <a href="#/">Beranda</a>
+        <a href="#/skenario">Skenario</a>
+        <a href="#/scamdex">ScamDEX</a>
+        <a href="#/grup">Dojo Grup</a>
+        <a href="#/ujian">Ujian</a>
+        <a href="#/bantuan">Bantuan</a>
+        <a href="#/pengaturan">Pengaturan</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="c-dojo-stage" id="stage">
+    <main id="app" tabindex="-1"></main>
+  </div>
+
+  <footer class="c-dojo-footer">
+    <div class="c-dojo-footer__inner">
+      <span>Scamurai v1.0 — edukasi komunitas, bukan sertifikasi resmi. Semua merek, nomor, dan data di simulasi adalah fiktif.</span>
+      <span class="u-row">
+        <a href="#/bantuan">Pusat Bantuan</a>
+        <a href="https://cingmen.github.io/phisquest" target="_blank" rel="noopener noreferrer">PhisQuest</a>
+        <a href="#/pengaturan">Privasi</a>
+      </span>
+    </div>
+  </footer>
+
+  <div class="c-toast-region" id="toast-region" role="status" aria-live="polite"></div>
+  <div id="modal-root"></div>
+
+  <noscript>
+    <p style="padding:24px;text-align:center">Scamurai membutuhkan JavaScript. Aktifkan JavaScript di browser, lalu muat ulang halaman.</p>
+  </noscript>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

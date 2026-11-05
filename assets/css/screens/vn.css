@@ -1,0 +1,189 @@
+/* Visual novel Love Scam */
+.scr-vn { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.c-vn-stage {
+  flex: 1 1 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(180deg, #2A2233 0%, #3A2C36 52%, #221C28 100%);
+  overflow: hidden;
+}
+.c-vn-stage__sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 74% 22%, rgba(255, 214, 160, .28), transparent 24%),
+    radial-gradient(circle at 22% 70%, rgba(120, 90, 140, .35), transparent 40%);
+}
+.c-vn-stage__city {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 42%;
+  background:
+    linear-gradient(180deg, transparent, rgba(0, 0, 0, .45)),
+    repeating-linear-gradient(90deg, #241E2B 0 18px, #2B2433 18px 32px, #1F1A26 32px 46px);
+  mask-image: linear-gradient(180deg, transparent, #000 30%);
+  opacity: .55;
+}
+.c-vn-portrait {
+  position: absolute;
+  right: 6%;
+  bottom: 32%;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, .22);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+  background: #4A3B52;
+  display: grid;
+  place-items: center;
+  font-size: 46px;
+  transition: opacity var(--s-dur-slow) var(--s-ease), transform var(--s-dur-slow) var(--s-ease);
+}
+.c-vn-portrait.is-hidden { opacity: 0; transform: translateY(8px) scale(.96); }
+.c-vn-chapter {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  background: rgba(0, 0, 0, .38);
+  border: 1px solid rgba(255, 255, 255, .16);
+  color: #F2EEE7;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.c-vn-tools {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  display: flex;
+  gap: 6px;
+}
+.c-vn-tool {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .2);
+  background: rgba(0, 0, 0, .35);
+  color: #F2EEE7;
+  font-size: 13px;
+  display: grid;
+  place-items: center;
+}
+.c-vn-dialogue {
+  position: relative;
+  z-index: 2;
+  margin: var(--s-sp-3);
+  background: rgba(20, 17, 24, .88);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: var(--s-radius-m);
+  padding: var(--s-sp-3) var(--s-sp-4);
+  color: #F2EEE7;
+  min-height: 128px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.c-vn-speaker { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #E4B970; }
+.c-vn-speaker--kamu { color: #8FC6A6; }
+.c-vn-speaker--narator { color: #A79FB2; }
+.c-vn-text { font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; }
+.c-vn-text .is-typing::after { content: "▌"; opacity: .6; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.c-vn-hint { font-size: 10px; color: rgba(255, 255, 255, .45); text-align: right; margin-top: auto; }
+.c-vn-choices { display: flex; flex-direction: column; gap: 6px; margin-top: var(--s-sp-2); }
+.c-vn-choice {
+  text-align: left;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  background: rgba(255, 255, 255, .06);
+  color: #F2EEE7;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+.c-vn-choice:hover { background: rgba(255, 255, 255, .14); border-color: rgba(228, 185, 112, .6); }
+.c-vn-time { font-size: 10px; color: rgba(255, 255, 255, .5); }
+.c-vn-attach { margin-top: 6px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255, 255, 255, .16); background: rgba(255, 255, 255, .06); }
+.c-vn-attach img { width: 100%; max-height: 140px; object-fit: cover; }
+.c-vn-videocall {
+  position: absolute;
+  inset: 0;
+  background: #0E0C11;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-sp-3);
+  z-index: 9;
+  color: #fff;
+  text-align: center;
+  padding: var(--s-sp-4);
+}
+.c-vn-videocall__face {
+  width: 160px;
+  height: 200px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 50% 34%, #7C6A72 0 26%, transparent 27%),
+    radial-gradient(circle at 50% 62%, #5F5058 0 34%, transparent 35%),
+    linear-gradient(160deg, #3B323C, #1D1820);
+  border: 1px solid rgba(255, 255, 255, .15);
+  filter: blur(.6px) contrast(1.05);
+  animation: vnGlitch 2.4s infinite;
+}
+@keyframes vnGlitch {
+  0%, 100% { transform: none; }
+  47% { transform: translateX(1px); filter: blur(.6px); }
+  48% { transform: translateX(-2px) skewX(.5deg); filter: blur(1.4px); }
+  49% { transform: none; }
+}
+.c-vn-videocall__name { font-weight: 700; }
+.c-vn-videocall__meta { font-size: 11px; color: rgba(255, 255, 255, .6); }
+.c-vn-videocall__wave { display: flex; gap: 3px; align-items: flex-end; height: 22px; }
+.c-vn-videocall__wave i { width: 4px; background: #E4B970; border-radius: 2px; animation: wave 1s infinite; }
+.c-vn-videocall__wave i:nth-child(2) { animation-delay: .15s; }
+.c-vn-videocall__wave i:nth-child(3) { animation-delay: .3s; }
+.c-vn-videocall__wave i:nth-child(4) { animation-delay: .45s; }
+.c-vn-videocall__wave i:nth-child(5) { animation-delay: .6s; }
+@keyframes wave { 0%, 100% { height: 6px; } 50% { height: 22px; } }
+
+.c-vn-history {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 13, 18, .96);
+  color: #F2EEE7;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding: var(--s-sp-3);
+  gap: var(--s-sp-2);
+}
+.c-vn-history__head { display: flex; justify-content: space-between; align-items: center; }
+.c-vn-history__list { overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
+.c-vn-history__item { font-size: 12px; line-height: 1.5; border-left: 2px solid rgba(228, 185, 112, .5); padding-left: 8px; }
+.c-vn-history__item b { display: block; font-size: 10px; color: #E4B970; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+.c-vn-save-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.c-vn-save-row .c-btn { flex: 1 1 40%; }
+
+/* Debrief VN */
+.c-vn-debrief-chapter { border-left: 2px solid var(--s-gold); padding-left: var(--s-sp-3); margin-bottom: var(--s-sp-4); }
+.c-vn-debrief-chapter h3 { font-size: var(--s-fs-500); }
+.c-vn-debrief-chapter p { font-size: var(--s-fs-400); color: var(--s-ink-soft); margin-top: 4px; }
+.c-vn-debrief-chapter blockquote {
+  margin: var(--s-sp-2) 0 0;
+  font-size: var(--s-fs-400);
+  background: var(--s-bg-inset);
+  border-radius: var(--s-radius-s);
+  padding: 10px 12px;
+  color: var(--s-ink);
+}
+.c-vn-debrief-chapter em { color: var(--s-accent); font-style: normal; font-weight: 700; }

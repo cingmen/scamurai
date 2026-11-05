@@ -1,0 +1,234 @@
+{
+  "updatedAt": "2026-11-05",
+  "cards": [
+    {
+      "id": "task-scam",
+      "name": "Task Scam",
+      "alias": "Pesanan / like berkomisi",
+      "icon": "./assets/img/scenarios/task-scam.svg",
+      "severity": 2,
+      "psychology": "Keserakahan kecil yang wajar: komisi cepat untuk pekerjaan sepele. Setelah tiga pembayaran kecil, otak menganggap sistemnya nyata.",
+      "flags": [
+        "Komisi tidak masuk akal untuk pekerjaan like/komentar",
+        "Diminta pindah ke grup atau aplikasi chat lain",
+        "Deposit atau saldo awal sebelum menerima komisi",
+        "Alasan “sistem error” untuk meminta transfer ulang",
+        "Tekanan waktu dan slot terbatas"
+      ],
+      "verify": [
+        "Tidak ada platform sah yang membayar like dengan deposit.",
+        "Cari nama akun + kata “scam” di mesin pencari.",
+        "Hubungi kanal resmi platform, bukan nomor di chat."
+      ],
+      "report": [
+        "Simpan tangkapan layar dan mutasi.",
+        "Lapor ke aduankonten.id dan lapor.go.id.",
+        "Hubungi bank untuk memblokir rekening penerima."
+      ],
+      "variants": []
+    },
+    {
+      "id": "bank-otp",
+      "name": "Bank & OTP",
+      "alias": "Telepon petugas bank palsu",
+      "icon": "./assets/img/scenarios/bank-otp.svg",
+      "severity": 3,
+      "psychology": "Rasa takut kehilangan uang dan otoritas yang mengancam. Korban dibuat panik agar tidak sempat berpikir atau menghubungi nomor lain.",
+      "flags": [
+        "Penelepon meminta OTP, PIN, atau kata sandi",
+        "Nomor penelepon bukan dari aplikasi resmi",
+        "Ancaman rekening dibekukan atau kasus pidana",
+        "Diminta tetap di telepon dan merahasiakan panggilan",
+        "Diminta mengunduh aplikasi atau membuka tautan"
+      ],
+      "verify": [
+        "Tutup telepon. Buka aplikasi bank sendiri, bukan dari tautan.",
+        "Hubungi call center resmi di belakang kartu atau aplikasi.",
+        "Bank tidak pernah meminta OTP, bahkan untuk pembatalan."
+      ],
+      "report": [
+        "Hubungi bank untuk memblokir kartu dan rekening.",
+        "Lapor ke 122 atau lapor.go.id.",
+        "Polisikan bila kerugian besar; bawa bukti mutasi."
+      ],
+      "variants": [
+        {
+          "id": "var-ojk-palsu",
+          "name": "Varian: OJK Palsu",
+          "unlockEnding": "hampir-kena",
+          "desc": "Penelepon mengaku petugas OJK dan mengirim halaman verifikasi palsu. OJK tidak pernah menelepon untuk meminta data atau memindahkan dana."
+        }
+      ]
+    },
+    {
+      "id": "pinjol",
+      "name": "Pinjol Ilegal",
+      "alias": "Pinjaman cair lima menit",
+      "icon": "./assets/img/scenarios/pinjol.svg",
+      "severity": 3,
+      "psychology": "Kebutuhan mendesak membuat orang menerima syarat yang tidak masuk akal. Rasa malu dan takut diteror mencegah korban melapor.",
+      "flags": [
+        "Tidak ada izin OJK di aplikasi atau situs",
+        "Meminta akses kontak, galeri, dan kamera",
+        "Bunga “0%” tetapi ada biaya tersembunyi",
+        "Pencairan lebih kecil dari yang disetujui",
+        "Ancaman menyebarkan data ke kontak"
+      ],
+      "verify": [
+        "Cek daftar penyelenggara berizin di situs OJK.",
+        "Bandingkan total pengembalian, bukan hanya bunga.",
+        "Jangan pernah memberikan akses kontak."
+      ],
+      "report": [
+        "Lapor ke OJK 157 dan lapor.go.id.",
+        "Blokir nomor dan simpan bukti teror.",
+        "Jangan membayar di luar tagihan resmi; minta bantuan pendampingan."
+      ],
+      "variants": []
+    },
+    {
+      "id": "marketplace",
+      "name": "Marketplace Palsu",
+      "alias": "Checkout di luar platform",
+      "icon": "./assets/img/scenarios/marketplace.svg",
+      "severity": 2,
+      "psychology": "Harga murah memicu urgensi dan rasa sayang kehilangan kesempatan. Desakan penjual menciptakan ilusi keakraban.",
+      "flags": [
+        "Harga jauh di bawah pasar untuk barang laris",
+        "Penjual mendesak pindah ke WhatsApp",
+        "Tautan checkout dengan domain aneh",
+        "Rekening penerima atas nama pribadi, bukan perusahaan",
+        "Diminta transfer penuh atau DP via aplikasi lain"
+      ],
+      "verify": [
+        "Periksa domain dan riwayat penjual di platform resmi.",
+        "Gunakan escrow atau pembayaran di dalam aplikasi.",
+        "Cari ulasan dan rekening di cekrekening.id."
+      ],
+      "report": [
+        "Laporkan penjual ke platform.",
+        "Lapor ke cekrekening.id dan 122.",
+        "Simpan percakapan dan bukti transfer."
+      ],
+      "variants": []
+    },
+    {
+      "id": "kerja-luar-negeri",
+      "name": "Kerja Luar Negeri Palsu",
+      "alias": "Gaji besar tanpa wawancara",
+      "icon": "./assets/img/scenarios/kerja-luar-negeri.svg",
+      "severity": 2,
+      "psychology": "Harapan mengubah hidup dan tekanan ekonomi. Surat penawaran terlihat resmi meski penuh kesalahan.",
+      "flags": [
+        "Gaji fantastis tanpa wawancara atau pengalaman",
+        "Biaya visa, pelatihan, atau tiket ke rekening pribadi",
+        "Email perusahaan memakai domain publik",
+        "Surat penawaran penuh typo dan tanpa alamat",
+        "Diminta mengirim paspor sebelum kontrak jelas"
+      ],
+      "verify": [
+        "Cek izin perusahaan di kanal resmi ketenagakerjaan.",
+        "Hubungi perusahaan lewat situs resmi, bukan nomor chat.",
+        "Baca kontrak dan pastikan visa kerja, bukan visa wisata."
+      ],
+      "report": [
+        "Lapor ke lapor.go.id dan kanal pengaduan ketenagakerjaan.",
+        "Blokir perekrut dan simpan dokumen.",
+        "Jangan mengirim uang tambahan."
+      ],
+      "variants": []
+    },
+    {
+      "id": "money-mule",
+      "name": "Money Mule",
+      "alias": "Rekening sewa",
+      "icon": "./assets/img/scenarios/money-mule.svg",
+      "severity": 3,
+      "psychology": "Uang mudah tanpa kerja terasa seperti keberuntungan. Pelaku memakai bahasa sopan dan administratif agar korban merasa menjadi “karyawan”.",
+      "flags": [
+        "Diminta menyewakan rekening, ATM, atau e-wallet",
+        "Uang masuk dari banyak pengirim tak dikenal",
+        "Diminta meneruskan dana ke rekening lain",
+        "Imbalan besar untuk pekerjaan “admin keuangan”",
+        "Tekanan agar tidak bertanya kepada siapa pun"
+      ],
+      "verify": [
+        "Rekening pribadi tidak boleh dipakai orang lain.",
+        "Cek rekening pengirim di cekrekening.id.",
+        "Tanyakan ke bank bila ada mutasi asing tak dikenal."
+      ],
+      "report": [
+        "Tutup rekening dan laporkan ke bank segera.",
+        "Lapor ke 122 dan lapor.go.id.",
+        "Simpan bukti komunikasi; jangan meneruskan dana."
+      ],
+      "variants": []
+    },
+    {
+      "id": "love-scam",
+      "name": "Love Scam",
+      "alias": "Penipuan romantis",
+      "icon": "./assets/img/scenarios/love-scam.svg",
+      "severity": 3,
+      "psychology": "Kesepian dan kebutuhan diterima. Penipu membangun intensitas cepat, lalu memakai rasa bersalah dan krisis palsu untuk meminta uang.",
+      "flags": [
+        "Intensitas cepat: sayang dan janji menikah dalam hitungan hari",
+        "Enggan video call panjang atau selalu “sinyal buruk”",
+        "Cerita krisis keluarga yang mendesak",
+        "Permintaan uang, bea, atau tiket ke rekening pribadi",
+        "Mengisolasi korban dari keluarga dan teman"
+      ],
+      "verify": [
+        "Cari foto dengan pencarian gambar terbalik.",
+        "Video call panjang dan minta hal spesifik.",
+        "Tolak semua permintaan uang; hubungan tidak butuh transfer."
+      ],
+      "report": [
+        "Simpan bukti chat dan transfer.",
+        "Lapor ke 122, aduankonten.id, dan lapor.go.id.",
+        "Ceritakan ke orang terpercaya — jangan menanggung sendirian."
+      ],
+      "variants": [
+        {
+          "id": "var-deepfake",
+          "name": "Varian: Video Call Deepfake",
+          "unlockEnding": "kena-total",
+          "desc": "Panggilan video singkat dengan wajah dan suara yang tampak nyata namun patah-patah. Deepfake tidak membuktikan identitas; minta interaksi spontan dan verifikasi independen."
+        }
+      ]
+    },
+    {
+      "id": "phishing",
+      "name": "Phishing",
+      "alias": "Tautan dan halaman palsu",
+      "icon": "./assets/img/scenarios/phishing.svg",
+      "severity": 3,
+      "psychology": "Kebiasaan mengklik dan rasa urgensi pengiriman. Halaman palsu meniru tampilan resmi sehingga mata melewati detail domain.",
+      "flags": [
+        "Domain tidak persis sama dengan situs resmi",
+        "Gembok tidak menjamin situs sah",
+        "Form meminta PIN, OTP, atau data kartu lengkap",
+        "Hitung mundur dan ancaman paket dikembalikan",
+        "Tautan pendek tanpa alamat perusahaan"
+      ],
+      "verify": [
+        "Buka aplikasi atau situs resmi sendiri, jangan lewat tautan.",
+        "Periksa domain huruf per huruf.",
+        "Kurir tidak pernah meminta OTP atau PIN kartu."
+      ],
+      "report": [
+        "Blokir kartu dan ubah kata sandi dari perangkat aman.",
+        "Aktifkan 2FA dan periksa transaksi.",
+        "Lapor ke aduankonten.id, 122, dan bank."
+      ],
+      "variants": [
+        {
+          "id": "var-akibat-beruntun",
+          "name": "Varian: Akibat Beruntun",
+          "unlockEnding": "kena-pulih",
+          "desc": "Data yang diketik dipakai berlapis: kartu, pinjol atas nama korban, lalu telepon yang memakai data itu untuk terlihat meyakinkan."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "verifiedAt": "2026-11-05",
+  "note": "Nomor dan tautan kanal resmi wajib diverifikasi ulang sebelum setiap rilis. Scamurai tidak mengelola pengaduan dan tidak meminta data pribadi.",
+  "intro": "Kalau kamu sedang terjadi sekarang, berhenti sejenak. Kamu tidak bodoh — penipu bekerja dengan naskah dan tekanan. Fokus ke langkah berikutnya.",
+  "branches": [
+    {
+      "id": "uang",
+      "title": "Uang sudah terkirim",
+      "summary": "Menit pertama menentukan. Hubungi bank, hentikan aliran dana, lalu laporkan.",
+      "steps": [
+        { "title": "Hubungi bank sekarang", "body": "Telepon call center resmi di belakang kartu atau buka aplikasi bank. Minta pemblokiran kartu/rekening dan penahanan transaksi. Jangan hubungi nomor dari chat penipu." },
+        { "title": "Kumpulkan bukti", "body": "Simpan tangkapan layar percakapan, bukti transfer, nomor rekening penerima, dan nomor telepon penipu. Jangan hapus chat." },
+        { "title": "Lapor ke kanal resmi", "body": "Lapor ke lapor.go.id dan 122. Untuk pinjol atau investasi, tambahkan OJK 157. Untuk rekening penerima, cek dan laporkan lewat cekrekening.id." },
+        { "title": "Beri tahu orang terpercaya", "body": "Ceritakan ke keluarga atau teman. Penipu sering meminta korban merahasiakan kejadian agar tidak ada yang menghentikan aliran dana." }
+      ]
+    },
+    {
+      "id": "data",
+      "title": "Data pribadi sudah bocor",
+      "summary": "OTP, PIN, kata sandi, foto KTP, atau data kartu sudah kamu serahkan.",
+      "steps": [
+        { "title": "Amankan akun", "body": "Ganti kata sandi email dan bank dari perangkat yang kamu percaya. Aktifkan verifikasi dua langkah. Keluar dari semua sesi yang tidak dikenal." },
+        { "title": "Blokir kartu dan rekening", "body": "Minta bank mengganti kartu bila data kartu bocor. Periksa transaksi dan tagihan yang tidak kamu kenali." },
+        { "title": "Waspadai serangan lanjutan", "body": "Penipu akan memakai data yang kamu berikan untuk menelepon lagi dan terlihat meyakinkan. Verifikasi semua panggilan lewat nomor resmi." },
+        { "title": "Laporkan", "body": "Lapor ke aduankonten.id bila ada tautan atau akun palsu. Untuk penyalahgunaan identitas, laporkan ke bank dan pihak berwenang." }
+      ]
+    },
+    {
+      "id": "belum",
+      "title": "Belum mengirim apa pun",
+      "summary": "Kamu mencurigai sesuatu, atau sudah hampir menekan tombol. Bagus — berhenti di sini.",
+      "steps": [
+        { "title": "Hentikan kontak", "body": "Jangan balas, jangan klik tautan, jangan mengunduh apa pun. Blokir nomor dan akun penipu." },
+        { "title": "Pindah ke kanal resmi", "body": "Buka aplikasi atau situs resmi langsung dari browser, bukan dari tautan yang dikirim. Hubungi layanan pelanggan resmi." },
+        { "title": "Simpan bukti", "body": "Tangkapan layar berguna untuk laporan dan untuk memperingatkan orang lain. Sensor data pribadimu sebelum membagikan." },
+        { "title": "Laporkan dan latih diri", "body": "Laporkan akun atau tautan ke platform dan aduankonten.id, lalu latih refleksmu di skenario Scamurai." }
+      ]
+    }
+  ],
+  "channels": [
+    {
+      "name": "Bank / penerbit kartu",
+      "what": "Memblokir kartu, menahan transaksi, mengganti kartu.",
+      "when": "Paling pertama bila uang atau data kartu sudah keluar.",
+      "phone": "Nomor di belakang kartu / aplikasi bank",
+      "url": ""
+    },
+    {
+      "name": "lapor.go.id",
+      "what": "Portal pengaduan pemerintah untuk berbagai dugaan penipuan.",
+      "when": "Setelah bank dihubungi dan bukti dikumpulkan.",
+      "phone": "1500-994",
+      "url": "https://lapor.go.id"
+    },
+    {
+      "name": "cekrekening.id",
+      "what": "Memeriksa dan melaporkan rekening yang diduga dipakai kejahatan.",
+      "when": "Sebelum transfer, atau setelah menemukan rekening penerima penipu.",
+      "phone": "",
+      "url": "https://cekrekening.id"
+    },
+    {
+      "name": "Hotline 122",
+      "what": "Layanan aduan konten dan penipuan digital.",
+      "when": "Untuk nomor, akun, atau tautan penipuan yang masih aktif.",
+      "phone": "122",
+      "url": "https://aduankonten.id"
+    },
+    {
+      "name": "OJK 157",
+      "what": "Konsumen pinjol ilegal, investasi, dan layanan keuangan.",
+      "when": "Untuk pinjol tanpa izin, teror penagihan, atau investasi bodong.",
+      "phone": "157",
+      "url": "https://kontak157.ojk.go.id"
+    }
+  ],
+  "psychology": {
+    "title": "Kalau rasa malu dan takut masih berat",
+    "body": "Menjadi korban penipuan bukan tanda kekurangan. Penipu melatih naskah mereka pada ribuan orang dan memilih momen ketika kita lelah, panik, atau sedang butuh uang. Kamu tidak perlu menanggungnya sendirian: ceritakan pada satu orang yang kamu percaya, tulis kronologinya, dan istirahatkan diri dari layar. Bila muncul rasa cemas berkepanjangan atau pikiran menyakiti diri, hubungi tenaga kesehatan jiwa atau layanan darurat setempat. Scamurai bukan layanan konseling."
+  }
+}
