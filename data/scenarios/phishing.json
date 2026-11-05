@@ -79,9 +79,9 @@
       "prompt": "Apa yang kamu lakukan dengan SMS ini?",
       "critical": true,
       "options": [
-        { "id": "buka", "label": "Buka tautan untuk melihat paket", "goto": 3 },
-        { "id": "resmi", "label": "Cek resi di aplikasi kurir resmi", "hint": "Jalur paling aman", "goto": 8 },
-        { "id": "lapor", "label": "Hapus SMS dan laporkan nomornya", "goto": 9 }
+        { "id": "buka", "label": "Buka tautan untuk melihat paket", "goto": 10 },
+        { "id": "resmi", "label": "Cek resi di aplikasi kurir resmi", "hint": "Jalur paling aman", "goto": 12 },
+        { "id": "lapor", "label": "Hapus SMS dan laporkan nomornya", "goto": 13 }
       ]
     },
     {
@@ -192,6 +192,14 @@
           "do": "Waspadai permintaan data kartu untuk nominal sekecil apa pun."
         },
         {
+          "flagId": "ph-tanpa-resi",
+          "x": 38,
+          "y": 18,
+          "title": "Tidak ada nomor pesanan atau nama merchant",
+          "why": "Halaman pembayaran tidak menunjukkan nomor pesanan, nama merchant, atau rincian barang. Jumlah Rp 12.500 muncul tanpa dasar transaksi yang bisa diperiksa.",
+          "do": "Jangan bayar. Pembayaran sah selalu punya identitas penerima dan rincian transaksi."
+        },
+        {
           "flagId": "ph-hitung2",
           "x": 64,
           "y": 44,
@@ -236,6 +244,82 @@
       "endingId": "lapor",
       "title": "SMS dilaporkan",
       "text": "Kamu menghapus SMS, memblokir nomornya, dan melaporkannya. Beberapa hari kemudian nomor itu berhenti beroperasi. Tidak ada data yang kamu berikan, dan tidak ada uang yang berpindah."
+    },
+    {
+      "type": "sms",
+      "app": "sms",
+      "header": { "title": "Pesan", "sub": "SMS masuk" },
+      "messages": [
+        {
+          "sender": "0812-7711-2030",
+          "time": "08.16",
+          "danger": true,
+          "text": "Jangan tutup halaman ya kak. Sistem sedang verifikasi alamat. Kalau ditutup, paket otomatis dikembalikan dan biaya hangus."
+        }
+      ],
+      "goto": 11,
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "app": "sms",
+      "header": { "title": "Pesan", "sub": "Pengirim tidak dikenal" },
+      "hint": "Periksa pesan susulan ini sebelum kembali ke halaman.",
+      "blocks": [
+        { "text": "0812-7711-2030 · 08.16", "head": true },
+        { "text": "Jangan tutup halaman. Sistem sedang verifikasi alamat." },
+        { "text": "Kalau ditutup, paket otomatis dikembalikan dan biaya hangus." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "ph-jangan-tutup",
+          "x": 58,
+          "y": 34,
+          "title": "“Jangan tutup halaman”",
+          "why": "Permintaan menahanmu di halaman adalah isolasi. Situs sah tidak kehilangan data karena kamu menutup tab.",
+          "do": "Tutup halaman dan lanjutkan lewat aplikasi resmi."
+        },
+        {
+          "flagId": "ph-ancaman-paket",
+          "x": 60,
+          "y": 70,
+          "title": "Paket dikembalikan & biaya hangus",
+          "why": "Ancaman kehilangan paket dipakai agar kamu menyelesaikan formulir dengan terburu-buru. Kurir tidak menghanguskan biaya hanya karena kamu menutup tab.",
+          "do": "Abaikan ancaman; cek status paket di kanal resmi."
+        },
+        {
+          "flagId": "ph-chat-bukan-resmi",
+          "x": 46,
+          "y": 50,
+          "title": "Verifikasi lewat chat nomor ponsel",
+          "why": "Kurir resmi tidak memverifikasi alamat lewat chat nomor ponsel. Kanal itu tidak bisa dipastikan milik perusahaan.",
+          "do": "Jangan balas. Hubungi layanan pelanggan dari aplikasi resmi."
+        },
+        {
+          "flagId": "ph-resi-susulan",
+          "x": 30,
+          "y": 20,
+          "title": "Nomor resi disebut lagi",
+          "decoy": true,
+          "why": "Nomor resi bisa dilihat siapa saja di label paket. Mengulanginya tidak membuktikan pengirim adalah kurir.",
+          "do": "Nilai kanal dan tautannya, bukan nomor resi."
+        }
+      ],
+      "goto": 3
+    },
+    {
+      "type": "lesson",
+      "title": "Cek resi tanpa membuka tautan",
+      "body": "Buka aplikasi kurir resmi atau ketik alamat resminya sendiri, lalu masukkan nomor resi. Jangan isi data kartu untuk biaya kirim. Jika data kartu sudah terlanjur dikirim, hubungi bank, blokir kartu, dan pantau transaksi. Simpan SMS aslinya sebagai bukti.",
+      "refDex": "Phishing",
+      "goto": 8
+    },
+    {
+      "type": "lesson",
+      "title": "Lapor dengan bukti yang cukup",
+      "body": "Simpan tangkapan layar, nomor pengirim, waktu, dan tautan sebelum menghapus. Laporkan ke operator seluler dan kanal aduan nomor penipuan, lalu blokir nomornya. Jangan meneruskan SMS ke orang lain karena tautannya tetap berbahaya.",
+      "refDex": "Phishing",
+      "goto": 9
     }
   ],
   "endings": {

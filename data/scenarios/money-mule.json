@@ -77,9 +77,9 @@
       "prompt": "Rio menunggu jawaban. Apa yang kamu lakukan?",
       "critical": true,
       "options": [
-        { "id": "ikut", "label": "Ikut sekali saja, lumayan komisinya", "goto": 3 },
-        { "id": "tanya", "label": "Tanya sumber dana & minta bukti klien", "goto": 8 },
-        { "id": "tolak", "label": "Tolak, blokir, dan laporkan", "hint": "Jalur paling aman", "goto": 9 }
+        { "id": "ikut", "label": "Ikut sekali saja, lumayan komisinya", "goto": 10 },
+        { "id": "tanya", "label": "Tanya sumber dana & minta bukti klien", "goto": 12 },
+        { "id": "tolak", "label": "Tolak, blokir, dan laporkan", "hint": "Jalur paling aman", "goto": 13 }
       ]
     },
     {
@@ -176,6 +176,82 @@
       "endingId": "aman",
       "title": "Kamu menolak menjadi perantara",
       "text": "Kamu menolak, memblokir Rio, dan melaporkan percakapan itu. Rekeningmu bersih dan tidak ada dana asing yang singgah. Teman yang benar-benar teman tidak akan meminta kamu menanggung risiko hukumnya."
+    },
+    {
+      "type": "sms",
+      "app": "sms",
+      "header": { "title": "Pesan", "sub": "Notifikasi bank" },
+      "messages": [
+        {
+          "sender": "Bank Jayakarta",
+          "time": "13.21",
+          "danger": true,
+          "text": "Dana masuk Rp 12.000.000 dari PT CAHAYA ABADI. Jika transaksi ini bukan milik Anda, jangan meneruskan dana dan hubungi call center di aplikasi."
+        }
+      ],
+      "goto": 11,
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "app": "sms",
+      "header": { "title": "Pesan", "sub": "Notifikasi bank" },
+      "hint": "Bank sudah memberi peringatan. Periksa sebelum menyentuh dana itu.",
+      "blocks": [
+        { "text": "Bank Jayakarta · 13.21", "head": true },
+        { "text": "Dana masuk Rp 12.000.000 dari PT CAHAYA ABADI." },
+        { "text": "Jika transaksi ini bukan milik Anda, jangan meneruskan dana dan hubungi call center di aplikasi." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "mm-bukan-milik",
+          "x": 44,
+          "y": 38,
+          "title": "Dana masuk bukan milikmu",
+          "why": "Uang yang salah masuk bukan hadiah dan bukan pinjaman. Menggunakannya atau meneruskannya bisa membuatmu menanggung akibat hukum.",
+          "do": "Jangan pakai atau pindahkan dana; hubungi bank."
+        },
+        {
+          "flagId": "mm-jangan-teruskan",
+          "x": 60,
+          "y": 66,
+          "title": "Bank meminta jangan meneruskan dana",
+          "why": "Peringatan bank adalah sinyal kuat bahwa transaksi ini mencurigakan. Mengabaikannya menghapus alasan “saya tidak tahu”.",
+          "do": "Ikuti peringatan bank dan minta dana dikembalikan lewat jalur resmi."
+        },
+        {
+          "flagId": "mm-pengirim-perusahaan",
+          "x": 50,
+          "y": 24,
+          "title": "Pengirim perusahaan yang tidak kamu kenal",
+          "why": "Kamu tidak punya hubungan dengan PT CAHAYA ABADI. Nama perusahaan bisa dibuat untuk membuat dana terlihat sah.",
+          "do": "Cek sumber dana lewat bank, bukan lewat instruksi Rio."
+        },
+        {
+          "flagId": "mm-nominal-besar",
+          "x": 34,
+          "y": 50,
+          "title": "Nominal Rp 12.000.000 disebut",
+          "decoy": true,
+          "why": "Nominal besar memang membuat panik atau tergoda, tetapi angka itu bukan bukti dana itu sah untukmu.",
+          "do": "Fokus pada kepemilikan dan instruksi penerusannya."
+        }
+      ],
+      "goto": 3
+    },
+    {
+      "type": "lesson",
+      "title": "Kalau dana asing sudah masuk",
+      "body": "Jangan gunakan, jangan pecah, dan jangan teruskan dananya. Hubungi bank lewat nomor resmi, jelaskan bahwa dana masuk tanpa dasar, dan minta pembalikan transaksi. Simpan mutasi dan percakapan sebagai bukti. Rekening bisa dibekukan sementara selama pemeriksaan, tetapi itu jauh lebih baik daripada terlibat pencucian uang.",
+      "refDex": "Money Mule",
+      "goto": 8
+    },
+    {
+      "type": "lesson",
+      "title": "Lapor, jangan hanya memblokir",
+      "body": "Simpan chat, nomor rekening, dan mutasi sebelum memblokir Rio. Laporkan ke bank, OJK 157, dan polisi. Ceritakan bahwa kamu diminta menerima lalu meneruskan dana. Melapor lebih awal membantumu membuktikan bahwa kamu bukan bagian jaringan.",
+      "refDex": "Money Mule",
+      "goto": 9
     }
   ],
   "endings": {

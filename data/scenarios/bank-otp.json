@@ -89,7 +89,7 @@
       "choices": [
         { "id": "ikuti", "label": "Ikuti instruksi petugas", "goto": 3 },
         { "id": "verifikasi", "label": "Minta nomor petugas resmi & verifikasi", "goto": 10 },
-        { "id": "tutup", "label": "Tutup telepon, buka aplikasi bank sendiri", "hint": "Jalur paling aman", "goto": 8 }
+        { "id": "tutup", "label": "Tutup telepon, buka aplikasi bank sendiri", "hint": "Jalur paling aman", "goto": 13 }
       ]
     },
     {
@@ -140,6 +140,14 @@
           "title": "Hitung mundur 04.59",
           "why": "Tekanan waktu dipakai agar kamu menyerahkan kode sebelum berpikir. Tidak ada pembatalan yang bergantung pada detik.",
           "do": "Berhenti saat dipaksa cepat."
+        },
+        {
+          "flagId": "bo-tiket",
+          "x": 42,
+          "y": 16,
+          "title": "Tidak ada nomor tiket atau laporan resmi",
+          "why": "Petugas fraud yang sah membuka laporan dengan nomor tiket yang bisa kamu cek di aplikasi. Di sini tidak ada nomor kasus, tidak ada kanal verifikasi, hanya instruksi lisan.",
+          "do": "Minta nomor tiket dan buka sendiri aplikasi bank untuk memeriksanya."
         },
         {
           "flagId": "bo-nominal-benar",
@@ -275,6 +283,24 @@
       "endingId": "hampir-kena",
       "title": "Kamu berhenti di halaman palsu",
       "text": "Kamu menutup halaman sebelum mengisi formulir, lalu membuka aplikasi bank dan menelepon call center resmi. Tidak ada data yang bocor. Halaman itu memakai domain mirip dan gembok “aman” untuk meyakinkanmu — kamu memeriksa alamatnya, bukan ikonnya."
+    },
+    {
+      "type": "chat",
+      "app": "chatriang",
+      "header": { "title": "ChatRiang", "sub": "Bank Jayakarta Resmi · terverifikasi" },
+      "from": "them",
+      "sender": "Bank Jayakarta Resmi",
+      "time": "19.49",
+      "text": "Terima kasih sudah menutup telepon. Kami tidak menemukan transaksi Rp 4.750.000 di rekening 8820. Tidak ada petugas yang menghubungi nasabah untuk meminta OTP. Jika kartu pernah dimasukkan ke tautan mencurigakan, balas “BLOKIR” di aplikasi.",
+      "auto": false,
+      "goto": 14
+    },
+    {
+      "type": "lesson",
+      "title": "Pastikan penelepon tidak bisa kembali",
+      "body": "Setelah menutup telepon, buka aplikasi bank dan cek mutasi. Jika nomor kartu sempat kamu berikan, blokir kartu dan minta ganti. Aktifkan notifikasi transaksi serta verifikasi dua langkah. Simpan nomor call center resmi di kontak agar lain kali kamu tidak perlu mencari nomor dari SMS.",
+      "refDex": "Bank & OTP",
+      "goto": 8
     }
   ],
   "endings": {

@@ -81,6 +81,14 @@
           "do": "Minta kontrak lengkap dan verifikasi perusahaan sebelum membayar apa pun."
         },
         {
+          "flagId": "kl-izin",
+          "x": 44,
+          "y": 50,
+          "title": "Tidak ada nomor izin atau alamat kantor",
+          "why": "Agen penempatan resmi mencantumkan nama badan usaha, alamat, dan nomor izin P3MI. Surat ini hanya memuat nama perusahaan dan nomor surat yang tidak bisa diverifikasi.",
+          "do": "Cari nama perusahaan dan izinnya di kanal resmi sebelum membalas."
+        },
+        {
           "flagId": "kl-gaji",
           "x": 42,
           "y": 24,
@@ -152,9 +160,9 @@
       "prompt": "Agen menunggu bukti transfer. Apa yang kamu lakukan?",
       "critical": true,
       "options": [
-        { "id": "bayar", "label": "Transfer biaya visa supaya tidak kehilangan slot", "goto": 6 },
-        { "id": "cek", "label": "Minta kontrak lengkap & nomor izin penempatan", "goto": 8 },
-        { "id": "lapor", "label": "Tolak, blokir, dan laporkan tawaran ini", "hint": "Jalur paling aman", "goto": 9 }
+        { "id": "bayar", "label": "Transfer biaya visa supaya tidak kehilangan slot", "goto": 10 },
+        { "id": "cek", "label": "Minta kontrak lengkap & nomor izin penempatan", "goto": 12 },
+        { "id": "lapor", "label": "Tolak, blokir, dan laporkan tawaran ini", "hint": "Jalur paling aman", "goto": 13 }
       ]
     },
     {
@@ -190,6 +198,78 @@
       "endingId": "aman",
       "title": "Kamu menolak dan melapor",
       "text": "Kamu memblokir nomor itu, menyimpan bukti chat, dan melaporkannya. Tawaran kerja yang meminta biaya di muka tidak layak dipercaya, sekalipun suratnya terlihat resmi. Kamu menyelamatkan Rp 4.500.000 dan data paspormu."
+    },
+    {
+      "type": "chat",
+      "app": "chatriang",
+      "header": { "title": "ChatRiang", "sub": "+62 813-2211-8899" },
+      "from": "them",
+      "sender": "Rekrutmen Global",
+      "time": "09.34",
+      "text": "Rekening perusahaan sedang maintenance, jadi transfer ke rekening a.n. Siti Rahma dulu ya. Nanti kami buat kuitansi resmi. Jangan tanya ke kantor pusat, mereka tidak tahu proses agen.",
+      "auto": false,
+      "goto": 11
+    },
+    {
+      "type": "flag-tap",
+      "app": "chatriang",
+      "header": { "title": "ChatRiang", "sub": "+62 813-2211-8899" },
+      "hint": "Ada alasan baru untuk tetap membayar. Periksa sebelum transfer.",
+      "blocks": [
+        { "text": "Rekrutmen Global · 09.34", "head": true },
+        { "text": "Rekening perusahaan sedang maintenance, transfer ke rekening a.n. Siti Rahma dulu." },
+        { "text": "Nanti kami buat kuitansi resmi. Jangan tanya ke kantor pusat, mereka tidak tahu proses agen." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "kl-jangan-konfirmasi",
+          "x": 58,
+          "y": 76,
+          "title": "“Jangan tanya ke kantor pusat”",
+          "why": "Permintaan tidak mengonfirmasi ke perusahaan adalah isolasi. Institusi sah tidak melarang calon pekerja memverifikasi tawaran.",
+          "do": "Justru hubungi perusahaan langsung lewat kanal resmi."
+        },
+        {
+          "flagId": "kl-maintenance",
+          "x": 54,
+          "y": 46,
+          "title": "Alasan “rekening perusahaan maintenance”",
+          "why": "Perusahaan tidak memindahkan pembayaran resmi ke rekening pribadi hanya karena sistem sedang maintenance. Alasan ini dibuat agar transfer tetap jalan.",
+          "do": "Tolak transfer ke rekening pribadi, apa pun alasannya."
+        },
+        {
+          "flagId": "kl-kuitansi",
+          "x": 56,
+          "y": 64,
+          "title": "Kuitansi resmi “nanti”",
+          "why": "Bukti pembayaran harus ada sebelum uang berpindah, bukan dijanjikan setelahnya. Kuitansi menyusul tidak melindungi uangmu.",
+          "do": "Minta kontrak dan kuitansi resmi lebih dulu; jangan transfer."
+        },
+        {
+          "flagId": "kl-nominal-sama",
+          "x": 36,
+          "y": 28,
+          "title": "Nominal sesuai surat",
+          "decoy": true,
+          "why": "Nominal yang konsisten dengan surat membuat permintaan terlihat rapi. Penipu memang menyiapkan dokumen agar angkanya cocok.",
+          "do": "Periksa tujuan dan izinnya, bukan kecocokan nominal."
+        }
+      ],
+      "goto": 6
+    },
+    {
+      "type": "lesson",
+      "title": "Verifikasi agen sebelum membayar",
+      "body": "Cek nama perusahaan dan izin P3MI di kanal resmi Kemnaker. Hubungi perusahaan di nomor yang kamu cari sendiri, bukan nomor dari chat. Minta kontrak kerja yang memuat posisi, gaji, jam kerja, dan siapa yang menanggung visa. Biaya rekrutmen tidak boleh dibebankan ke pekerja.",
+      "refDex": "Penipuan Kerja",
+      "goto": 8
+    },
+    {
+      "type": "lesson",
+      "title": "Lapor, bukan hanya memblokir",
+      "body": "Simpan surat, chat, nomor rekening, dan bukti transfer sebelum memblokir. Laporkan ke Kemnaker, BP2MI, bank penerima, dan platform chat. Kalau sudah mentransfer, segera hubungi bank untuk meminta pembekuan rekening tujuan dan buat laporan polisi.",
+      "refDex": "Penipuan Kerja",
+      "goto": 9
     }
   ],
   "endings": {

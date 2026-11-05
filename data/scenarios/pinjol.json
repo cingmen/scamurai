@@ -119,10 +119,10 @@
       "prompt": "Dana belum cair. Total tagihan Rp 4.650.000 dari pinjaman Rp 3.000.000. Apa keputusanmu?",
       "critical": true,
       "options": [
-        { "id": "batalkan", "label": "Batalkan sebelum dana cair & cabut izin", "hint": "Masih bisa mundur", "goto": 9 },
+        { "id": "batalkan", "label": "Batalkan sebelum dana cair & cabut izin", "hint": "Masih bisa mundur", "goto": 11 },
         { "id": "lunas", "label": "Terima, lalu bayar penuh tepat waktu", "goto": 8 },
-        { "id": "nanti", "label": "Terima dan bayar nanti", "goto": 5 },
-        { "id": "ojk", "label": "Tutup aplikasi, cari pinjol berizin OJK", "hint": "Jalur paling aman", "goto": 10 }
+        { "id": "nanti", "label": "Terima dan bayar nanti", "goto": 13 },
+        { "id": "ojk", "label": "Tutup aplikasi, cari pinjol berizin OJK", "hint": "Jalur paling aman", "goto": 12 }
       ]
     },
     {
@@ -184,6 +184,82 @@
       "endingId": "ojk",
       "title": "Kamu memilih jalur berizin",
       "text": "Kamu menutup CairDuit dan mengecek daftar pinjol berizin di OJK. Alternatif yang legal memiliki biaya lebih jelas dan tidak meminta akses kontak. Prosesnya lebih lambat, tetapi tidak ada teror yang menunggu di belakang."
+    },
+    {
+      "type": "lesson",
+      "title": "Batalkan, lalu pastikan izinnya benar-benar dicabut",
+      "body": "Membatalkan pengajuan belum cukup. Buka pengaturan ponsel, cabut izin kontak, galeri, lokasi, dan SMS untuk aplikasi itu, lalu hapus aplikasinya. Minta bukti pembatalan tertulis dan cek bahwa tidak ada data yang sudah terunggah. Jika terlanjur ada transfer, blokir rekening tujuan dan lapor ke bank.",
+      "refDex": "Pinjol Ilegal",
+      "goto": 9
+    },
+    {
+      "type": "lesson",
+      "title": "Cek izin OJK sebelum menekan setuju",
+      "body": "Buka daftar penyelenggara pinjaman berizin di OJK atau hubungi 157. Cocokkan nama badan usaha, bukan nama aplikasi. Baca total pengembalian, biaya admin, denda, dan izin yang diminta. Pinjol legal tidak meminta akses kontak atau galeri.",
+      "refDex": "Pinjol Ilegal",
+      "goto": 10
+    },
+    {
+      "type": "sms",
+      "app": "sms",
+      "header": { "title": "Pesan", "sub": "SMS masuk" },
+      "messages": [
+        {
+          "sender": "CairDuit",
+          "time": "09.12",
+          "danger": true,
+          "text": "Jatuh tempo hari ini. Bayar Rp 4.720.000 ke 5510-9988-2211 a.n. Rudi Hartono. Kalau tidak, foto dan seluruh kontakmu kami sebar. Kami tahu kamu kerja di mana."
+        }
+      ],
+      "goto": 14,
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "app": "sms",
+      "header": { "title": "Pesan", "sub": "Penagihan" },
+      "hint": "Periksa pesan penagihan ini. Ketuk hal yang membuatnya berbahaya.",
+      "blocks": [
+        { "text": "CairDuit · 09.12", "head": true },
+        { "text": "Bayar Rp 4.720.000 ke 5510-9988-2211 a.n. Rudi Hartono." },
+        { "text": "Kalau tidak, foto dan seluruh kontakmu kami sebar. Kami tahu kamu kerja di mana." }
+      ],
+      "hotspots": [
+        {
+          "flagId": "pj-ancaman",
+          "x": 62,
+          "y": 70,
+          "title": "Ancaman menyebar foto dan kontak",
+          "why": "Penagih legal menagih lewat prosedur, bukan mengancam menyebar foto pribadi. Ancaman seperti ini justru bukti tambahan untuk dilaporkan.",
+          "do": "Simpan pesan, blokir nomor, dan laporkan ke OJK serta polisi."
+        },
+        {
+          "flagId": "pj-rekening-pribadi",
+          "x": 52,
+          "y": 46,
+          "title": "Transfer ke rekening pribadi",
+          "why": "Pembayaran pinjaman resmi masuk ke rekening badan usaha, bukan rekening pribadi penagih. Ini juga membuat uang sulit dilacak.",
+          "do": "Jangan transfer. Minta nomor kontrak dan rekening resmi perusahaan."
+        },
+        {
+          "flagId": "pj-tahu-kantor",
+          "x": 56,
+          "y": 84,
+          "title": "Mengaku tahu tempat kerja",
+          "why": "Data lokasi dan kontak dipakai untuk membuatmu takut. Aplikasi ilegal mengumpulkannya lewat izin berlebihan.",
+          "do": "Jangan menuruti ancaman; laporkan bersama bukti izin aplikasinya."
+        },
+        {
+          "flagId": "pj-denda",
+          "x": 38,
+          "y": 24,
+          "title": "Nominal denda disebut rinci",
+          "decoy": true,
+          "why": "Nominal yang terlihat rinci tidak membuat penagihan itu sah. Yang menentukan adalah kontrak, izin, dan cara penagihannya.",
+          "do": "Fokus pada ancaman dan tujuan transfernya."
+        }
+      ],
+      "goto": 5
     }
   ],
   "endings": {

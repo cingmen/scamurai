@@ -67,8 +67,7 @@ function checkDebrief(file, debrief) {
 }
 
 function checkSim(file, scenario, steps) {
-  if (steps.length < 10) fail(file, `langkah terlalu sedikit (${steps.length}), minimal 10`);
-  else if (steps.length < 14) warn(file, `langkah ${steps.length}; target roadmap 14+`);
+  if (steps.length < 14) fail(file, `langkah terlalu sedikit (${steps.length}), minimal 14`);
 
   steps.forEach((step, index) => {
     checks += 1;
