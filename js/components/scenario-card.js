@@ -28,6 +28,7 @@ export function scenarioCard(meta, progress = null) {
         src: meta.cover,
         alt: `Ilustrasi skenario ${meta.title}`,
         loading: 'lazy',
+        decoding: 'async',
         width: '480',
         height: '270',
       }),
@@ -49,7 +50,7 @@ export function scenarioCard(meta, progress = null) {
 export function minigameCard(meta) {
   return h('a', { class: 'c-card-scn', href: '#/grup' },
     h('div', { class: 'c-card-scn__cover' },
-      h('img', { src: meta.cover, alt: `Ilustrasi ${meta.title}`, loading: 'lazy', width: '480', height: '270' }),
+      h('img', { src: meta.cover, alt: `Ilustrasi ${meta.title}`, loading: 'lazy', decoding: 'async', width: '480', height: '270' }),
     ),
     h('div', { class: 'c-card-scn__body' },
       h('div', { class: 'c-card-scn__meta' },

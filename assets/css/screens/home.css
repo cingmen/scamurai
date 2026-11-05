@@ -126,7 +126,14 @@
   transition: transform var(--s-dur-fast) var(--s-ease), border-color var(--s-dur-fast) var(--s-ease);
 }
 .c-card-scn:hover { transform: translateY(-2px); border-color: var(--s-gold); }
-.c-card-scn__cover { aspect-ratio: 16 / 9; background: var(--s-bg-inset); position: relative; overflow: hidden; }
+.c-card-scn__cover {
+  aspect-ratio: 16 / 9;
+  background: var(--s-bg-inset);
+  position: relative;
+  overflow: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 213px;
+}
 .c-card-scn__cover img { width: 100%; height: 100%; object-fit: cover; }
 .c-card-scn__body { padding: var(--s-sp-3) var(--s-sp-4) var(--s-sp-4); display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto; }
 .c-card-scn__title { font-weight: 700; font-size: var(--s-fs-600); line-height: 1.25; }

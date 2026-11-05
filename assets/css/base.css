@@ -83,8 +83,7 @@ code, kbd { font-family: var(--s-font-mono); }
   position: sticky;
   top: 0;
   z-index: 40;
-  background: color-mix(in srgb, var(--s-bg) 92%, transparent);
-  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--s-bg) 96%, transparent);
   border-bottom: var(--s-border-w) solid var(--s-line);
 }
 .c-dojo-header__inner {
