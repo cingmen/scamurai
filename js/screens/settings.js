@@ -100,7 +100,10 @@ export async function render(root) {
           confirmLabel: 'Aktifkan',
           cancelLabel: 'Batal',
         });
-        if (!ok) return;
+        if (!ok) {
+          render(root);
+          return;
+        }
         set('settings.mode', 'lansia');
         set('settings.theme', 'washi');
         set('settings.fontScale', 'elder');

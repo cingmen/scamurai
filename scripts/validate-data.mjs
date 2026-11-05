@@ -116,9 +116,47 @@ function checkSim(file, scenario, steps) {
     if (typeof ending.saldoDelta !== 'number') warn(file, `ending "${id}" tanpa saldoDelta`);
   });
   const reached = new Set(steps.filter((step) => step.type === 'consequence').map((step) => step.endingId));
+  const reachable = reachableEndings(steps);
   endings.forEach((id) => {
-    if (!reached.has(id)) warn(file, `ending "${id}" tidak punya langkah consequence`);
+    if (!reached.has(id)) fail(file, `ending "${id}" tidak punya langkah consequence`);
+    else if (!reachable.has(id)) fail(file, `ending "${id}" tidak dapat dicapai dari langkah pertama`);
   });
+}
+
+/** Telusuri graf langkah dari indeks 0; kumpulkan ending yang bisa dicapai. */
+function reachableEndings(steps) {
+  const seen = new Set();
+  const endings = new Set();
+  const queue = [0];
+  while (queue.length) {
+    const index = queue.shift();
+    if (seen.has(index) || index < 0 || index >= steps.length) continue;
+    seen.add(index);
+    const step = steps[index];
+    if (step.type === 'consequence' && step.endingId) endings.add(step.endingId);
+
+    const targets = [];
+    if (Number.isInteger(step.goto)) targets.push(step.goto);
+    if (Number.isInteger(step.button?.goto)) targets.push(step.button.goto);
+    if (Number.isInteger(step.submitGoto)) targets.push(step.submitGoto);
+    if (Number.isInteger(step.rejectGoto)) targets.push(step.rejectGoto);
+    (step.options || []).forEach((option) => { if (Number.isInteger(option.goto)) targets.push(option.goto); });
+    (step.choices || []).forEach((choice) => { if (Number.isInteger(choice.goto)) targets.push(choice.goto); });
+    // Langkah yang punya tombol “tutup/lewati” tetap bisa maju tanpa goto.
+    if (step.type === 'browser' || step.type === 'flag-tap' || step.type === 'permission') {
+      targets.push(index + 1);
+    }
+    if (step.type === 'call' && !step.choices?.length) targets.push(index + 1);
+    if (step.type === 'input-otp') {
+      if (!Number.isInteger(step.submitGoto)) targets.push(index + 1);
+      if (!Number.isInteger(step.rejectGoto)) targets.push(index + 1);
+    }
+    if (!targets.length) targets.push(index + 1);
+    targets.forEach((target) => {
+      if (Number.isInteger(target) && target >= 0 && target < steps.length) queue.push(target);
+    });
+  }
+  return endings;
 }
 
 function checkVN(file, scenario) {
