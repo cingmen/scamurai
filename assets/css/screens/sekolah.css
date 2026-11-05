@@ -1,0 +1,54 @@
+/* Mode sekolah & cetak lembar guru */
+.scr-sekolah .c-progress-card-preview { margin-top: var(--s-sp-4); }
+
+@media print {
+  @page { margin: 16mm; }
+
+  html, body {
+    background: #fff !important;
+    color: #201C26 !important;
+  }
+
+  .c-dojo-header,
+  .c-dojo-footer,
+  #toast-region,
+  #modal-root,
+  .no-print,
+  .u-skip {
+    display: none !important;
+  }
+
+  .c-dojo-stage {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  #app { max-width: none !important; }
+
+  .scr-sekolah {
+    max-width: none !important;
+    gap: 0 !important;
+    margin: 0 !important;
+  }
+
+  .c-teacher-sheet {
+    box-shadow: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    color: #201C26 !important;
+  }
+
+  .c-teacher-sheet h1 { font-size: 1.5rem !important; }
+  .c-teacher-sheet h2 { page-break-after: avoid; }
+  .c-teacher-sheet table { width: 100%; border-collapse: collapse; }
+  .c-teacher-sheet th,
+  .c-teacher-sheet td {
+    border: 1px solid #C9C2B4;
+    padding: 6px 8px;
+    vertical-align: top;
+    font-size: .78rem;
+  }
+  .c-teacher-sheet th { background: #F2EEE7; text-align: left; }
+  .c-teacher-sheet li { break-inside: avoid; }
+}

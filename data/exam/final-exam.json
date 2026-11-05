@@ -1,0 +1,650 @@
+{
+  "id": "final-exam",
+  "version": "1.0.0",
+  "passScore": 80,
+  "poolSize": 20,
+  "minutes": 20,
+  "questions": [
+    {
+      "id": "q-01",
+      "type": "pilihan",
+      "tag": "Bank & OTP",
+      "scenario": "bank-otp",
+      "prompt": "Seorang penelepon mengaku petugas fraud bank dan meminta kode OTP untuk membatalkan transaksi. Apa tindakan yang benar?",
+      "options": [
+        "Membacakan OTP agar transaksi segera dibatalkan",
+        "Menutup telepon, lalu menghubungi call center dari aplikasi bank",
+        "Mengirim OTP lewat SMS agar ada bukti tertulis",
+        "Meminta petugas menunggu sambil mencari OTP di email"
+      ],
+      "answer": 1,
+      "explain": "OTP adalah kunci transaksi. Bank tidak pernah memintanya lewat telepon. Tutup telepon dan hubungi kanal resmi yang kamu buka sendiri."
+    },
+    {
+      "id": "q-02",
+      "type": "pilihan",
+      "tag": "Bank & OTP",
+      "scenario": "bank-otp",
+      "prompt": "SMS mengabarkan transaksi besar dan meminta kamu menelepon nomor ponsel 0812-…. Apa langkah pertama?",
+      "options": [
+        "Menelepon nomor itu sebelum rekening dibekukan",
+        "Membalas SMS untuk menanyakan detail transaksi",
+        "Membuka aplikasi bank resmi dan memeriksa mutasi",
+        "Mengirim nomor rekening agar petugas bisa mengecek"
+      ],
+      "answer": 2,
+      "explain": "Nomor ponsel bukan kanal resmi bank. Periksa mutasi di aplikasi yang kamu buka sendiri, bukan dari tautan atau nomor di pesan."
+    },
+    {
+      "id": "q-03",
+      "type": "pilihan",
+      "tag": "Bank & OTP",
+      "scenario": "bank-otp",
+      "prompt": "Penelepon berkata, “Jangan tutup telepon, ini rahasia bank.” Kalimat itu sebaiknya dibaca sebagai…",
+      "options": [
+        "Bukti bahwa penelepon memang petugas internal",
+        "Prosedur standar keamanan perbankan",
+        "Upaya mengisolasi korban agar tidak memverifikasi",
+        "Permintaan wajar agar transaksi tidak gagal"
+      ],
+      "answer": 2,
+      "explain": "Permintaan merahasiakan panggilan mencegah korban bertanya ke bank atau keluarga. Institusi sah tidak meminta kerahasiaan seperti itu."
+    },
+    {
+      "id": "q-04",
+      "type": "pilihan",
+      "tag": "Phishing",
+      "scenario": "bank-otp",
+      "prompt": "Halaman verifikasi memakai alamat bank-jayakarta-verifikasi.xyz dan menampilkan ikon gembok. Apa arti gembok tersebut?",
+      "options": [
+        "Situs sudah diverifikasi sebagai milik bank",
+        "Koneksi terenkripsi, tetapi pemilik situs belum tentu sah",
+        "Data kartu otomatis aman dari pencurian",
+        "Situs terdaftar di OJK"
+      ],
+      "answer": 1,
+      "explain": "HTTPS hanya mengenkripsi koneksi. Situs penipu juga bisa memilikinya. Yang menentukan adalah nama domain dan isi permintaannya."
+    },
+    {
+      "id": "q-05",
+      "type": "pilihan",
+      "tag": "Phishing",
+      "scenario": "phishing",
+      "prompt": "SMS menyebut paket tertahan dan meminta biaya kirim Rp 12.500 lewat tautan. Tindakan paling aman adalah…",
+      "options": [
+        "Membuka tautan karena nominalnya kecil",
+        "Membayar lewat tautan agar paket segera dikirim",
+        "Mengecek nomor resi di aplikasi kurir resmi",
+        "Mengirim nomor kartu untuk verifikasi"
+      ],
+      "answer": 2,
+      "explain": "Tautan dari SMS tidak perlu dibuka. Lacak resi lewat aplikasi kurir resmi yang kamu buka sendiri."
+    },
+    {
+      "id": "q-06",
+      "type": "pilihan",
+      "tag": "Phishing",
+      "scenario": "phishing",
+      "prompt": "Halaman pembayaran biaya kirim meminta nomor kartu, masa berlaku, dan CVV. Apa yang harus kamu lakukan?",
+      "options": [
+        "Mengisi karena biayanya hanya Rp 12.500",
+        "Mengisi hanya nomor kartu, CVV dikosongkan",
+        "Menutup halaman karena kurir tidak meminta data kartu",
+        "Mengirim data lewat chat agar lebih aman"
+      ],
+      "answer": 2,
+      "explain": "CVV adalah kunci transaksi kartu. Tidak ada biaya kirim yang membutuhkannya. Tutup halaman dan hubungi bank bila data sudah terlanjur diisi."
+    },
+    {
+      "id": "q-07",
+      "type": "pilihan",
+      "tag": "Phishing",
+      "scenario": "phishing",
+      "prompt": "Halaman palsu meminta OTP “untuk memastikan kartu ini milikmu”. Apa fungsi OTP sebenarnya?",
+      "options": [
+        "Bukti bahwa kamu pemilik kartu, aman dibagikan",
+        "Kunci untuk menyelesaikan transaksi, tidak boleh dibagikan",
+        "Kode promosi yang bisa diberikan ke siapa saja",
+        "Kata sandi sementara untuk masuk aplikasi"
+      ],
+      "answer": 1,
+      "explain": "OTP menyelesaikan transaksi. Membagikannya berarti menyerahkan kendali transaksi kepada orang lain."
+    },
+    {
+      "id": "q-08",
+      "type": "pilihan",
+      "tag": "Phishing",
+      "scenario": "phishing",
+      "prompt": "Setelah mengisi data kartu di halaman palsu, apa langkah pemulihan yang paling mendesak?",
+      "options": [
+        "Menunggu tagihan berikutnya sebelum bertindak",
+        "Menghapus riwayat browser saja",
+        "Memblokir kartu dan menghubungi bank lewat kanal resmi",
+        "Mengirim email ke pemilik situs meminta data dihapus"
+      ],
+      "answer": 2,
+      "explain": "Blokir kartu mencegah transaksi berikutnya. Setelah itu ganti kata sandi, aktifkan 2FA, dan periksa mutasi."
+    },
+    {
+      "id": "q-09",
+      "type": "pilihan",
+      "tag": "Marketplace",
+      "scenario": "marketplace",
+      "prompt": "Penjual mendesak pindah ke WhatsApp dan mengirim tautan checkout. Mengapa ini berbahaya?",
+      "options": [
+        "WhatsApp tidak bisa dipakai untuk jual beli",
+        "Transaksi di luar platform kehilangan escrow dan perlindungan pembeli",
+        "Tautan WhatsApp selalu mengandung virus",
+        "Penjual tidak bisa mengirim barang lewat kurir"
+      ],
+      "answer": 1,
+      "explain": "Pindah platform memindahkan transaksi keluar dari escrow dan riwayat resmi. Tautan checkout di luar aplikasi tidak dilindungi."
+    },
+    {
+      "id": "q-10",
+      "type": "pilihan",
+      "tag": "Marketplace",
+      "scenario": "marketplace",
+      "prompt": "Kamera dijual 40% di bawah harga pasar oleh akun baru tanpa ulasan. Bagaimana membacanya?",
+      "options": [
+        "Peluang bagus yang harus segera diambil",
+        "Umpan yang justru menuntut pemeriksaan lebih teliti",
+        "Bukti penjual sedang butuh uang",
+        "Alasan untuk transfer lebih cepat agar tidak didahului"
+      ],
+      "answer": 1,
+      "explain": "Harga jauh di bawah pasar pada barang laris adalah umpan. Penjual asli tidak perlu menjual rugi untuk barang yang mudah terjual."
+    },
+    {
+      "id": "q-11",
+      "type": "pilihan",
+      "tag": "Marketplace",
+      "scenario": "marketplace",
+      "prompt": "Penjual menolak escrow dan meminta transfer ke rekening pribadi atas nama orang lain. Apa risikonya?",
+      "options": [
+        "Tidak ada, asalkan penjual mengirim bukti resi",
+        "Biaya admin lebih murah sehingga lebih menguntungkan",
+        "Uang tidak bisa ditarik kembali bila barang tidak dikirim",
+        "Barang otomatis diasuransikan oleh marketplace"
+      ],
+      "answer": 2,
+      "explain": "Transfer ke rekening pribadi di luar escrow membuat uang langsung menjadi milik penjual. Bukti resi mudah dipalsukan."
+    },
+    {
+      "id": "q-12",
+      "type": "pilihan",
+      "tag": "Marketplace",
+      "scenario": "marketplace",
+      "prompt": "Apa fungsi escrow dalam transaksi marketplace?",
+      "options": [
+        "Menahan dana sampai barang diterima atau masalah diselesaikan",
+        "Menghapus biaya pengiriman",
+        "Menjamin barang selalu baru dan bergaransi",
+        "Menggantikan kebutuhan untuk membaca ulasan penjual"
+      ],
+      "answer": 0,
+      "explain": "Escrow menahan dana di platform. Pembeli tidak menanggung risiko kehilangan uang bila barang tidak dikirim."
+    },
+    {
+      "id": "q-13",
+      "type": "pilihan",
+      "tag": "Pinjol Ilegal",
+      "scenario": "pinjol",
+      "prompt": "Aplikasi menawarkan pinjaman “bunga 0%” tanpa jaminan. Apa yang perlu diperiksa sebelum setuju?",
+      "options": [
+        "Jumlah unduhan aplikasi di toko aplikasi",
+        "Total biaya admin, layanan, denda, dan izin OJK",
+        "Warna dan tampilan aplikasi",
+        "Jumlah iklan yang muncul di media sosial"
+      ],
+      "answer": 1,
+      "explain": "Bunga 0% bisa disertai biaya admin dan denda yang jauh lebih besar. Periksa total pengembalian dan legalitas di OJK."
+    },
+    {
+      "id": "q-14",
+      "type": "pilihan",
+      "tag": "Pinjol Ilegal",
+      "scenario": "pinjol",
+      "prompt": "Mengapa aplikasi pinjol meminta izin kontak, galeri, dan lokasi?",
+      "options": [
+        "Untuk mempercepat pencairan dana",
+        "Untuk memverifikasi penghasilan peminjam",
+        "Untuk alat menekan dan meneror saat penagihan",
+        "Untuk mencadangkan data agar tidak hilang"
+      ],
+      "answer": 2,
+      "explain": "Izin berlebihan memberi penagih alat tekanan: menghubungi kontak, menyebar foto, dan mendatangi lokasi. Pinjaman tidak membutuhkannya."
+    },
+    {
+      "id": "q-15",
+      "type": "pilihan",
+      "tag": "Pinjol Ilegal",
+      "scenario": "pinjol",
+      "prompt": "Bagaimana cara memastikan sebuah pinjol legal?",
+      "options": [
+        "Melihat jumlah ulasan bintang lima di toko aplikasi",
+        "Mengecek daftar berizin di OJK atau menghubungi 157",
+        "Mempercayai sertifikat yang dikirim aplikasi",
+        "Membaca testimoni di grup media sosial"
+      ],
+      "answer": 1,
+      "explain": "Legalitas hanya bisa dipastikan lewat daftar resmi OJK. Ulasan dan testimoni mudah dipalsukan."
+    },
+    {
+      "id": "q-16",
+      "type": "pilihan",
+      "tag": "Pinjol Ilegal",
+      "scenario": "pinjol",
+      "prompt": "Kamu sudah terlanjur meminjam di pinjol ilegal dan mulai diteror. Apa langkah yang tepat?",
+      "options": [
+        "Membayar ke rekening pribadi penagih agar berhenti",
+        "Mengabaikan semuanya dan berharap utang hilang",
+        "Menyebar data penagih lebih dulu di media sosial",
+        "Mencabut izin aplikasi, menyimpan bukti, dan melapor ke OJK/Satgas"
+      ],
+      "answer": 3,
+      "explain": "Cabut akses aplikasi, simpan bukti teror, dan laporkan. Membayar ke rekening pribadi tidak menghentikan utang dan bisa mengulang pemerasan."
+    },
+    {
+      "id": "q-17",
+      "type": "pilihan",
+      "tag": "Kerja Luar Negeri",
+      "scenario": "kerja-luar-negeri",
+      "prompt": "Agen menawarkan kerja di luar negeri dan meminta Rp 4.500.000 untuk visa sebelum berangkat. Apa yang seharusnya kamu pikirkan?",
+      "options": [
+        "Biaya visa wajar ditanggung pelamar",
+        "Perusahaan dan agen resmi tidak memungut biaya rekrutmen dari pekerja",
+        "Transfer ke rekening pribadi lebih cepat diproses",
+        "Surat penawaran sudah cukup sebagai jaminan"
+      ],
+      "answer": 1,
+      "explain": "Biaya rekrutmen, visa, dan tiket yang dibebankan ke pekerja adalah ciri penipuan penempatan. Agen resmi dibayar oleh perusahaan."
+    },
+    {
+      "id": "q-18",
+      "type": "pilihan",
+      "tag": "Kerja Luar Negeri",
+      "scenario": "kerja-luar-negeri",
+      "prompt": "Di mana kamu bisa memeriksa izin perusahaan penempatan kerja?",
+      "options": [
+        "Di grup WhatsApp para pencari kerja",
+        "Di lampiran surat yang dikirim agen",
+        "Di instansi resmi ketenagakerjaan atau daftar izin penempatan",
+        "Di kolom komentar akun agen"
+      ],
+      "answer": 2,
+      "explain": "Izin penempatan harus dicek di sumber resmi, bukan dokumen yang diberikan agen. Lampiran mudah dipalsukan."
+    },
+    {
+      "id": "q-19",
+      "type": "pilihan",
+      "tag": "Kerja Luar Negeri",
+      "scenario": "kerja-luar-negeri",
+      "prompt": "Surat penawaran kerja tidak mencantumkan alamat perusahaan, penanggung jawab, atau tanda tangan. Bagaimana menilainya?",
+      "options": [
+        "Tetap sah karena ada nomor surat",
+        "Sah bila dikirim lewat email perusahaan",
+        "Tidak bisa diverifikasi dan tidak layak dipercaya",
+        "Sah selama gaji disebutkan dengan jelas"
+      ],
+      "answer": 2,
+      "explain": "Dokumen kerja yang sah memuat identitas perusahaan dan penanggung jawab yang bisa diverifikasi. Nomor surat saja mudah dibuat."
+    },
+    {
+      "id": "q-20",
+      "type": "pilihan",
+      "tag": "Money Mule",
+      "scenario": "money-mule",
+      "prompt": "Seorang kenalan meminta meminjam rekeningmu untuk menerima dan meneruskan transfer, dengan komisi 5%. Apa status hukumnya?",
+      "options": [
+        "Boleh, selama kamu tidak mengambil uangnya",
+        "Boleh, karena rekening tetap atas namamu",
+        "Berisiko menjadi bagian pencucian uang dan tindak pidana",
+        "Hanya pelanggaran ringan tanpa konsekuensi"
+      ],
+      "answer": 2,
+      "explain": "Rekening yang dipakai menampung dan memindahkan uang kejahatan menjadikan pemiliknya money mule. Ini tindak pidana, bukan sekadar pelanggaran."
+    },
+    {
+      "id": "q-21",
+      "type": "pilihan",
+      "tag": "Money Mule",
+      "scenario": "money-mule",
+      "prompt": "Dana Rp 12.000.000 masuk dari perusahaan yang tidak kamu kenal, lalu kamu diminta memecahnya ke tiga rekening. Pola ini disebut…",
+      "options": [
+        "Investasi bodong",
+        "Pencucian uang melalui money mule",
+        "Phishing",
+        "Pinjaman online ilegal"
+      ],
+      "answer": 1,
+      "explain": "Menerima lalu memecah dana ke beberapa rekening adalah lapisan pencucian uang untuk menyulitkan pelacakan."
+    },
+    {
+      "id": "q-22",
+      "type": "pilihan",
+      "tag": "Money Mule",
+      "scenario": "money-mule",
+      "prompt": "Ada transfer asing tidak dikenal masuk ke rekeningmu. Apa yang sebaiknya dilakukan?",
+      "options": [
+        "Meneruskannya ke rekening yang diminta pengirim",
+        "Mengambil komisi lalu mentransfer sisanya",
+        "Menghubungi bank, tidak meneruskan dana, dan menyimpan bukti",
+        "Menghapus riwayat chat agar tidak terlibat"
+      ],
+      "answer": 2,
+      "explain": "Jangan meneruskan dana yang bukan hakmu. Hubungi bank, simpan bukti, dan laporkan agar kamu tidak dianggap pelaku."
+    },
+    {
+      "id": "q-23",
+      "type": "pilihan",
+      "tag": "Task Scam",
+      "scenario": "task-scam",
+      "prompt": "Pekerjaan like dan komentar membayar komisi kecil di awal, lalu meminta deposit untuk “paket tugas lebih besar”. Ini pola…",
+      "options": [
+        "Task scam",
+        "Marketplace palsu",
+        "Love scam",
+        "Phishing kartu kredit"
+      ],
+      "answer": 0,
+      "explain": "Komisi kecil dibayar untuk membangun kepercayaan, lalu deposit diminta dan tidak pernah kembali. Itu task scam."
+    },
+    {
+      "id": "q-24",
+      "type": "pilihan",
+      "tag": "Task Scam",
+      "scenario": "task-scam",
+      "prompt": "Setelah deposit, muncul “error sistem” yang mengharuskan deposit tambahan. Apa yang harus dilakukan?",
+      "options": [
+        "Menambah deposit agar dana sebelumnya bisa dicairkan",
+        "Meminjam uang untuk menutup kekurangan",
+        "Menghentikan semua pembayaran dan melapor",
+        "Mengikuti instruksi admin karena sudah dekat pencairan"
+      ],
+      "answer": 2,
+      "explain": "Error yang terus berulang adalah bagian dari penipuan. Deposit tambahan hanya menambah kerugian."
+    },
+    {
+      "id": "q-25",
+      "type": "pilihan",
+      "tag": "Love Scam",
+      "scenario": "love-scam",
+      "prompt": "Seseorang yang baru dikenal mengirim video call singkat dengan gambar buram, lalu menghindari panggilan berikutnya. Apa artinya?",
+      "options": [
+        "Jaringan internetnya memang buruk",
+        "Video singkat bukan bukti identitas dan perlu diverifikasi",
+        "Dia pasti orang asli karena mau video call",
+        "Kamu harus segera mengirim uang agar dia percaya"
+      ],
+      "answer": 1,
+      "explain": "Video call singkat dan buram bisa direkayasa. Identitas perlu diverifikasi lewat cara lain, bukan dengan mengirim uang."
+    },
+    {
+      "id": "q-26",
+      "type": "pilihan",
+      "tag": "Love Scam",
+      "scenario": "love-scam",
+      "prompt": "Pasangan online yang belum pernah bertemu meminta biaya pengobatan darurat. Paling tepat…",
+      "options": [
+        "Mengirim uang karena sayang",
+        "Mengirim sebagian dulu sebagai uji kepercayaan",
+        "Tidak mengirim uang dan meminta bukti yang bisa diverifikasi",
+        "Meminjamkan rekening agar dia bisa menerima donasi"
+      ],
+      "answer": 2,
+      "explain": "Permintaan uang dari orang yang belum terverifikasi adalah red flag utama love scam. Jangan kirim uang atau meminjamkan rekening."
+    },
+    {
+      "id": "q-27",
+      "type": "pilihan",
+      "tag": "Investasi Palsu",
+      "scenario": "wa-grup",
+      "prompt": "Di grup investasi, banyak akun memuji admin, slot selalu terbatas, dan satu anggota yang bertanya dikeluarkan. Kesimpulanmu?",
+      "options": [
+        "Grup itu komunitas trader yang solid",
+        "Pola khas grup investasi palsu dengan akun pemanas suasana",
+        "Anggota yang dikeluarkan memang perusak grup",
+        "Slot terbatas membuktikan profitnya nyata"
+      ],
+      "answer": 1,
+      "explain": "Pujian berulang dari akun-akun seragam, urgensi buatan, dan pembungkaman skeptis adalah pola grup investasi palsu."
+    },
+    {
+      "id": "q-28",
+      "type": "pilihan",
+      "tag": "Psikologi Penipuan",
+      "scenario": "umum",
+      "prompt": "Mengapa penipu sering menciptakan tenggat waktu yang sangat singkat?",
+      "options": [
+        "Agar korban tidak sempat memverifikasi dan berpikir tenang",
+        "Karena sistem mereka memang terbatas",
+        "Untuk mematuhi aturan perbankan",
+        "Agar transaksi lebih aman"
+      ],
+      "answer": 0,
+      "explain": "Tekanan waktu mematikan kemampuan memeriksa. Saat dipaksa cepat, berhenti justru tindakan paling aman."
+    },
+    {
+      "id": "q-29",
+      "type": "urutan",
+      "tag": "Bank & OTP",
+      "scenario": "bank-otp",
+      "prompt": "Susun langkah pemulihan setelah OTP terlanjur dibagikan kepada penipu.",
+      "items": [
+        "Hubungi bank dan minta blokir kartu serta pembekuan rekening",
+        "Ganti kata sandi aplikasi bank dan aktifkan verifikasi dua langkah",
+        "Simpan bukti: nomor penelepon, SMS, mutasi, dan waktu kejadian",
+        "Lapor ke 122 dan lapor.go.id dengan nomor penerima",
+        "Waspadai telepon “tim pemulihan dana” yang meminta biaya"
+      ],
+      "explain": "Blokir lebih dulu agar kerugian berhenti, lalu amankan akun, simpan bukti, dan laporkan. Penipuan kedua sering datang mengaku bisa mengembalikan dana."
+    },
+    {
+      "id": "q-30",
+      "type": "urutan",
+      "tag": "Phishing",
+      "scenario": "phishing",
+      "prompt": "Susun langkah yang benar setelah data kartu dan OTP sudah dikirim ke halaman palsu.",
+      "items": [
+        "Blokir kartu lewat aplikasi bank atau call center resmi",
+        "Ubah kata sandi akun penting dan aktifkan 2FA",
+        "Periksa mutasi beberapa minggu ke depan",
+        "Laporkan domain palsu ke penyedia dan aduankonten.id",
+        "Lapor ke 122 dengan bukti SMS dan tangkapan layar"
+      ],
+      "explain": "Hentikan akses kartu dulu, amankan akun, pantau transaksi susulan, lalu laporkan bukti."
+    },
+    {
+      "id": "q-31",
+      "type": "urutan",
+      "tag": "Pinjol Ilegal",
+      "scenario": "pinjol",
+      "prompt": "Susun langkah saat sudah terjerat pinjol ilegal dan diteror.",
+      "items": [
+        "Cabut semua izin aplikasi dan hapus aplikasinya",
+        "Simpan bukti pesan teror dan bukti transfer",
+        "Lapor ke OJK 157 dan Satgas PASTI",
+        "Beri tahu keluarga dan atasan agar tidak ikut tertipu",
+        "Laporkan teror ke polisi bila berlanjut"
+      ],
+      "explain": "Cabut akses agar data tidak terus diambil, simpan bukti, lalu laporkan ke kanal resmi. Teror adalah tindak pidana."
+    },
+    {
+      "id": "q-32",
+      "type": "urutan",
+      "tag": "Marketplace",
+      "scenario": "marketplace",
+      "prompt": "Susun langkah setelah transfer ke penjual palsu di marketplace.",
+      "items": [
+        "Laporkan penjual dan listing ke platform",
+        "Hubungi bank untuk meminta penahanan dana bila masih memungkinkan",
+        "Laporkan rekening penerima ke cekrekening.id",
+        "Simpan chat, tautan, dan bukti transfer",
+        "Lapor ke 122 dan lapor.go.id"
+      ],
+      "explain": "Mulai dari platform dan bank karena keduanya punya jalur cepat, lalu lengkapi laporan dengan bukti."
+    },
+    {
+      "id": "q-33",
+      "type": "urutan",
+      "tag": "Money Mule",
+      "scenario": "money-mule",
+      "prompt": "Susun langkah aman saat diminta meneruskan dana yang tidak dikenal.",
+      "items": [
+        "Jangan meneruskan dana apa pun",
+        "Hubungi bank dan jelaskan dana masuk yang tidak dikenal",
+        "Simpan percakapan dan instruksi transfer sebagai bukti",
+        "Lapor ke 122 dan lapor.go.id",
+        "Jangan menghapus chat atau mentransfer balik tanpa arahan bank"
+      ],
+      "explain": "Menghentikan aliran dana adalah prioritas. Bukti dan laporan melindungimu dari tuduhan sebagai pelaku."
+    },
+    {
+      "id": "q-34",
+      "type": "urutan",
+      "tag": "Love Scam",
+      "scenario": "love-scam",
+      "prompt": "Susun langkah saat menyadari hubungan online yang kamu jalani adalah love scam.",
+      "items": [
+        "Berhenti mengirim uang dan jangan menanggapi ancaman",
+        "Simpan seluruh percakapan, foto profil, nomor, dan bukti transfer",
+        "Blokir akun dan laporkan rekening penerima",
+        "Lapor ke 122 dan aduankonten.id",
+        "Cari dukungan orang terpercaya atau bantuan psikologis"
+      ],
+      "explain": "Hentikan aliran uang, amankan bukti, putus kontak, lalu laporkan. Dukungan emosional penting karena korban sering merasa malu."
+    },
+    {
+      "id": "q-35",
+      "type": "flag-gambar",
+      "tag": "Bank & OTP",
+      "scenario": "bank-otp",
+      "prompt": "Ketuk bagian SMS ini yang paling menunjukkan pesan itu bukan dari bank.",
+      "surface": {
+        "title": "Bank Jayakarta",
+        "lines": [
+          "Transaksi Rp 4.750.000 ke BUDI SANTOSO berhasil.",
+          "Bukan Anda? Hubungi 0812-3399-1122 sekarang.",
+          "Rekening dibekukan dalam 10 menit."
+        ]
+      },
+      "hotspots": [
+        { "x": 58, "y": 42, "label": "Nomor ponsel 0812-3399-1122", "correct": true },
+        { "x": 34, "y": 20, "label": "Nominal Rp 4.750.000", "correct": false },
+        { "x": 30, "y": 12, "label": "Nama Bank Jayakarta", "correct": false }
+      ],
+      "explain": "Bank memakai nomor resmi, bukan ponsel. Nominal dan nama bank bisa diketahui siapa saja."
+    },
+    {
+      "id": "q-36",
+      "type": "flag-gambar",
+      "tag": "Phishing",
+      "scenario": "phishing",
+      "prompt": "Ketuk bagian halaman ini yang membuktikan alamatnya bukan milik kurir resmi.",
+      "surface": {
+        "title": "NusantaraExpress · Lacak Paket",
+        "lines": [
+          "Paket NE-8842-1190 tertahan di gudang.",
+          "Lengkapi alamat dan bayar Rp 12.500.",
+          "nusantara-express-resi.xyz/ne8842"
+        ]
+      },
+      "hotspots": [
+        { "x": 50, "y": 82, "label": "Domain nusantara-express-resi.xyz", "correct": true },
+        { "x": 36, "y": 56, "label": "Biaya Rp 12.500", "correct": false },
+        { "x": 30, "y": 14, "label": "Logo NusantaraExpress", "correct": false }
+      ],
+      "explain": "Domain dengan tanda hubung dan akhiran .xyz bukan domain resmi. Logo dan nominal bisa ditiru."
+    },
+    {
+      "id": "q-37",
+      "type": "flag-gambar",
+      "tag": "Pinjol Ilegal",
+      "scenario": "pinjol",
+      "prompt": "Ketuk izin aplikasi yang paling berbahaya untuk pinjaman ini.",
+      "surface": {
+        "title": "CairDuit · Izin aplikasi",
+        "lines": [
+          "Kontak & riwayat panggilan",
+          "Galeri & media",
+          "Lokasi presisi",
+          "SMS"
+        ]
+      },
+      "hotspots": [
+        { "x": 50, "y": 28, "label": "Kontak & riwayat panggilan", "correct": true },
+        { "x": 50, "y": 46, "label": "Galeri & media", "correct": true },
+        { "x": 50, "y": 64, "label": "Lokasi presisi", "correct": true },
+        { "x": 50, "y": 82, "label": "SMS", "correct": true }
+      ],
+      "explain": "Semua izin itu berlebihan untuk pinjaman. Kontak, galeri, lokasi, dan SMS dipakai menekan korban saat penagihan."
+    },
+    {
+      "id": "q-38",
+      "type": "flag-gambar",
+      "tag": "Kerja Luar Negeri",
+      "scenario": "kerja-luar-negeri",
+      "prompt": "Ketuk kalimat dalam surat penawaran yang menunjukkan penipuan penempatan.",
+      "surface": {
+        "title": "Surat Penawaran Kerja",
+        "lines": [
+          "Posisi Customer Service Hotel, gaji RM 4.500.",
+          "Tanpa pengalaman dan tanpa wawancara.",
+          "Biaya visa Rp 4.500.000 ditanggung pelamar.",
+          "Dokumen asli menyusul."
+        ]
+      },
+      "hotspots": [
+        { "x": 52, "y": 56, "label": "Biaya visa ditanggung pelamar", "correct": true },
+        { "x": 46, "y": 34, "label": "Tanpa pengalaman", "correct": false },
+        { "x": 42, "y": 76, "label": "Dokumen asli menyusul", "correct": false }
+      ],
+      "explain": "Biaya visa yang dibebankan ke pelamar adalah ciri penipuan. Perusahaan resmi tidak memungut biaya rekrutmen."
+    },
+    {
+      "id": "q-39",
+      "type": "flag-gambar",
+      "tag": "Money Mule",
+      "scenario": "money-mule",
+      "prompt": "Ketuk kalimat yang menunjukkan kamu tidak boleh mengetahui asal uang.",
+      "surface": {
+        "title": "ChatRiang · Rio",
+        "lines": [
+          "Terima transfer dari klien luar, lalu teruskan.",
+          "Komisi 5%, sekali jalan Rp 600 ribu.",
+          "Jangan tanya sumbernya dulu.",
+          "Nanti aku jelasin."
+        ]
+      },
+      "hotspots": [
+        { "x": 54, "y": 64, "label": "Jangan tanya sumbernya dulu", "correct": true },
+        { "x": 50, "y": 26, "label": "Terima transfer dari klien luar", "correct": false },
+        { "x": 50, "y": 46, "label": "Komisi 5%", "correct": false }
+      ],
+      "explain": "Permintaan menutup pertanyaan adalah tanda uang itu hasil kejahatan. Kamu diminta menjadi perantara yang tidak bertanya."
+    },
+    {
+      "id": "q-40",
+      "type": "flag-gambar",
+      "tag": "Investasi Palsu",
+      "scenario": "wa-grup",
+      "prompt": "Ketuk bagian pesan grup yang dipakai menekan kamu agar segera membayar.",
+      "surface": {
+        "title": "Fabel Trading VIP · Admin",
+        "lines": [
+          "Paket Platinum 10 juta profit 60%.",
+          "Hanya 3 slot.",
+          "Deposit sebelum jam 9 malam.",
+          "Sistem kami transparan."
+        ]
+      },
+      "hotspots": [
+        { "x": 48, "y": 34, "label": "Hanya 3 slot", "correct": true },
+        { "x": 52, "y": 56, "label": "Deposit sebelum jam 9 malam", "correct": true },
+        { "x": 50, "y": 14, "label": "Paket Platinum", "correct": false }
+      ],
+      "explain": "Kelangkaan dan tenggat buatan mendorong keputusan cepat. Investasi sah tidak bergantung pada slot yang hilang dalam hitungan jam."
+    }
+  ]
+}
