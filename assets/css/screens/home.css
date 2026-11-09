@@ -115,8 +115,6 @@
 
 .c-scn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--s-sp-4); }
 .c-card-scn {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 320px;
   display: flex;
   flex-direction: column;
   background: var(--s-bg-soft);
