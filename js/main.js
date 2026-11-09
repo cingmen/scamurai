@@ -56,8 +56,7 @@ function initAudioUnlock() {
 function initServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   if (location.protocol !== 'http:' && location.protocol !== 'https:') return;
-
-  const register = async () => {
+  window.addEventListener('load', async () => {
     try {
       const reg = await navigator.serviceWorker.register('./sw.js');
       reg.addEventListener('updatefound', () => {
@@ -81,26 +80,7 @@ function initServiceWorker() {
     } catch (err) {
       console.warn('[sw] registrasi gagal:', err);
     }
-  };
-
-  // Precache 100 aset tidak boleh berebut jaringan/main thread dengan render
-  // pertama. Daftarkan setelah interaksi pertama atau 8 detik, mana yang dulu.
-  const schedule = () => {
-    let started = false;
-    const events = ['pointerdown', 'keydown', 'touchstart'];
-    const go = () => {
-      if (started) return;
-      started = true;
-      clearTimeout(timer);
-      for (const event of events) window.removeEventListener(event, go);
-      register();
-    };
-    const timer = setTimeout(go, 8000);
-    for (const event of events) window.addEventListener(event, go, { once: true, passive: true });
-  };
-
-  if (document.readyState === 'complete') schedule();
-  else window.addEventListener('load', schedule, { once: true });
+  });
 }
 
 async function maybeOnboard() {
