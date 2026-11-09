@@ -7,6 +7,7 @@
   "scripts": {
     "validate": "node scripts/validate-data.mjs",
     "verify:pwa": "node scripts/verify-pwa.mjs",
-    "check": "node scripts/validate-data.mjs && node --check sw.js && node --check js/main.js && node --check js/router.js"
+    "prerender:home": "node scripts/prerender-home.mjs",
+    "check": "node scripts/validate-data.mjs && node scripts/prerender-home.mjs --check && node --check sw.js && node --check js/main.js && node --check js/router.js"
   }
 }
