@@ -110,7 +110,7 @@ code, kbd { font-family: var(--s-font-mono); }
 .c-brand__tag {
   display: block;
   font-size: var(--s-fs-300);
-  font-weight: 500;
+  font-weight: 400;
   color: var(--s-ink-faint);
   letter-spacing: 0;
 }
