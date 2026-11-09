@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 
+Sitemap: https://cingmen.github.io/scamurai/sitemap.xml
+
 # Scamurai adalah situs edukasi statis. Tidak ada data pengguna yang dikumpulkan.

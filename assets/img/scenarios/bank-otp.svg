@@ -6,7 +6,7 @@
   <rect width="640" height="360" fill="url(#bg)"/>
   <rect width="640" height="360" fill="url(#grid)"/>
   <circle cx="520" cy="56" r="130" fill="#ffffff" opacity=".05"/>
-  <text x="52" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="2.5" fill="#C93A3A">BANK & OTP</text>
+  <text x="52" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="2.5" fill="#C93A3A">BANK &amp; OTP</text>
   <text x="50" y="116" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Kode yang Tak</text>
   <text x="50" y="154" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Boleh Dibagikan</text>
   <path d="M76 300 L116 274 L156 300 L156 344 Q116 366 76 344 Z" fill="#ffffff" opacity=".14" stroke="#ffffff" stroke-opacity=".4" stroke-width="2"/><circle cx="102" cy="306" r="6" fill="#ffffff" opacity=".7"/><circle cx="116" cy="306" r="6" fill="#ffffff" opacity=".7"/><circle cx="130" cy="306" r="6" fill="#ffffff" opacity=".7"/><circle cx="102" cy="324" r="6" fill="#ffffff" opacity=".7"/><circle cx="116" cy="324" r="6" fill="#ffffff" opacity=".7"/><circle cx="130" cy="324" r="6" fill="#ffffff" opacity=".7"/>
