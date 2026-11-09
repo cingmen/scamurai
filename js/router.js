@@ -88,6 +88,15 @@ function completedCount() {
   return Object.values(all().progress || {}).filter((p) => p.status === 'selesai').length;
 }
 
+function staticHomeUsable() {
+  if (!appEl?.querySelector('[data-prerendered-home]')) return false;
+  const state = all();
+  return Object.keys(state.progress || {}).length === 0
+    && Object.keys(state.dex || {}).length === 0
+    && !state.exam?.passed
+    && Number(state.dojo?.saldo) === 5_000_000;
+}
+
 function currentPath() {
   const raw = window.location.hash.replace(/^#/, '') || '/';
   return raw.startsWith('/') ? raw : `/${raw}`;
@@ -148,6 +157,14 @@ async function navigate(force = false) {
   if (!force && matched.name === currentName && !matched.allowRepeat) {
     // hashchange dengan rute sama tetap dirender ulang bila data berubah,
     // kecuali sedang di layar yang menangani sendiri.
+  }
+
+  if (matched.name === 'home' && !force && (currentName === null || currentName === 'home') && staticHomeUsable()) {
+    currentName = 'home';
+    setImmersive(false);
+    updateNav('home');
+    emit('route:change', { from: null, to: 'home', path });
+    return;
   }
 
   closeModal({ silent: true });
