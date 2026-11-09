@@ -20,7 +20,7 @@
 .c-btn:active { transform: scale(.98); }
 .c-btn--primary { background: var(--s-gold); color: var(--s-ink-inverse); }
 .c-btn--ghost { background: transparent; border-color: var(--s-line); color: var(--s-ink); }
-.c-btn--danger { background: var(--s-accent-soft); color: var(--s-accent); border-color: color-mix(in srgb, var(--s-accent) 35%, transparent); }
+.c-btn--danger { background: var(--s-accent-soft); color: var(--s-accent-text); border-color: color-mix(in srgb, var(--s-accent) 35%, transparent); }
 .c-btn--quiet { background: transparent; color: var(--s-ink-soft); font-weight: 600; }
 .c-btn--sm { min-height: 40px; padding: 6px var(--s-sp-3); font-size: var(--s-fs-400); }
 .c-btn--block { width: 100%; }
@@ -41,7 +41,7 @@
   white-space: nowrap;
 }
 .c-chip--gold { background: var(--s-gold-soft); border-color: transparent; color: var(--s-gold); }
-.c-chip--danger { background: var(--s-accent-soft); border-color: transparent; color: var(--s-accent); }
+.c-chip--danger { background: var(--s-accent-soft); border-color: transparent; color: var(--s-accent-text); }
 .c-chip--success { background: var(--s-success-soft); border-color: transparent; color: var(--s-success); }
 .c-chip--info { background: var(--s-info-soft); border-color: transparent; color: var(--s-info); }
 .c-chip--warn { background: var(--s-warn-soft); border-color: transparent; color: var(--s-warn); }
