@@ -4,12 +4,14 @@ import { fnv1a } from './format.js';
 
 const NS = 'scamurai.v1';
 const SW_ACK = 'scamurai.v1.sw-ack';
+const BACKUP_NS = 'scamurai.v1.backup';
 export const SCHEMA_VERSION = 1;
 export const STARTER_SALDO = 5_000_000;
 
 let state = null;
 let storageAvailable = true;
 let persistTimer = null;
+let storageNotice = null;
 
 export function defaultState() {
   return {
@@ -42,6 +44,22 @@ function isPlainObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
+function defaultScenarioProgress() {
+  return {
+    status: 'belum',
+    bestEnding: null,
+    bestRank: -1,
+    endingsSeen: [],
+    flags: { found: 0, missed: 0 },
+    debriefDone: false,
+    lastStep: 0,
+    briefed: false,
+    recovered: 0,
+    loss: 0,
+    updatedAt: null,
+  };
+}
+
 /** Gabungkan nilai tersimpan dengan default (array diganti, bukan digabung). */
 function merge(base, patch) {
   if (!isPlainObject(base) || !isPlainObject(patch)) return patch === undefined ? base : patch;
@@ -53,24 +71,143 @@ function merge(base, patch) {
 }
 
 function migrate(raw) {
+  if (!isPlainObject(raw)) throw new Error('Data progres bukan objek.');
+  let version = Number(raw.schemaVersion);
+  if (!Number.isFinite(version) || version < 0) version = 0;
   const next = { ...raw };
-  if (!next.schemaVersion) next.schemaVersion = 1;
   // Tempat migrasi berantai m0→m1→…; tidak boleh menghapus data pengguna.
-  if (next.schemaVersion < 1) {
-    next.dojo = { saldo: next.wallet?.saldo ?? STARTER_SALDO, belt: 0 };
+  if (version < 1) {
+    const wallet = isPlainObject(raw.wallet) ? raw.wallet : {};
+    const dojo = isPlainObject(raw.dojo) ? raw.dojo : {};
+    const walletSaldo = Number(wallet.saldo);
+    const dojoSaldo = Number(dojo.saldo);
+    next.dojo = {
+      ...dojo,
+      saldo: Number.isFinite(walletSaldo) ? walletSaldo : (Number.isFinite(dojoSaldo) ? dojoSaldo : STARTER_SALDO),
+      belt: Number.isFinite(Number(dojo.belt)) ? Number(dojo.belt) : 0,
+    };
     delete next.wallet;
-    next.schemaVersion = 1;
+    version = 1;
   }
+  next.schemaVersion = version;
   return next;
 }
 
-function readStorage() {
+function normalizeState(raw) {
+  const base = defaultState();
+  const migrated = migrate(raw);
+  const next = merge(base, migrated);
+  let repaired = false;
+
+  for (const key of ['profile', 'settings', 'dojo', 'progress', 'vn', 'dex', 'exam', 'certificate', 'wa', 'sekolah', 'stats', 'meta']) {
+    if (!isPlainObject(next[key])) {
+      next[key] = base[key];
+      repaired = true;
+    }
+  }
+
+  if (!Array.isArray(next.vn.saves)) {
+    next.vn.saves = [...base.vn.saves];
+    repaired = true;
+  } else if (next.vn.saves.length < 2) {
+    next.vn.saves = [...next.vn.saves, ...Array(2 - next.vn.saves.length).fill(null)];
+  }
+  if (!Array.isArray(next.exam.lastPool)) {
+    next.exam.lastPool = [];
+    repaired = true;
+  }
+  if (!Array.isArray(next.sekolah.packagesDone)) {
+    next.sekolah.packagesDone = [];
+    repaired = true;
+  }
+
+  const saldo = Number(next.dojo.saldo);
+  if (Number.isFinite(saldo)) next.dojo.saldo = saldo;
+  else {
+    next.dojo.saldo = base.dojo.saldo;
+    repaired = true;
+  }
+  const belt = Number(next.dojo.belt);
+  if (Number.isFinite(belt)) next.dojo.belt = belt;
+  else {
+    next.dojo.belt = base.dojo.belt;
+    repaired = true;
+  }
+
+  const progress = {};
+  for (const [id, entry] of Object.entries(next.progress)) {
+    if (!isPlainObject(entry)) {
+      progress[id] = defaultScenarioProgress();
+      repaired = true;
+      continue;
+    }
+    const item = merge(defaultScenarioProgress(), entry);
+    if (!isPlainObject(item.flags)) {
+      item.flags = { found: 0, missed: 0 };
+      repaired = true;
+    } else {
+      item.flags = merge({ found: 0, missed: 0 }, item.flags);
+    }
+    if (!Array.isArray(item.endingsSeen)) {
+      item.endingsSeen = [];
+      repaired = true;
+    }
+    progress[id] = item;
+  }
+  next.progress = progress;
+
+  return {
+    state: next,
+    repaired,
+    migrated: Number(raw.schemaVersion) !== Number(next.schemaVersion),
+  };
+}
+
+function backupRaw(raw, reason) {
   try {
-    const raw = localStorage.getItem(NS);
-    if (!raw) return null;
-    return merge(defaultState(), migrate(JSON.parse(raw)));
+    localStorage.setItem(BACKUP_NS, JSON.stringify({
+      raw: String(raw),
+      reason,
+      savedAt: new Date().toISOString(),
+    }));
   } catch (err) {
-    console.warn('[store] gagal membaca localStorage:', err);
+    console.warn('[store] gagal mencadangkan data lama:', err);
+  }
+}
+
+function readStorage() {
+  let raw;
+  try {
+    raw = localStorage.getItem(NS);
+  } catch (err) {
+    console.warn('[store] gagal mengakses localStorage:', err);
+    return null;
+  }
+  if (!raw) return null;
+
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (err) {
+    backupRaw(raw, 'parse');
+    storageNotice = { kind: 'corrupt', reason: 'parse' };
+    console.warn('[store] data lama rusak; cadangan mentah disimpan:', err);
+    return null;
+  }
+
+  try {
+    const result = normalizeState(parsed);
+    if (result.repaired) {
+      backupRaw(raw, 'normalize');
+      storageNotice = { kind: 'repaired', reason: 'normalize' };
+    } else if (result.migrated) {
+      backupRaw(raw, 'migration');
+    }
+    return result.state;
+  } catch (err) {
+    backupRaw(raw, 'shape');
+    storageNotice = { kind: 'corrupt', reason: 'shape' };
+    console.warn('[store] struktur data lama tidak dikenali; cadangan mentah disimpan:', err);
     return null;
   }
 }
@@ -162,13 +299,21 @@ export function storageOk() {
   return storageAvailable;
 }
 
+/** Ambil sekali peringatan pemulihan data saat boot; kosong setelah dibaca. */
+export function consumeStorageNotice() {
+  const notice = storageNotice;
+  storageNotice = null;
+  return notice;
+}
+
 /** Ganti seluruh state (impor) dengan validasi ringan. */
 export function replace(nextState) {
   if (!isPlainObject(nextState)) throw new Error('State tidak valid.');
   if (Number(nextState.schemaVersion) > SCHEMA_VERSION) {
     throw new Error('Kode progres dari versi Scamurai yang lebih baru.');
   }
-  state = merge(defaultState(), migrate(nextState));
+  const result = normalizeState(nextState);
+  state = result.state;
   emit('state:change', { path: '*', value: state });
   schedulePersist();
   return state;
@@ -191,6 +336,10 @@ export function resetProgress() {
 
 export function resetAll() {
   state = defaultState();
+  storageNotice = null;
+  try {
+    localStorage.removeItem(BACKUP_NS);
+  } catch { /* penyimpanan mungkin diblokir */ }
   emit('state:change', { path: '*', value: state });
   persist();
 }

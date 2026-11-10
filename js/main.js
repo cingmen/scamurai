@@ -1,5 +1,5 @@
 // Bootstrap aplikasi (structure.md §2).
-import { get, all, beltInfo, set, getSwAck, swAck, persist } from './core/store.js';
+import { get, all, beltInfo, set, getSwAck, swAck, persist, consumeStorageNotice } from './core/store.js';
 import { on } from './core/events.js';
 import { startRouter } from './router.js';
 import { showToast } from './components/toast.js';
@@ -117,6 +117,15 @@ async function boot() {
 
   await startRouter();
   document.body.classList.add('is-booted');
+  const storageNotice = consumeStorageNotice();
+  if (storageNotice) {
+    showToast(
+      storageNotice.kind === 'repaired'
+        ? 'Sebagian data progres lama tidak valid dan sudah dinormalkan. Salinan asli tetap disimpan di perangkat ini.'
+        : 'Data progres lama tidak dapat dibaca. Salinan mentahnya disimpan di perangkat ini; progres baru dimulai.',
+      { timeout: 12000 },
+    );
+  }
   await maybeOnboard();
 
   window.addEventListener('pagehide', persist);

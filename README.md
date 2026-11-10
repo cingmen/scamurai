@@ -29,7 +29,8 @@ Semua path relatif, jadi aplikasi juga berjalan dari subfolder GitHub Pages (`/s
 ## Validasi
 
 ```bash
-npm run check                    # data + sinkronisasi shell beranda + sintaks inti
+npm run check                    # data + uji store + sinkronisasi shell beranda + sintaks inti
+npm run test:store               # migrasi data lama, data korup, dan normalisasi state
 npm run prerender:home           # tulis ulang shell index.html setelah mengubah home.js
 npm run verify:pwa -- http://localhost:4173/ bank-otp   # offline + metrik (Chrome/CDP)
 ```

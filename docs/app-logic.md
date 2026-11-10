@@ -45,7 +45,7 @@ function persist() { localStorage.setItem(NS, JSON.stringify(state)); }
 
 ## 2. Model State & Skema localStorage
 
-Satu kunci utama: `localStorage["scamurai.v1"]` (JSON penuh). Kunci bantu: `scamurai.v1.sw-ack` (ack banner versi SW).
+Satu kunci utama: `localStorage["scamurai.v1"]` (JSON penuh). Kunci bantu: `scamurai.v1.sw-ack` (ack banner versi SW) dan `scamurai.v1.backup` (payload mentah terakhir yang rusak/direparasi, beserta alasan dan waktu).
 
 ```js
 {
@@ -100,7 +100,8 @@ Satu kunci utama: `localStorage["scamurai.v1"]` (JSON penuh). Kunci bantu: `scam
 
 **Aturan:**
 - Semua penulisan lewat `store.set`; **dilarang** menulis localStorage langsung dari komponen.
-- `schemaVersion` berbeda → jalankan `migrate()` sebelum dipakai; migrasi harus fungsi berantai `m1→m2→...` yang tidak pernah menghapus data pengguna.
+- `schemaVersion` berbeda → jalankan `migrate()` sebelum dipakai; migrasi harus fungsi berantai `m1→m2→...` yang tidak pernah menghapus data pengguna. Data tanpa versi diperlakukan sebagai m0, sehingga `wallet.saldo` lama dipindahkan ke `dojo.saldo` tanpa menimpa saldo yang sudah ada.
+- Data yang tidak bisa diparse atau strukturnya rusak tidak boleh langsung ditimpa: payload mentah dicadangkan ke `scamurai.v1.backup`, state dinormalkan ke default yang aman, dan boot menampilkan notifikasi pemulihan. Field progres yang hilang diisi default tanpa menghapus nilai valid.
 - **Ekspor/impor progres:** string `JSON.stringify(state)` di-encode base64 (dengan checksum sederhana) → tampil sebagai kode yang bisa disalin; impor memvalidasi `schemaVersion` ≤ versi jalan.
 - Reset: modal konfirmasi + pilihan "hapus semuanya" / "hapus hanya kemajuan" (settings tetap).
 
