@@ -70,7 +70,7 @@ Hasil 5 November 2026 pada https://cingmen.github.io/scamurai/ (Chrome 150, Ligh
 | TTFB | 340 ms |
 | Total transfer | 165 KiB |
 
-Angka dicatat apa adanya dari satu run bersih tanpa proses Chrome lain. Performa naik dari 65, CLS dari 0,176 ke 0, dan TBT dari 1.090 ms ke 400 ms, tetapi **89 masih satu poin di bawah target roadmap ≥90**. Trace baseline menunjukkan satu long task 381 ms dan layout pertama 173 ms untuk 330 objek. Tiga percobaan optimasi berikutnya — CSS lazy, penundaan precache service worker, dan `content-visibility` pada grid — menghasilkan live 80 dan 88, sehingga semuanya direvert. Review praktisi, uji kegunaan 5 lansia/5 remaja, dan uji perangkat fisik belum dijalankan, jadi F7 belum dapat ditandai 100%. Tag `v1.0.0` yang sudah ada di repo menunjuk commit lama `c0ab2c1`; tag publik itu tidak dipindahkan karena gerbang rilis belum terpenuhi dan memindahkannya bersifat destruktif.
+Angka di atas adalah baseline 5 November 2026. Setelah itu beranda diprerender ke `index.html`: live 9 November 2026 memberi performance **88/97/91/97/95 (median 95)**, Accessibility/Best Practices/SEO **100/100/100**, dan CLS **0**; tiga run lokal setelah generator shell memberi **85/94/95 (median 94)**, dengan TBT 0 ms pada dua run terakhir. Target roadmap ≥90 sudah tercapai. Trace baseline lama menunjukkan satu long task 381 ms dan layout pertama 173 ms untuk 330 objek; percobaan CSS lazy, penundaan precache service worker, dan `content-visibility` pada grid yang menghasilkan live 80/88 sudah direvert. F7 belum dapat ditandai 100% karena review praktisi, uji kegunaan 5 lansia/5 remaja, dan uji perangkat fisik belum dijalankan. Tag `v1.0.0` yang sudah ada di repo menunjuk commit lama `c0ab2c1`; tag publik itu tidak dipindahkan karena gerbang rilis belum terpenuhi dan memindahkannya bersifat destruktif.
 
 Perintah Lighthouse yang dipakai (jalur Chrome disesuaikan dengan sistem):
 
@@ -96,7 +96,7 @@ js/components/        phone frame, chat, flag-tap, keypad, modal, share, dll.
 data/scenarios/       8 JSON skenario
 data/exam/            pool ujian
 data/minigames/       grup Fabel Investasi
-scripts/              validator konten
+scripts/              validator konten + generator/check shell beranda
 ```
 
 ## Privasi
@@ -108,7 +108,7 @@ Tidak ada backend, akun, cookie, atau analitik pihak ketiga. Font dan seluruh as
 1. Tambah skenario di `data/scenarios/<id>.json` dan daftarkan di `data/manifest.json`.
 2. Gunakan tipe langkah yang sudah ada (`chat`, `sms`, `call`, `choice`, `flag-tap`, `browser`, `app-ui`, `permission`, `input-otp`, `consequence`, `lesson`).
 3. Sertakan `brief`, minimal 3 flag, minimal 2 ending, `debrief.anatomi` + `aliran` + `pulihkan`.
-4. Jalankan `node scripts/validate-data.mjs` sebelum commit.
+4. Jalankan `npm run check` sebelum commit.
 
 Semua teks dari JSON dirender sebagai text node, bukan HTML mentah. Jangan menambahkan domain, nomor, atau merek nyata ke data simulasi.
 
