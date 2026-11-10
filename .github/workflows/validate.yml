@@ -20,8 +20,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Validate content data
-        run: node scripts/validate-data.mjs
+      - name: Check data, prerender shell, and core syntax
+        run: npm run check
 
       - name: Parse every JS module
         run: |

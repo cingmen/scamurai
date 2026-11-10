@@ -29,12 +29,14 @@ Semua path relatif, jadi aplikasi juga berjalan dari subfolder GitHub Pages (`/s
 ## Validasi
 
 ```bash
-node scripts/validate-data.mjs   # konten: goto, flag, ending, debrief, soal ujian
-node --check js/main.js          # sintaks modul (Node ≥ 20, package.json type=module)
+npm run check                    # data + sinkronisasi shell beranda + sintaks inti
+npm run prerender:home           # tulis ulang shell index.html setelah mengubah home.js
 npm run verify:pwa -- http://localhost:4173/ bank-otp   # offline + metrik (Chrome/CDP)
 ```
 
-CI menjalankan keduanya pada setiap push dan pull request (`.github/workflows/validate.yml`). Validator memeriksa:
+`npm run check` juga memastikan blok `.scr-home` dengan `data-prerendered-home="1"` di `index.html` persis sama dengan hasil render `js/screens/home.js`. Jika markup beranda berubah, jalankan `npm run prerender:home`; check akan gagal sampai shell diperbarui.
+
+CI menjalankan `npm run check` dan mem-parse semua modul pada setiap push dan pull request (`.github/workflows/validate.yml`). Validator memeriksa:
 
 - setiap `goto` menunjuk langkah yang ada dan setiap ending dapat dicapai dari langkah pertama;
 - setiap skenario simulasi versi penuh minimal 14 langkah, dengan minimal 3 red flag non-decoy, 2 ending, dan 3 langkah pemulihan;
