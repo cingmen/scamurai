@@ -1,10 +1,37 @@
 // Pengaturan & data lokal (structure.md §3).
 import {
   all, get, set, resetProgress, resetAll, exportCode, importCode, storageOk, persist,
+  getBackups, restoreBackup, storageWriteProtected,
 } from '../core/store.js';
 import { h, clear } from '../core/dom.js';
 import { showToast } from '../components/toast.js';
 import { confirmModal } from '../components/modal.js';
+import { dateTimeID } from '../core/format.js';
+
+const BACKUP_REASONS = {
+  parse: 'JSON tidak bisa dibaca',
+  shape: 'Struktur data tidak dikenali',
+  normalize: 'Data dinormalkan',
+  migration: 'Data lama dimigrasikan',
+  future: 'Dibuat versi lebih baru',
+};
+
+function backupReason(reason) {
+  return BACKUP_REASONS[reason] || 'Data dicadangkan otomatis';
+}
+
+function downloadBackupPayload(backup, index) {
+  const blob = new Blob([backup.raw], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  const stamp = String(backup.savedAt || '').replace(/[^0-9]/g, '').slice(0, 14) || 'backup';
+  anchor.href = url;
+  anchor.download = `scamurai-backup-${index + 1}-${stamp}.json`;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 
 function seg(options, current, onPick, { disabled = false } = {}) {
   const wrap = h('div', { class: 'c-seg', role: 'group' });
@@ -141,6 +168,56 @@ export async function render(root) {
     'aria-label': 'Kode progres untuk diimpor',
   });
 
+  const backups = getBackups();
+  const recovery = h('section', { class: 'c-card' },
+    h('h2', { class: 'section-title' }, 'Pemulihan data'),
+    h('p', { class: 'u-small u-muted' }, 'Cadangan dibuat otomatis saat data lama rusak, dinormalkan, atau berasal dari versi yang lebih baru. Backup tidak dihapus saat restore.'),
+    storageWriteProtected()
+      ? h('p', { class: 'u-small u-muted' }, 'Penyimpanan utama dilindungi karena berisi skema yang lebih baru. Data asli tidak diubah; unduh backup untuk diamankan, atau pulihkan backup lama di bawah ini.')
+      : null,
+    backups.length
+      ? h('div', { class: 'u-col', style: { gap: '8px' } }, backups.map((item, index) => h('div', {
+        class: 'c-setting',
+        'data-backup-index': String(index),
+      },
+      h('div', null,
+        h('div', { class: 'c-setting__title' }, backupReason(item.reason)),
+        h('div', { class: 'c-setting__sub' }, `${dateTimeID(item.savedAt)} · ${item.raw.length} karakter`),
+      ),
+      h('div', { class: 'u-row' },
+        h('button', {
+          type: 'button',
+          class: 'c-btn c-btn--ghost c-btn--sm',
+          'data-backup-download': String(index),
+          onclick: () => downloadBackupPayload(item, index),
+        }, 'Unduh JSON'),
+        h('button', {
+          type: 'button',
+          class: 'c-btn c-btn--danger c-btn--sm',
+          'data-backup-restore': String(index),
+          onclick: async () => {
+            const ok = await confirmModal({
+              title: 'Pulihkan backup ini?',
+              message: `Progres saat ini akan diganti oleh backup ${dateTimeID(item.savedAt)}. Backup tetap disimpan; tindakan ini tidak bisa dibatalkan.`,
+              confirmLabel: 'Pulihkan',
+              cancelLabel: 'Batal',
+              danger: true,
+            });
+            if (!ok) return;
+            try {
+              restoreBackup(item);
+              showToast('Backup berhasil dipulihkan. Memuat ulang…', { timeout: 3000 });
+              setTimeout(() => window.location.reload(), 800);
+            } catch (err) {
+              showToast(err?.message || 'Backup tidak dapat dipulihkan.', { timeout: 5000 });
+            }
+          },
+        }, 'Pulihkan'),
+      ),
+    )))
+      : h('p', { class: 'u-small u-faint' }, 'Belum ada backup otomatis di perangkat ini.'),
+  );
+
   const backup = h('section', { class: 'c-card' },
     h('h2', { class: 'section-title' }, 'Cadangan progres'),
     h('p', { class: 'u-small u-muted' }, 'Kode ini berisi seluruh progresmu. Simpan di tempat aman; siapa pun yang memilikinya bisa memakainya. Tidak dikirim ke mana pun.'),
@@ -260,6 +337,7 @@ export async function render(root) {
     rhythm,
     mode,
     feedback,
+    recovery,
     backup,
     about,
     danger,

@@ -156,6 +156,7 @@
 **Tugas:**
 - [x] `sw.js` precache penuh (shell + data + aset kunci), strategi per jenis (app-logic §11), banner "versi baru tersedia".
 - [ ] Audit performa: gambar WebP/AVIF final, audio < 20 KB/berkas, bundle inti < 150 KB gzip; Lighthouse ≥ 90/95/95/100 (perf/a11y/best-practice/seo) di halaman utama. **Catatan 10 Nov 2026: target Lighthouse tercapai (live median 95/100/100/100; CLS 0), tetapi audit aset final belum ditutup.**
+- [x] Persistensi tahan versi: payload schema lebih baru dilindungi dari overwrite, backup berformat riwayat bisa dilihat/diunduh/dipulihkan dari Pengaturan dengan konfirmasi.
 - [ ] QA penuh checklist `app-logic.md` §15 + uji perangkat: Android kelas bawah, iOS Safari ≥ 15, desktop 2 browser.
 - [ ] Review konten oleh 1 praktisi keamanan/komunitas + uji kegunaan 5 lansia & 5 remaja; catat & perbaiki temuan kritis.
 - [x] Konten final: glosarium beranda, README (cara kontribusi, disclaimer etika), halaman Tentang (kredit, lisensi MIT, sumber statistik), `404.html`.

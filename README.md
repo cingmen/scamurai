@@ -37,6 +37,10 @@ npm run verify:pwa -- http://localhost:4173/ bank-otp   # offline + metrik (Chro
 
 `npm run check` juga memastikan blok `.scr-home` dengan `data-prerendered-home="1"` di `index.html` persis sama dengan hasil render `js/screens/home.js`. Jika markup beranda berubah, jalankan `npm run prerender:home`; check akan gagal sampai shell diperbarui.
 
+### Pemulihan data
+
+Data dengan `schemaVersion` lebih baru dari kode yang berjalan tidak pernah ditimpa. Payload asli dibiarkan utuh, aplikasi memberi tahu bahwa versi lebih baru diperlukan, dan payload dicadangkan ke `scamurai.v1.backup`. Di **Pengaturan → Pemulihan data**, backup menampilkan alasan, waktu, tombol **Unduh JSON**, dan **Pulihkan** dengan konfirmasi. Restore memvalidasi payload terlebih dahulu; backup korup atau dari schema lebih baru ditolak tanpa mengubah state aktif. `resetAll()` tetap menghapus backup hanya setelah pengguna memilih hapus semua data.
+
 CI menjalankan `npm run check` dan mem-parse semua modul pada setiap push dan pull request (`.github/workflows/validate.yml`). Validator memeriksa:
 
 - setiap `goto` menunjuk langkah yang ada dan setiap ending dapat dicapai dari langkah pertama;

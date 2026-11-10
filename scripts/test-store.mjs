@@ -16,8 +16,7 @@ function makeStorage(seed = {}) {
   };
 }
 
-async function loadStore(seed) {
-  const storage = makeStorage({ [NS]: seed });
+async function importStore(storage) {
   globalThis.localStorage = storage;
   globalThis.window = {
     addEventListener() {},
@@ -33,9 +32,20 @@ async function loadStore(seed) {
   }
 }
 
-function backupRaw(storage) {
+async function loadStore(seed) {
+  return importStore(makeStorage({ [NS]: seed }));
+}
+
+function backupItems(storage) {
   const raw = storage.getItem(BACKUP);
-  return raw ? JSON.parse(raw) : null;
+  if (!raw) return [];
+  const parsed = JSON.parse(raw);
+  if (Array.isArray(parsed?.items)) return parsed.items;
+  return parsed?.raw ? [parsed] : [];
+}
+
+function backupRaw(storage) {
+  return backupItems(storage)[0] || null;
 }
 
 const tests = [];
@@ -109,6 +119,89 @@ test('state parsial yang valid tidak memicu cadangan', async () => {
   assert.equal(store.all().profile.name, 'Sari');
   assert.equal(store.all().settings.mode, 'standar');
   assert.equal(store.all().progress['task-scam'].status, 'selesai');
+  assert.equal(storage.getItem(BACKUP), null);
+});
+
+test('skema lebih baru dilindungi dan payload asli tidak pernah ditimpa', async () => {
+  const raw = JSON.stringify({
+    schemaVersion: 2,
+    futureOnly: { keep: true },
+    profile: { name: 'Masa Depan', onboarded: true },
+    dojo: { saldo: 999 },
+  });
+  const { store, storage } = await loadStore(raw);
+  assert.equal(store.storageWriteProtected(), true);
+  assert.equal(store.all().schemaVersion, 1);
+  const notice = store.consumeStorageNotice();
+  assert.equal(notice.kind, 'future');
+  assert.equal(notice.version, 2);
+  const backups = store.getBackups();
+  assert.equal(backups[0].reason, 'future');
+  assert.equal(backups[0].raw, raw);
+  store.set('profile.onboarded', true);
+  assert.equal(store.persist(), false);
+  assert.equal(storage.getItem(NS), raw, 'payload skema baru tidak boleh ditimpa');
+
+  const second = await importStore(storage);
+  assert.equal(second.store.storageWriteProtected(), true);
+  assert.equal(storage.getItem(NS), raw);
+  assert.equal(second.store.getBackups().filter((item) => item.reason === 'future').length, 1);
+});
+
+test('backup valid bisa dipulihkan; backup korup/future ditolak tanpa mengubah state', async () => {
+  const activeRaw = JSON.stringify({
+    schemaVersion: 1,
+    profile: { name: 'Aktif', onboarded: true },
+    dojo: { saldo: 1000 },
+    progress: { 'task-scam': { status: 'selesai' } },
+  });
+  const validBackupRaw = JSON.stringify({
+    schemaVersion: 1,
+    profile: { name: 'Pulih', onboarded: true },
+    dojo: { saldo: 777000 },
+    progress: { 'task-scam': { status: 'selesai', debriefDone: true } },
+  });
+  const storage = makeStorage({
+    [NS]: activeRaw,
+    [BACKUP]: JSON.stringify({ items: [{
+      raw: validBackupRaw,
+      reason: 'normalize',
+      savedAt: '2026-11-10T10:00:00.000Z',
+    }] }),
+  });
+  const { store } = await importStore(storage);
+  assert.equal(store.all().profile.name, 'Aktif');
+  const [backup] = store.getBackups();
+  const before = JSON.stringify(store.all());
+  assert.throws(() => store.restoreBackup({ ...backup, raw: '{"profile":' }), /JSON/);
+  assert.equal(JSON.stringify(store.all()), before);
+  assert.throws(
+    () => store.restoreBackup({ ...backup, raw: JSON.stringify({ schemaVersion: 2 }) }),
+    /lebih baru/,
+  );
+  assert.equal(JSON.stringify(store.all()), before);
+
+  store.restoreBackup(backup);
+  assert.equal(store.all().profile.name, 'Pulih');
+  assert.equal(store.all().dojo.saldo, 777000);
+  assert.equal(store.storageWriteProtected(), false);
+  assert.equal(JSON.parse(storage.getItem(NS)).profile.name, 'Pulih');
+});
+
+test('resetAll eksplisit membersihkan backup dan membuka proteksi tulis', async () => {
+  const storage = makeStorage({
+    [NS]: JSON.stringify({ schemaVersion: 2 }),
+    [BACKUP]: JSON.stringify({ items: [{
+      raw: '{"profile":',
+      reason: 'parse',
+      savedAt: '2026-11-10T10:00:00.000Z',
+    }] }),
+  });
+  const { store } = await importStore(storage);
+  assert.equal(store.storageWriteProtected(), true);
+  store.resetAll();
+  assert.equal(store.storageWriteProtected(), false);
+  assert.equal(store.getBackups().length, 0);
   assert.equal(storage.getItem(BACKUP), null);
 });
 

@@ -1,5 +1,5 @@
 // Bootstrap aplikasi (structure.md §2).
-import { get, all, beltInfo, set, getSwAck, swAck, persist, consumeStorageNotice } from './core/store.js';
+import { get, all, beltInfo, set, getSwAck, swAck, persist, consumeStorageNotice, storageWriteProtected } from './core/store.js';
 import { on } from './core/events.js';
 import { startRouter } from './router.js';
 import { showToast } from './components/toast.js';
@@ -119,14 +119,14 @@ async function boot() {
   document.body.classList.add('is-booted');
   const storageNotice = consumeStorageNotice();
   if (storageNotice) {
-    showToast(
-      storageNotice.kind === 'repaired'
-        ? 'Sebagian data progres lama tidak valid dan sudah dinormalkan. Salinan asli tetap disimpan di perangkat ini.'
-        : 'Data progres lama tidak dapat dibaca. Salinan mentahnya disimpan di perangkat ini; progres baru dimulai.',
-      { timeout: 12000 },
-    );
+    const messages = {
+      future: `Data progres ini dibuat oleh Scamurai versi lebih baru (skema ${storageNotice.version}). Data asli tidak diubah; buka versi terbaru, atau unduh/pulihkan backup dari Pengaturan.`,
+      repaired: 'Sebagian data progres lama tidak valid dan sudah dinormalkan. Salinan asli tetap disimpan di perangkat ini.',
+      corrupt: 'Data progres lama tidak dapat dibaca. Salinan mentahnya disimpan di perangkat ini; progres baru dimulai.',
+    };
+    showToast(messages[storageNotice.kind] || messages.corrupt, { timeout: 15000 });
   }
-  await maybeOnboard();
+  if (!storageWriteProtected()) await maybeOnboard();
 
   window.addEventListener('pagehide', persist);
 }

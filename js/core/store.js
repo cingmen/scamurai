@@ -12,6 +12,7 @@ let state = null;
 let storageAvailable = true;
 let persistTimer = null;
 let storageNotice = null;
+let writeProtected = false;
 
 export function defaultState() {
   return {
@@ -163,16 +164,47 @@ function normalizeState(raw) {
   };
 }
 
-function backupRaw(raw, reason) {
+function isBackupRecord(value) {
+  return isPlainObject(value)
+    && typeof value.raw === 'string'
+    && typeof value.reason === 'string'
+    && typeof value.savedAt === 'string';
+}
+
+function readBackupItems() {
   try {
-    localStorage.setItem(BACKUP_NS, JSON.stringify({
-      raw: String(raw),
-      reason,
-      savedAt: new Date().toISOString(),
-    }));
+    const raw = localStorage.getItem(BACKUP_NS);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed?.items)) return parsed.items.filter(isBackupRecord);
+    if (isBackupRecord(parsed)) return [parsed];
+  } catch (err) {
+    console.warn('[store] gagal membaca cadangan:', err);
+  }
+  return [];
+}
+
+function backupRaw(raw, reason) {
+  const record = { raw: String(raw), reason, savedAt: new Date().toISOString() };
+  try {
+    const items = readBackupItems();
+    const duplicate = items.findIndex((item) => item.raw === record.raw && item.reason === reason);
+    if (duplicate === -1) items.unshift(record);
+    else items[duplicate] = record;
+    localStorage.setItem(BACKUP_NS, JSON.stringify({ items }));
+    return record;
   } catch (err) {
     console.warn('[store] gagal mencadangkan data lama:', err);
+    return null;
   }
+}
+
+export function getBackups() {
+  return readBackupItems();
+}
+
+export function storageWriteProtected() {
+  return writeProtected;
 }
 
 function readStorage() {
@@ -189,24 +221,33 @@ function readStorage() {
   try {
     parsed = JSON.parse(raw);
   } catch (err) {
-    backupRaw(raw, 'parse');
-    storageNotice = { kind: 'corrupt', reason: 'parse' };
+    const backup = backupRaw(raw, 'parse');
+    storageNotice = { kind: 'corrupt', reason: 'parse', backupSaved: Boolean(backup) };
     console.warn('[store] data lama rusak; cadangan mentah disimpan:', err);
+    return null;
+  }
+
+  const storedVersion = Number(parsed?.schemaVersion);
+  if (Number.isFinite(storedVersion) && storedVersion > SCHEMA_VERSION) {
+    const backup = backupRaw(raw, 'future');
+    writeProtected = true;
+    storageNotice = { kind: 'future', version: storedVersion, backupSaved: Boolean(backup) };
+    console.warn(`[store] data skema ${storedVersion} lebih baru dari ${SCHEMA_VERSION}; penyimpanan dilindungi.`);
     return null;
   }
 
   try {
     const result = normalizeState(parsed);
     if (result.repaired) {
-      backupRaw(raw, 'normalize');
-      storageNotice = { kind: 'repaired', reason: 'normalize' };
+      const backup = backupRaw(raw, 'normalize');
+      storageNotice = { kind: 'repaired', reason: 'normalize', backupSaved: Boolean(backup) };
     } else if (result.migrated) {
       backupRaw(raw, 'migration');
     }
     return result.state;
   } catch (err) {
-    backupRaw(raw, 'shape');
-    storageNotice = { kind: 'corrupt', reason: 'shape' };
+    const backup = backupRaw(raw, 'shape');
+    storageNotice = { kind: 'corrupt', reason: 'shape', backupSaved: Boolean(backup) };
     console.warn('[store] struktur data lama tidak dikenali; cadangan mentah disimpan:', err);
     return null;
   }
@@ -276,13 +317,13 @@ export function update(path, updater) {
 }
 
 function schedulePersist() {
-  if (!storageAvailable) return;
+  if (!storageAvailable || writeProtected) return;
   clearTimeout(persistTimer);
   persistTimer = setTimeout(persist, 300);
 }
 
 export function persist() {
-  if (!storageAvailable) return false;
+  if (!storageAvailable || writeProtected) return false;
   clearTimeout(persistTimer);
   try {
     localStorage.setItem(NS, JSON.stringify(state));
@@ -314,6 +355,7 @@ export function replace(nextState) {
   }
   const result = normalizeState(nextState);
   state = result.state;
+  writeProtected = false;
   emit('state:change', { path: '*', value: state });
   schedulePersist();
   return state;
@@ -321,6 +363,7 @@ export function replace(nextState) {
 
 export function resetProgress() {
   const fresh = defaultState();
+  writeProtected = false;
   state.progress = {};
   state.dex = {};
   state.exam = fresh.exam;
@@ -337,6 +380,7 @@ export function resetProgress() {
 export function resetAll() {
   state = defaultState();
   storageNotice = null;
+  writeProtected = false;
   try {
     localStorage.removeItem(BACKUP_NS);
   } catch { /* penyimpanan mungkin diblokir */ }
@@ -375,6 +419,36 @@ export function importCode(code) {
   }
   const parsed = JSON.parse(fromBase64(payload));
   replace(parsed);
+  persist();
+  return state;
+}
+
+/** Pulihkan satu record backup; validasi selesai sebelum state disentuh. */
+export function restoreBackup(backup) {
+  if (!isBackupRecord(backup)) throw new Error('Backup tidak valid.');
+  let parsed;
+  try {
+    parsed = JSON.parse(backup.raw);
+  } catch {
+    throw new Error('Backup rusak: JSON tidak bisa dibaca.');
+  }
+  if (!isPlainObject(parsed)) throw new Error('Backup rusak: payload bukan objek.');
+  const version = Number(parsed.schemaVersion);
+  if (Number.isFinite(version) && version > SCHEMA_VERSION) {
+    throw new Error('Backup dibuat oleh Scamurai versi lebih baru; unduh dan buka dengan versi tersebut.');
+  }
+
+  let result;
+  try {
+    result = normalizeState(parsed);
+  } catch {
+    throw new Error('Backup rusak: struktur data tidak valid.');
+  }
+  if (result.repaired) throw new Error('Backup berisi data yang perlu diperbaiki; state aktif tidak diubah.');
+
+  state = result.state;
+  writeProtected = false;
+  emit('state:change', { path: '*', value: state });
   persist();
   return state;
 }
