@@ -143,7 +143,7 @@
 - [x] Mode Lansia: aturan paksaan settings (app-logic §10), versi disederhanakan Bank & OTP (subset JSON `simplify: true`), tanpa timer, 2-oppsi.
 - [ ] Mode Sekolah: paket 45 menit, layar `#/sekolah`, lembar guru print-friendly, kartu kemajuan siswa (canvas).
 - [ ] `data/bantuan.json` + layar `bantuan` (alur "baru saja kena", tabel kanal resmi: cekrekening.id, lapor.go.id, 122, OJK 157 + tanggal verifikasi).
-- [ ] Route `#/latihan` → kartu integrasi PhisQuest (tautan dua arah sudah diminta ke repo PhisQuest via issue/PR README).
+- [x] Route `#/latihan` → kartu integrasi PhisQuest (tautan dua arah sudah diminta ke repo PhisQuest via issue/PR README). **Layar kartu tersedia offline lewat precache SW dan diuji `npm run verify:pwa`.**
 
 **DoD:**
 1. Lulus ujian ≥ 80 → sertifikat bisa dibuat & dibagikan; gagal → ulang mulus.
@@ -155,7 +155,7 @@
 
 **Tugas:**
 - [x] `sw.js` precache penuh (shell + data + aset kunci), strategi per jenis (app-logic §11), banner "versi baru tersedia".
-- [x] Audit performa: gambar WebP/AVIF final, audio < 20 KB/berkas, bundle inti < 150 KB gzip; Lighthouse ≥ 90/95/95/100 (perf/a11y/best-practice/seo) di halaman utama. **Catatan 11 Nov 2026: target Lighthouse tercapai (live median 95/100/100/100; CLS 0) dan anggaran aset dijaga `npm run audit:assets`: audio terbesar 19,0 KB, raster terbesar 273,0 KB, aplikasi 101,1 KB gzip.**
+- [x] Audit performa: gambar WebP/AVIF final, audio < 20 KB/berkas, bundle inti < 150 KB gzip; Lighthouse ≥ 90/95/95/100 (perf/a11y/best-practice/seo) di halaman utama. **Catatan 11 Nov 2026: target Lighthouse tercapai (live median 95/100/100/100; CLS 0) dan anggaran aset dijaga `npm run audit:assets`: audio terbesar 19,0 KB, raster terbesar 273,0 KB, aplikasi 102,1 KB gzip.**
 - [x] Persistensi tahan versi: payload schema lebih baru dilindungi dari overwrite, backup berformat riwayat bisa dilihat/diunduh/dipulihkan dari Pengaturan dengan konfirmasi.
 - [ ] QA penuh checklist `app-logic.md` §15 + uji perangkat: Android kelas bawah, iOS Safari ≥ 15, desktop 2 browser.
 - [ ] Review konten oleh 1 praktisi keamanan/komunitas + uji kegunaan 5 lansia & 5 remaja; catat & perbaiki temuan kritis.
@@ -167,7 +167,7 @@
 - Trace: long task **381 ms**; layout pertama **173 ms untuk 330 objek**; paint 27 ms.
 - Percobaan yang diuji dan direvert karena memperburuk metrik: CSS lazy + penundaan SW → live **80** (TBT 700 ms); `content-visibility` grid → live **88** (TBT 440 ms).
 - **Pembaruan 9 November 2026:** prerender shell beranda menghasilkan live 5 run **88/97/91/97/95 (median 95)** dengan A11y/BP/SEO 100 dan CLS 0; tiga run lokal **85/94/95 (median 94)**, TBT 0 ms pada dua run terakhir. Target performa ≥90 tercapai; F7 tetap terbuka untuk review/QA manusia.
-- **Pembaruan 11 November 2026:** audit anggaran aset masuk `npm run check`; batas audio 20 KB/berkas, raster 300 KB, SVG 100 KB, dan aplikasi 150 KB gzip. Pengukuran saat ini: audio terbesar 19,0 KB, raster terbesar 273,0 KB, aplikasi 101,1 KB gzip.
+- **Pembaruan 11 November 2026:** audit anggaran aset masuk `npm run check`; batas audio 20 KB/berkas, raster 300 KB, SVG 100 KB, dan aplikasi 150 KB gzip. Pengukuran saat ini: audio terbesar 19,0 KB, raster terbesar 273,0 KB, aplikasi 102,1 KB gzip.
 
 **DoD rilis:**
 1. Semua checklist QA & gaya (styles.md §11) lolos.

@@ -255,6 +255,11 @@ async function main() {
         (value) => Boolean(value),
         'heading aplikasi',
       );
+      await waitFor(
+        `Boolean(document.body.classList.contains('is-booted'))`,
+        Boolean,
+        'boot aplikasi selesai',
+      );
     };
 
     await loadPage(PAGE_URL);
@@ -350,6 +355,14 @@ async function main() {
       'Pusat Bantuan offline',
     );
 
+    await evalValue(`location.hash = '#/latihan'`);
+    const latihan = await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Latihan kilat di PhisQuest') && text.includes('40 skenario pesan'),
+      'kartu integrasi PhisQuest offline',
+    );
+    const latihanHref = await evalValue(`document.querySelector('[data-phisquest-link]')?.getAttribute('href') || ''`);
+
     const offlineData = await evalValue(`(async () => {
       const response = await fetch('./data/scenarios/${SCENARIO_ID}.json');
       const body = await response.json();
@@ -367,6 +380,8 @@ async function main() {
       && offlineShell.heading.length > 0
       && scenario.length > 0
       && help.length > 0
+      && latihan.length > 0
+      && latihanHref === 'https://cingmen.github.io/phisquest'
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -381,6 +396,8 @@ async function main() {
         scenarioTitle,
         scenarioHeadingFound: scenario.includes(scenarioTitle),
         helpFound: help.length > 0,
+        latihanFound: latihan.includes('Latihan kilat di PhisQuest'),
+        latihanHref,
         data: offlineData,
         networkFailures: pageFailures.length,
       },
@@ -389,7 +406,7 @@ async function main() {
     console.log(JSON.stringify(report, null, 2));
 
     if (!pass) throw new Error('Verifikasi offline gagal: shell, rute, data, atau aset tidak lengkap.');
-    console.log(`\nPWA OK — ${PAGE_URL} memuat shell, skenario ${SCENARIO_ID} (${offlineData.steps} langkah), dan Pusat Bantuan saat offline.`);
+    console.log(`\nPWA OK — ${PAGE_URL} memuat shell, skenario ${SCENARIO_ID} (${offlineData.steps} langkah), Pusat Bantuan, dan kartu PhisQuest saat offline.`);
   } finally {
     await dispose();
   }

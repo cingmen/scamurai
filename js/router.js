@@ -6,8 +6,6 @@ import { showToast } from './components/toast.js';
 import { closeModal } from './components/modal.js';
 import { h, replace } from './core/dom.js';
 
-const PHISQUEST_URL = 'https://cingmen.github.io/phisquest';
-
 const ROUTES = [
   { name: 'home', pattern: /^\/?$/, load: () => import('./screens/home.js') },
   { name: 'skenario', pattern: /^\/skenario\/?$/, load: () => import('./screens/scenario-select.js') },
@@ -58,7 +56,7 @@ const ROUTES = [
   { name: 'pengaturan', pattern: /^\/pengaturan\/?$/, load: () => import('./screens/settings.js') },
   { name: 'sekolah', pattern: /^\/sekolah\/?$/, load: () => import('./screens/sekolah.js') },
   { name: 'guru', pattern: /^\/sekolah\/guru\/?$/, load: () => import('./screens/sekolah.js'), params: ['guru'] },
-  { name: 'latihan', pattern: /^\/latihan\/?$/, external: PHISQUEST_URL },
+  { name: 'latihan', pattern: /^\/latihan\/?$/, load: () => import('./screens/latihan.js') },
 ];
 
 const IMMERSIVE = new Set(['main', 'vn', 'grup']);
@@ -83,6 +81,7 @@ const NAV_MAP = {
 let appEl = null;
 let cleanup = null;
 let currentName = null;
+let navigationQueue = Promise.resolve();
 
 function completedCount() {
   return Object.values(all().progress || {}).filter((p) => p.status === 'selesai').length;
@@ -128,19 +127,21 @@ function renderFatal(error) {
   );
 }
 
-async function navigate(force = false) {
+// Serialkan navigasi agar render awal saat boot tidak berlomba dengan klik/hash
+// berikutnya. Navigasi terbaru tetap menjadi layar terakhir.
+function navigate(force = false) {
+  const run = () => performNavigate(force);
+  navigationQueue = navigationQueue.then(run, run);
+  return navigationQueue;
+}
+
+async function performNavigate(force = false) {
   const path = currentPath();
   const matched = ROUTES.find((route) => route.pattern.test(path));
 
   if (!matched) {
     showToast('Halaman tidak ditemukan.');
     if (window.location.hash !== '#/') window.location.hash = '#/';
-    return;
-  }
-
-  if (matched.external) {
-    window.open(matched.external, '_blank', 'noopener,noreferrer');
-    window.location.hash = '#/';
     return;
   }
 
