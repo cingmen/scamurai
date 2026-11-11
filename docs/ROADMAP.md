@@ -2,7 +2,7 @@
 
 > Rencana kerja dari nol sampai rilis penuh untuk implementasi vanilla HTML/CSS/JS di GitHub Pages (tanpa framework, tanpa build step). Setiap fase punya: tujuan, daftar tugas, file yang dibuat/ubah, kriteria selesai (Definition of Done), dan target persentase kemajuan total. Estimasi durasi mengasumsikan **1 developer** dengan ritme santai (±2–4 jam/hari); kalikan/dibagi sesuai jumlah orang.
 
-> **Status implementasi 10 November 2026.** F0–F6 sudah diimplementasikan dan ter-deploy. F7 sudah mencakup PWA offline, precache 100 entri, README/About/404, CI, dan GitHub Pages; setelah prerender shell beranda, Lighthouse live **median 95/100/100/100** (target performa ≥90 tercapai). Review praktisi, uji kegunaan 5 lansia/5 remaja, dan uji perangkat fisik belum dijalankan, sehingga F7 sengaja belum dicentang penuh.
+> **Status implementasi 11 November 2026.** F0–F6 sudah diimplementasikan dan ter-deploy. F7 sudah mencakup PWA offline, precache 100 entri, README/About/404, CI, GitHub Pages, audit anggaran aset otomatis, dan proteksi data schema baru; setelah prerender shell beranda, Lighthouse live **median 95/100/100/100** (target performa ≥90 tercapai). Review praktisi, uji kegunaan 5 lansia/5 remaja, dan uji perangkat fisik belum dijalankan, sehingga F7 sengaja belum dicentang penuh.
 
 ## 0. Cara Membaca Roadmap
 
@@ -155,7 +155,7 @@
 
 **Tugas:**
 - [x] `sw.js` precache penuh (shell + data + aset kunci), strategi per jenis (app-logic §11), banner "versi baru tersedia".
-- [ ] Audit performa: gambar WebP/AVIF final, audio < 20 KB/berkas, bundle inti < 150 KB gzip; Lighthouse ≥ 90/95/95/100 (perf/a11y/best-practice/seo) di halaman utama. **Catatan 10 Nov 2026: target Lighthouse tercapai (live median 95/100/100/100; CLS 0), tetapi audit aset final belum ditutup.**
+- [x] Audit performa: gambar WebP/AVIF final, audio < 20 KB/berkas, bundle inti < 150 KB gzip; Lighthouse ≥ 90/95/95/100 (perf/a11y/best-practice/seo) di halaman utama. **Catatan 11 Nov 2026: target Lighthouse tercapai (live median 95/100/100/100; CLS 0) dan anggaran aset dijaga `npm run audit:assets`: audio terbesar 19,0 KB, raster terbesar 273,0 KB, aplikasi 101,1 KB gzip.**
 - [x] Persistensi tahan versi: payload schema lebih baru dilindungi dari overwrite, backup berformat riwayat bisa dilihat/diunduh/dipulihkan dari Pengaturan dengan konfirmasi.
 - [ ] QA penuh checklist `app-logic.md` §15 + uji perangkat: Android kelas bawah, iOS Safari ≥ 15, desktop 2 browser.
 - [ ] Review konten oleh 1 praktisi keamanan/komunitas + uji kegunaan 5 lansia & 5 remaja; catat & perbaiki temuan kritis.
@@ -166,7 +166,8 @@
 - Lighthouse live bersih: **89/96/100/100**, FCP 1,2 s, LCP 1,8 s, TBT 400 ms, CLS 0.
 - Trace: long task **381 ms**; layout pertama **173 ms untuk 330 objek**; paint 27 ms.
 - Percobaan yang diuji dan direvert karena memperburuk metrik: CSS lazy + penundaan SW → live **80** (TBT 700 ms); `content-visibility` grid → live **88** (TBT 440 ms).
-- **Pembaruan 9 November 2026:** prerender shell beranda menghasilkan live 5 run **88/97/91/97/95 (median 95)** dengan A11y/BP/SEO 100 dan CLS 0; tiga run lokal **85/94/95 (median 94)**, TBT 0 ms pada dua run terakhir. Target performa ≥90 tercapai; F7 tetap terbuka untuk review/QA manusia dan audit aset final.
+- **Pembaruan 9 November 2026:** prerender shell beranda menghasilkan live 5 run **88/97/91/97/95 (median 95)** dengan A11y/BP/SEO 100 dan CLS 0; tiga run lokal **85/94/95 (median 94)**, TBT 0 ms pada dua run terakhir. Target performa ≥90 tercapai; F7 tetap terbuka untuk review/QA manusia.
+- **Pembaruan 11 November 2026:** audit anggaran aset masuk `npm run check`; batas audio 20 KB/berkas, raster 300 KB, SVG 100 KB, dan aplikasi 150 KB gzip. Pengukuran saat ini: audio terbesar 19,0 KB, raster terbesar 273,0 KB, aplikasi 101,1 KB gzip.
 
 **DoD rilis:**
 1. Semua checklist QA & gaya (styles.md §11) lolos.
@@ -188,7 +189,7 @@
 [x] F5d Pinjol                                  (79%)
 [x] F5e Kerja LN + Money Mule                   (82%)
 [x] F6  Ujian, sertifikat, lansia, sekolah, bantuan (92%)
-[ ] F7  PWA, QA, review, rilis v1.0             (belum: review & uji pengguna; audit aset final belum)
+[ ] F7  PWA, QA, review, rilis v1.0             (belum: review & uji pengguna)
 ```
 
 ## 10. Backlog Pasca-v1.0 (di luar 100% roadmap ini)

@@ -29,13 +29,18 @@ Semua path relatif, jadi aplikasi juga berjalan dari subfolder GitHub Pages (`/s
 ## Validasi
 
 ```bash
-npm run check                    # data + uji store + sinkronisasi shell beranda + sintaks inti
+npm run check                    # data + uji store + audit aset + sinkronisasi shell beranda + sintaks inti
 npm run test:store               # migrasi data lama, data korup, dan normalisasi state
+npm run audit:assets             # anggaran audio, gambar, dan bundle aplikasi
 npm run prerender:home           # tulis ulang shell index.html setelah mengubah home.js
 npm run verify:pwa -- http://localhost:4173/ bank-otp   # offline + metrik (Chrome/CDP)
 ```
 
 `npm run check` juga memastikan blok `.scr-home` dengan `data-prerendered-home="1"` di `index.html` persis sama dengan hasil render `js/screens/home.js`. Jika markup beranda berubah, jalankan `npm run prerender:home`; check akan gagal sampai shell diperbarui.
+
+### Anggaran aset
+
+`npm run audit:assets` menjaga aset runtime tetap ringan: audio maksimal 20 KB/berkas, gambar raster maksimal 300 KB, SVG maksimal 100 KB, dan seluruh JS + CSS + `index.html` maksimal 150 KB gzip. Audit 11 November 2026: 4 audio (terbesar 19,0 KB), 15 gambar (14 SVG, 1 raster; raster terbesar 273,0 KB), dan 58 berkas aplikasi (101,1 KB gzip). Semua berada di bawah anggaran.
 
 ### Pemulihan data
 
@@ -75,7 +80,7 @@ Hasil 5 November 2026 pada https://cingmen.github.io/scamurai/ (Chrome 150, Ligh
 | TTFB | 340 ms |
 | Total transfer | 165 KiB |
 
-Angka di atas adalah baseline 5 November 2026. Setelah itu beranda diprerender ke `index.html`: live 9 November 2026 memberi performance **88/97/91/97/95 (median 95)**, Accessibility/Best Practices/SEO **100/100/100**, dan CLS **0**; tiga run lokal setelah generator shell memberi **85/94/95 (median 94)**, dengan TBT 0 ms pada dua run terakhir. Target roadmap ≥90 sudah tercapai. Trace baseline lama menunjukkan satu long task 381 ms dan layout pertama 173 ms untuk 330 objek; percobaan CSS lazy, penundaan precache service worker, dan `content-visibility` pada grid yang menghasilkan live 80/88 sudah direvert. F7 belum dapat ditandai 100% karena review praktisi, uji kegunaan 5 lansia/5 remaja, dan uji perangkat fisik belum dijalankan. Tag `v1.0.0` yang sudah ada di repo menunjuk commit lama `c0ab2c1`; tag publik itu tidak dipindahkan karena gerbang rilis belum terpenuhi dan memindahkannya bersifat destruktif.
+Angka di atas adalah baseline 5 November 2026. Setelah itu beranda diprerender ke `index.html`: live 9 November 2026 memberi performance **88/97/91/97/95 (median 95)**, Accessibility/Best Practices/SEO **100/100/100**, dan CLS **0**; tiga run lokal setelah generator shell memberi **85/94/95 (median 94)**, dengan TBT 0 ms pada dua run terakhir. Target roadmap ≥90 sudah tercapai. Audit aset final juga sudah otomatis lewat `npm run audit:assets`: audio terbesar 19,0 KB, raster terbesar 273,0 KB, dan aplikasi 101,1 KB gzip—di bawah batas 20 KB/300 KB/150 KB. Trace baseline lama menunjukkan satu long task 381 ms dan layout pertama 173 ms untuk 330 objek; percobaan CSS lazy, penundaan precache service worker, dan `content-visibility` pada grid yang menghasilkan live 80/88 sudah direvert. F7 belum dapat ditandai 100% karena review praktisi, uji kegunaan 5 lansia/5 remaja, dan uji perangkat fisik belum dijalankan. Tag `v1.0.0` yang sudah ada di repo menunjuk commit lama `c0ab2c1`; tag publik itu tidak dipindahkan karena gerbang rilis belum terpenuhi dan memindahkannya bersifat destruktif.
 
 Perintah Lighthouse yang dipakai (jalur Chrome disesuaikan dengan sistem):
 
