@@ -435,7 +435,7 @@
         "Hubungi bank dan minta blokir kartu serta pembekuan rekening",
         "Ganti kata sandi aplikasi bank dan aktifkan verifikasi dua langkah",
         "Simpan bukti: nomor penelepon, SMS, mutasi, dan waktu kejadian",
-        "Lapor ke 122 dan lapor.go.id dengan nomor penerima",
+        "Lapor ke Aduan Konten Komdigi dan lapor.go.id dengan nomor penerima",
         "Waspadai telepon “tim pemulihan dana” yang meminta biaya"
       ],
       "explain": "Blokir lebih dulu agar kerugian berhenti, lalu amankan akun, simpan bukti, dan laporkan. Penipuan kedua sering datang mengaku bisa mengembalikan dana."
@@ -450,8 +450,8 @@
         "Blokir kartu lewat aplikasi bank atau call center resmi",
         "Ubah kata sandi akun penting dan aktifkan 2FA",
         "Periksa mutasi beberapa minggu ke depan",
-        "Laporkan domain palsu ke penyedia dan aduankonten.id",
-        "Lapor ke 122 dengan bukti SMS dan tangkapan layar"
+        "Laporkan domain palsu ke penyedia dan Aduan Konten Komdigi",
+        "Lapor ke Aduan Konten Komdigi dengan bukti SMS dan tangkapan layar"
       ],
       "explain": "Hentikan akses kartu dulu, amankan akun, pantau transaksi susulan, lalu laporkan bukti."
     },
@@ -481,7 +481,7 @@
         "Hubungi bank untuk meminta penahanan dana bila masih memungkinkan",
         "Laporkan rekening penerima ke cekrekening.id",
         "Simpan chat, tautan, dan bukti transfer",
-        "Lapor ke 122 dan lapor.go.id"
+        "Lapor ke Aduan Konten Komdigi dan lapor.go.id"
       ],
       "explain": "Mulai dari platform dan bank karena keduanya punya jalur cepat, lalu lengkapi laporan dengan bukti."
     },
@@ -495,7 +495,7 @@
         "Jangan meneruskan dana apa pun",
         "Hubungi bank dan jelaskan dana masuk yang tidak dikenal",
         "Simpan percakapan dan instruksi transfer sebagai bukti",
-        "Lapor ke 122 dan lapor.go.id",
+        "Lapor ke Aduan Konten Komdigi dan lapor.go.id",
         "Jangan menghapus chat atau mentransfer balik tanpa arahan bank"
       ],
       "explain": "Menghentikan aliran dana adalah prioritas. Bukti dan laporan melindungimu dari tuduhan sebagai pelaku."
@@ -510,7 +510,7 @@
         "Berhenti mengirim uang dan jangan menanggapi ancaman",
         "Simpan seluruh percakapan, foto profil, nomor, dan bukti transfer",
         "Blokir akun dan laporkan rekening penerima",
-        "Lapor ke 122 dan aduankonten.id",
+        "Lapor ke Aduan Konten Komdigi dan lapor.go.id",
         "Cari dukungan orang terpercaya atau bantuan psikologis"
       ],
       "explain": "Hentikan aliran uang, amankan bukti, putus kontak, lalu laporkan. Dukungan emosional penting karena korban sering merasa malu."

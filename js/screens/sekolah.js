@@ -41,7 +41,7 @@ function teacherSheet(manifest) {
           h('tr', null, h('td', null, '12 menit'), h('td', null, 'Skenario Task Scam'), h('td', null, 'Siswa bermain sendiri; guru tidak memberi jawaban di tengah.')),
           h('tr', null, h('td', null, '12 menit'), h('td', null, 'Skenario Bank & OTP'), h('td', null, 'Minta siswa mencatat satu kalimat yang membuat panik.')),
           h('tr', null, h('td', null, '10 menit'), h('td', null, 'Debrief berpasangan'), h('td', null, 'Bandingkan akhir yang berbeda dan langkah pemulihan.')),
-          h('tr', null, h('td', null, '6 menit'), h('td', null, 'Diskusi kelas & penutup'), h('td', null, 'Gunakan pertanyaan di bawah; tutup dengan kanal 122 dan OJK 157.')),
+          h('tr', null, h('td', null, '6 menit'), h('td', null, 'Diskusi kelas & penutup'), h('td', null, 'Gunakan pertanyaan di bawah; tutup dengan kanal Aduan Konten Komdigi dan OJK 157.')),
         ),
       ),
       h('h2', null, 'Pertanyaan diskusi'),

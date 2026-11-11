@@ -28,7 +28,7 @@
       "difficulty": 2,
       "minutes": 12,
       "summary": "Telepon dari “petugas bank” soal transaksi mencurigakan, lalu permintaan OTP untuk membatalkannya. Satu digit bisa menguras tabungan.",
-      "learning": ["Bank tidak pernah meminta OTP", "Verifikasi lewat kanal resmi di aplikasi", "Hotline 122 / OJK 157 saat panik"],
+      "learning": ["Bank tidak pernah meminta OTP", "Verifikasi lewat kanal resmi di aplikasi", "Aduan Konten Komdigi / OJK 157 saat panik"],
       "requirements": null,
       "order": 2
     },

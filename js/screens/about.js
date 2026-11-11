@@ -1,11 +1,13 @@
 // Halaman Tentang: kredit, lisensi, sumber, dan disclaimer (ROADMAP F7).
-import { all, get } from '../core/store.js';
+import { all } from '../core/store.js';
+import { loadJSON } from '../core/loader.js';
 import { h, clear } from '../core/dom.js';
 import { dateID } from '../core/format.js';
 
 export async function render(root) {
   const state = all();
-  const bantuanDate = get('meta.lastSeen', new Date().toISOString());
+  const bantuan = await loadJSON('./data/bantuan.json');
+  const bantuanDate = bantuan.verifiedAt || state.meta?.lastSeen || new Date().toISOString();
   clear(root);
 
   root.append(h('div', { class: 'scr-home' },
@@ -52,8 +54,8 @@ export async function render(root) {
         }, 'Repositori GitHub ↗'),
       ),
       h('p', { class: 'u-small u-muted u-mt-3' },
-        'Kanal resmi di Pusat Bantuan dicek manual dan diberi tanggal verifikasi. Data statistik sosial sengaja dikosongkan sampai ada sumber yang dapat diperiksa. ',
-        `Tanggal data terakhir diperbarui: ${dateID(bantuanDate)}.`,
+        'Kanal resmi di Pusat Bantuan dicek dan diberi tanggal verifikasi. Data statistik sosial sengaja dikosongkan sampai ada sumber yang dapat diperiksa. ',
+        `Tanggal verifikasi kanal resmi: ${dateID(bantuanDate)}.`,
       ),
     ),
     h('section', { class: 'c-card c-card--accent u-mt-4' },

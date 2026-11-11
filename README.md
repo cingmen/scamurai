@@ -12,7 +12,7 @@ Dojo simulasi anti-penipuan berbahasa Indonesia. Kamu memainkan penipuan sungguh
 - **Ujian akhir:** pool 40 soal, 20 soal per percobaan, tiga tipe soal, lulus ≥ 80.
 - **Sertifikat:** canvas 1200×850, kode deterministik, unduh/bagikan. Bukti edukasi komunitas, bukan sertifikasi resmi.
 - **Mode Lansia & Sekolah:** teks besar tanpa timer, varian Bank & OTP 8 langkah dengan maksimal dua pilihan per layar, paket 45 menit, lembar guru siap cetak, kartu kemajuan siswa.
-- **Pusat Bantuan:** alur "baru saja kena", kanal resmi, dan langkah pemulihan — bisa dibuka offline.
+- **Pusat Bantuan:** alur "baru saja kena", kanal resmi (lapor.go.id, cekrekening.id, Aduan Konten Komdigi, OJK 157), tanggal verifikasi, dan langkah pemulihan — bisa dibuka offline.
 - **PWA:** service worker, cache data, dan progres lokal di `scamurai.v1`.
 
 ## Menjalankan lokal

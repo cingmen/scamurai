@@ -11,10 +11,11 @@ import { rupiah, dateID } from '../core/format.js';
 
 export async function render(root, { params }) {
   const id = params[0];
-  const [manifest, scenario, scamdex] = await Promise.all([
+  const [manifest, scenario, scamdex, bantuan] = await Promise.all([
     loadJSON('./data/manifest.json'),
     loadJSON(`./data/scenarios/${id}.json`),
     loadJSON('./data/scamdex.json'),
+    loadJSON('./data/bantuan.json'),
   ]);
 
   const meta = manifest.scenarios.find((item) => item.id === id) || { title: scenario.title };
@@ -135,7 +136,7 @@ export async function render(root, { params }) {
         h('a', { class: 'c-btn c-btn--danger', href: '#/bantuan' }, 'Buka Pusat Bantuan'),
         h('a', {
           class: 'c-btn c-btn--ghost',
-          href: 'https://cekrekening.id',
+          href: 'https://cekrekening.id/',
           target: '_blank',
           rel: 'noopener noreferrer',
         }, 'Cek rekening ↗'),
@@ -182,6 +183,6 @@ export async function render(root, { params }) {
       h('a', { class: 'c-btn c-btn--ghost', href: '#/scamdex' }, 'Buka ScamDEX'),
       h('a', { class: 'c-btn c-btn--quiet', href: `#/skenario/${id}` }, 'Ulangi skenario'),
     ),
-    h('p', { class: 'u-small u-faint u-center' }, `Data kanal resmi terakhir diverifikasi ${dateID(get('meta.lastSeen', new Date().toISOString()))}.`),
+    h('p', { class: 'u-small u-faint u-center' }, `Data kanal resmi terakhir diverifikasi ${dateID(bantuan.verifiedAt)}.`),
   ));
 }

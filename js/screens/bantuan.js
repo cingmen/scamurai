@@ -3,6 +3,12 @@ import { loadJSON } from '../core/loader.js';
 import { h, clear } from '../core/dom.js';
 import { dateID } from '../core/format.js';
 
+const LINKS = {
+  lapor: 'https://www.lapor.go.id/',
+  cekrekening: 'https://cekrekening.id/',
+  aduan: 'https://wasdig.komdigi.go.id/kontak',
+};
+
 export async function render(root) {
   const data = await loadJSON('./data/bantuan.json');
   let activeBranch = data.branches[0]?.id || null;
@@ -26,10 +32,15 @@ export async function render(root) {
       ));
     });
     flow.append(h('div', { class: 'u-row u-mt-4' },
-      h('a', { class: 'c-btn c-btn--danger', href: 'tel:122' }, 'Telepon 122'),
       h('a', {
         class: 'c-btn c-btn--ghost',
-        href: 'https://lapor.go.id',
+        href: LINKS.aduan,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      }, 'Aduan Konten Komdigi ↗'),
+      h('a', {
+        class: 'c-btn c-btn--ghost',
+        href: LINKS.lapor,
         target: '_blank',
         rel: 'noopener noreferrer',
       }, 'Buka lapor.go.id ↗'),
@@ -79,7 +90,7 @@ export async function render(root) {
     h('section', null,
       h('h2', { class: 'section-title' }, 'Cek rekening atau akun'),
       h('div', { class: 'c-card' },
-        h('p', null, 'Sebelum bertransaksi, periksa nomor rekening penerima di cekrekening.id. Situs ini dikelola untuk menerima laporan rekening yang diduga dipakai penipuan.'),
+        h('p', null, 'Sebelum bertransaksi, periksa nomor rekening penerima di cekrekening.id. Situs resmi Kementerian Komdigi ini menerima laporan rekening yang diduga dipakai penipuan.'),
         h('ol', { class: 'c-brief-list u-mt-3' },
           h('li', null, 'Buka cekrekening.id dari browser, bukan dari tautan yang dikirim orang lain.'),
           h('li', null, 'Masukkan nomor rekening dan pilih bank penerbit.'),
@@ -88,7 +99,7 @@ export async function render(root) {
         ),
         h('a', {
           class: 'c-btn c-btn--primary u-mt-4',
-          href: 'https://cekrekening.id',
+          href: LINKS.cekrekening,
           target: '_blank',
           rel: 'noopener noreferrer',
         }, 'Buka cekrekening.id ↗'),

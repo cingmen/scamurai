@@ -99,7 +99,7 @@ Karena Scamurai tidak memiliki backend, metrik kuantitatif server-side tidak ter
 
 ## 4. Non-Goals (Di Luar Lingkup)
 
-- **Bukan forum pengaduan resmi.** Scamurai mengarahkan ke kanal resmi (cekrekening.id, lapor.go.id, hotline), tidak mengelola aduan.
+- **Bukan forum pengaduan resmi.** Scamurai mengarahkan ke kanal resmi (cekrekening.id, lapor.go.id, Aduan Konten Komdigi), tidak mengelola aduan.
 - **Bukan simulator penipuan aktif.** Tidak ada konten yang dapat disalahgunakan sebagai panduan menipu; skrip penipu di dalam debrief disajikan sebagai anatomi, bukan resep siap pakai.
 - **Bukan aplikasi native / Play Store.** Web PWA saja.
 - **Bukan platform multi-pemain.** Semua interaksi adalah pengguna vs. simulasi.
@@ -181,7 +181,7 @@ Setiap skenario memiliki struktur tetap: **Pengantar (brief) → Simulasi di dal
 - **Alur:** SMS asli-ish → telepon masuk dengan skrip menekan (kasus pencucian uang, ancaman akun dibekukan) → muncul input OTP palsu → opsional: pindah ke "halaman resmi" (BrowserMini) yang alamatnya mirip.
 - **Mekanik:** UI telepon tiruan (layar memanggil, timer); pengguna bisa memilih *menutup telepon dan menelpon nomor resmi di aplikasi bank* — jalur benar; mengetik OTP → konsekuensi dramatis (saldo keluar per detik).
 - **Akhir:** *Tegas & verifikasi ulang*, *Kena (OTP dibagikan)* dengan debrief animasi aliran uang, *Hampir kena*.
-- **Pelajaran inti:** bank **tidak pernah** meminta OTP; verifikasi memakai kanal resmi; 122/157 sebagai jalur aman.
+- **Pelajaran inti:** bank **tidak pernah** meminta OTP; verifikasi memakai kanal resmi; Aduan Konten Komdigi/OJK 157 sebagai jalur aman.
 
 ### 8.3 Pinjol Ilegal — "Cepat Cair, Selamanya Merunduk"
 - **Premis:** Butuh uang cepat; iklan "cair 5 menit tanpa jaminan". Aplikasi CairDuit meminta izin kontak, foto KTP, saldo, lalu mencairkan jumlah lebih kecil dari yang dijanjikan dengan tenor pendek.
@@ -327,7 +327,7 @@ Setiap skenario diakhiri debrief 3 bagian:
 
 1. **Anatomi serangan** — timeline visual langkah demi langkah dengan naskah penipu (apa tujuan tiap pesan).
 2. **Aliran uang** — diagram mule → penadah → luar negeri (statis, ilustratif, tanpa detail operasional).
-3. **Jika ini terjadi sungguhan** — langkah pemulihan bernomor + tautan kanal resmi (cekrekening.id, lapor.go.id, hotline 122, OJK 157).
+3. **Jika ini terjadi sungguhan** — langkah pemulihan bernomor + tautan kanal resmi (cekrekening.id, lapor.go.id, Aduan Konten Komdigi, OJK 157).
 
 Debrief Mode Lansia menampilkan versi teks besar 5 langkah tanpa diagram.
 
@@ -360,9 +360,9 @@ Debrief Mode Lansia menampilkan versi teks besar 5 langkah tanpa diagram.
 
 Halaman satu-akses untuk korban aktif (dapat dibuka langsung dari landing):
 
-1. **Yang baru terjadi padamu?** — alur bantu: (a) uang sudah terkirim → langkah darurat (hubungi bank, blokir, lapor 122); (b) data pribadi bocor → amankan akun; (c) belum kirim apa pun → tutup kontak & simpan bukti.
+1. **Yang baru terjadi padamu?** — alur bantu: (a) uang sudah terkirim → langkah darurat (hubungi bank, blokir, lapor Aduan Konten Komdigi); (b) data pribadi bocor → amankan akun; (c) belum kirim apa pun → tutup kontak & simpan bukti.
 2. **Cek rekening/akun** — tautan dan penjelasan cekrekening.id (cara pakai).
-3. **Lapor** — kanal resmi: lapor.go.id, aduankonten, hotline 122, OJK 157 (pinjol/investasi) — masing-masing dengan "kapan pakai yang mana" dalam tabel sederhana.
+3. **Lapor** — kanal resmi: lapor.go.id, Aduan Konten Komdigi, OJK 157 (pinjol/investasi) — masing-masing dengan "kapan pakai yang mana" dalam tabel sederhana.
 4. **Bantuan psikologis** — pesan destigmatizing + arahan menghubungi orang terpercaya; tanpa nama layanan yang tak terverifikasi.
 - Konten halaman ini dikelola sebagai `data/bantuan.json` agar mudah diperbarui; **nomor dan tautan wajib diverifikasi ulang sebelum setiap rilis** (lihat §21.5).
 
@@ -422,7 +422,7 @@ Tiap skenario menyertakan: tujuan pembelajaran, ≥3 red flags interaktif, ≥2 
 Watermark "SIMULASI — semua data fiktif" di setiap layar tiruan; logo tiruan dibuat berbeda nyata; tidak ada teknik yang dapat langsung disalin untuk menipu (tanpa kit serangan).
 
 ### 21.5 Pembaruan informasi kanal resmi
-Nomor hotline/URL kanal resmi direview tiap rilis; halaman Pusat Bantuan menampilkan tanggal terakhir diverifikasi.
+Nomor/URL kanal resmi direview tiap rilis; halaman Pusat Bantuan menampilkan tanggal terakhir diverifikasi.
 
 ---
 

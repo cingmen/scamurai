@@ -22,7 +22,7 @@
       ],
       "report": [
         "Simpan tangkapan layar dan mutasi.",
-        "Lapor ke aduankonten.id dan lapor.go.id.",
+        "Lapor ke Aduan Konten Komdigi dan lapor.go.id.",
         "Hubungi bank untuk memblokir rekening penerima."
       ],
       "variants": []
@@ -48,7 +48,7 @@
       ],
       "report": [
         "Hubungi bank untuk memblokir kartu dan rekening.",
-        "Lapor ke 122 atau lapor.go.id.",
+        "Lapor ke Aduan Konten Komdigi atau lapor.go.id.",
         "Polisikan bila kerugian besar; bawa bukti mutasi."
       ],
       "variants": [
@@ -107,7 +107,7 @@
       ],
       "report": [
         "Laporkan penjual ke platform.",
-        "Lapor ke cekrekening.id dan 122.",
+        "Lapor ke cekrekening.id dan Aduan Konten Komdigi.",
         "Simpan percakapan dan bukti transfer."
       ],
       "variants": []
@@ -159,7 +159,7 @@
       ],
       "report": [
         "Tutup rekening dan laporkan ke bank segera.",
-        "Lapor ke 122 dan lapor.go.id.",
+        "Lapor ke Aduan Konten Komdigi dan lapor.go.id.",
         "Simpan bukti komunikasi; jangan meneruskan dana."
       ],
       "variants": []
@@ -185,7 +185,7 @@
       ],
       "report": [
         "Simpan bukti chat dan transfer.",
-        "Lapor ke 122, aduankonten.id, dan lapor.go.id.",
+        "Lapor ke Aduan Konten Komdigi dan lapor.go.id.",
         "Ceritakan ke orang terpercaya — jangan menanggung sendirian."
       ],
       "variants": [
@@ -219,7 +219,7 @@
       "report": [
         "Blokir kartu dan ubah kata sandi dari perangkat aman.",
         "Aktifkan 2FA dan periksa transaksi.",
-        "Lapor ke aduankonten.id, 122, dan bank."
+        "Lapor ke Aduan Konten Komdigi dan bank."
       ],
       "variants": [
         {
