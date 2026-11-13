@@ -1,6 +1,6 @@
 # Scamurai
 
-Dojo simulasi anti-penipuan berbahasa Indonesia. Kamu memainkan penipuan sungguhan di dalam ponsel tiruan — lengkap dengan konsekuensi, debrief di balik layar penipu, dan langkah pemulihan. Semua uang, nomor, rekening, dan merek adalah fiktif.
+Dojo simulasi anti-penipuan dengan teks asli Indonesia. Kamu memainkan penipuan sungguhan di dalam ponsel tiruan — lengkap dengan konsekuensi, debrief di balik layar penipu, dan langkah pemulihan. Semua uang, nomor, rekening, dan merek adalah fiktif.
 
 **Situs:** https://cingmen.github.io/scamurai/
 
@@ -15,6 +15,7 @@ Dojo simulasi anti-penipuan berbahasa Indonesia. Kamu memainkan penipuan sungguh
 - **Mode Lansia & Sekolah:** teks besar tanpa timer, varian Bank & OTP 8 langkah dengan maksimal dua pilihan per layar, paket 45 menit, kuis kelas 10 soal tanpa timer, lembar guru siap cetak, kartu kemajuan siswa.
 - **Pusat Bantuan:** alur "baru saja kena", kanal resmi (lapor.go.id, cekrekening.id, Aduan Konten Komdigi, OJK 157), tanggal verifikasi, dan langkah pemulihan — bisa dibuka offline.
 - **PWA:** service worker, cache data, dan progres lokal di `scamurai.v1`.
+- **Bahasa:** katalog `id`, `jv-ID` (Jawa ngoko), dan `en`; pemilih bahasa persisten di Pengaturan dengan fallback locale → Indonesia → teks sumber. `jv-ID` dan `en` masih **draf mesin** dan menunggu review penutur asli.
 
 ## Menjalankan lokal
 
@@ -32,6 +33,7 @@ Semua path relatif, jadi aplikasi juga berjalan dari subfolder GitHub Pages (`/s
 ```bash
 npm run check                    # data + uji store + audit aset + sinkronisasi shell beranda + sintaks inti
 npm run test:store               # migrasi data lama, data korup, dan normalisasi state
+npm run test:i18n                # pemilihan locale, fallback, dan cakupan data
 npm run test:exam                # pool 10/20 soal, anti-repetisi, dan penilaian ujian
 npm run audit:assets             # anggaran audio, gambar, dan bundle aplikasi
 npm run prerender:home           # tulis ulang shell index.html setelah mengubah home.js
@@ -42,7 +44,7 @@ npm run verify:pwa -- http://localhost:4173/ bank-otp   # offline + metrik (Chro
 
 ### Anggaran aset
 
-`npm run audit:assets` menjaga aset runtime tetap ringan: audio maksimal 20 KB/berkas, gambar raster maksimal 300 KB, SVG maksimal 100 KB, dan seluruh JS + CSS + `index.html` maksimal 150 KB gzip. Audit 11 November 2026: 4 audio (terbesar 19,0 KB), 15 gambar (14 SVG, 1 raster; raster terbesar 273,0 KB), dan 59 berkas aplikasi (102,1 KB gzip). Semua berada di bawah anggaran.
+`npm run audit:assets` menjaga aset runtime tetap ringan: audio maksimal 20 KB/berkas, gambar raster maksimal 300 KB, SVG maksimal 100 KB, dan seluruh JS + CSS + `index.html` maksimal 150 KB gzip. Audit 13 November 2026: 4 audio (terbesar 19,0 KB), 20 gambar (19 SVG, 1 raster; raster terbesar 273,1 KB), dan 65 berkas aplikasi (114,8 KB gzip). Semua berada di bawah anggaran.
 
 ### Pemulihan data
 
@@ -55,6 +57,12 @@ CI menjalankan `npm run check` dan mem-parse semua modul pada setiap push dan pu
 - varian Mode Lansia memakai 8 langkah, maksimal dua pilihan per layar, dan semua ending-nya dapat dicapai;
 - struktur VN (node, choice, endingRules), minigame ≥ 40 beat, pool ujian ≥ 40 soal;
 - tidak ada `TODO`/placeholder di data inti.
+
+## Lokalisasi
+
+Katalog ada di `i18n/id.json`, `i18n/jv-ID.json`, dan `i18n/en.json`. Katalog memakai teks Indonesia sebagai kunci; kunci yang belum ada kembali ke teks Indonesia, lalu ke kunci asli. Pilihan bahasa disimpan di `settings.locale` dan dipertahankan setelah reload. UI memakai katalog lewat helper DOM, sedangkan data skenario, ScamDEX, ujian, bantuan, sekolah, dan Studio dilokalkan di loader JSON.
+
+`jv-ID` dan `en` adalah **draf mesin**, bukan terjemahan tervalidasi. Keduanya belum diverifikasi oleh penutur asli; jangan menganggap lokalisasi selesai sebelum ada review satu penutur asli Jawa dan satu editor bahasa Inggris. Tes `npm run test:i18n` memeriksa pemilihan/fallback serta memastikan seluruh string data 13 skenario ada di kedua katalog.
 
 ## Verifikasi PWA & performa
 

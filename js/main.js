@@ -5,6 +5,7 @@ import { startRouter } from './router.js';
 import { showToast } from './components/toast.js';
 import { unlockAudio } from './core/sfx.js';
 import { rupiah } from './core/format.js';
+import { ensureI18n, localizeDocument, startDomLocalization } from './core/i18n.js';
 
 const root = document.documentElement;
 
@@ -95,6 +96,9 @@ async function maybeOnboard() {
 }
 
 async function boot() {
+  await ensureI18n();
+  localizeDocument();
+  startDomLocalization();
   applyAppearance();
   updateHeader();
   initAudioUnlock();

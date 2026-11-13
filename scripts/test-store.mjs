@@ -366,6 +366,21 @@ test('impor gabung mempertahankan progres lokal dan menambah progres kode', asyn
   assert.equal(merged.stats.scenariosCompleted, 1);
 });
 
+test('locale default id dan pilihan jv-ID dipertahankan', async () => {
+  const fallback = await loadStore(JSON.stringify({ schemaVersion: 1 }));
+  assert.equal(fallback.store.all().settings.locale, 'id');
+  assert.equal(backupRaw(fallback.storage), null, 'locale default tidak perlu dicadangkan');
+
+  const valid = await loadStore(JSON.stringify({ schemaVersion: 1, settings: { locale: 'jv-ID' } }));
+  assert.equal(valid.store.all().settings.locale, 'jv-ID');
+  assert.equal(valid.store.persist(), true);
+  assert.equal(JSON.parse(valid.storage.getItem(NS)).settings.locale, 'jv-ID');
+
+  const invalid = await loadStore(JSON.stringify({ schemaVersion: 1, settings: { locale: 'fr' } }));
+  assert.equal(invalid.store.all().settings.locale, 'id');
+  assert.ok(backupRaw(invalid.storage), 'locale tidak dikenal harus dinormalkan dan dicadangkan');
+});
+
 
 let failed = 0;
 for (const { name, fn } of tests) {

@@ -886,6 +886,123 @@ async function main() {
       };
     })()`);
 
+    // Lokalisasi: pilih en → jv-ID → id, reload persisten, lalu pastikan UI,
+    // judul skenario, dan langkah pertama benar-benar berubah.
+    await evalValue(`location.hash = '#/pengaturan'`);
+    await waitFor(
+      `Boolean(document.querySelector('[data-language-select]'))`,
+      Boolean,
+      'pemilih bahasa',
+    );
+    const enWords = await evalValue(`fetch('./i18n/en.json').then((r) => r.json()).then((d) => ({
+      title: d.strings['Pesanan yang Menggugah'],
+      step: d.strings['Selasa, 09.12'],
+      start: d.strings['Mulai simulasi'],
+      replay: d.strings['Mainkan lagi'],
+      language: d.strings['Bahasa'],
+    }))`);
+    let reload = cdp.wait('Page.loadEventFired', session);
+    await evalValue(`document.querySelector('[data-language-select] button[data-value="en"]').click()`);
+    await reload;
+    await waitFor(
+      `document.documentElement.lang`,
+      (value) => value === 'en',
+      'locale en setelah reload',
+    );
+    const enSettings = await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes(enWords.language || 'Language'),
+      'UI en setelah reload',
+    );
+    const enStored = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').settings?.locale || ''`);
+    await evalValue(`location.hash = '#/skenario/task-scam'`);
+    const enScenario = await waitFor(
+      `document.querySelector('#app h1')?.textContent?.trim() || ''`,
+      (title) => title === enWords.title,
+      'judul skenario en',
+    );
+    const enStarted = await evalValue(`(() => {
+      const labels = new Set([${JSON.stringify(enWords.start)}, ${JSON.stringify(enWords.replay)}].filter(Boolean));
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => labels.has(node.textContent.trim())
+          || /^(Start|Play)/.test(node.textContent.trim()));
+      if (!button) return false;
+      button.click();
+      return true;
+    })()`);
+    const enStep = await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes(enWords.step),
+      'langkah skenario en',
+    );
+
+    await evalValue(`location.hash = '#/pengaturan'`);
+    await waitFor(
+      `Boolean(document.querySelector('[data-language-select]'))`,
+      Boolean,
+      'pengaturan sebelum jv-ID',
+    );
+    const jvWords = await evalValue(`fetch('./i18n/jv-ID.json').then((r) => r.json()).then((d) => ({
+      title: d.strings['Pesanan yang Menggugah'],
+      step: d.strings['Selasa, 09.12'],
+      start: d.strings['Mulai simulasi'],
+      replay: d.strings['Mainkan lagi'],
+    }))`);
+    reload = cdp.wait('Page.loadEventFired', session);
+    await evalValue(`document.querySelector('[data-language-select] button[data-value="jv-ID"]').click()`);
+    await reload;
+    await waitFor(
+      `document.documentElement.lang`,
+      (value) => value === 'jv-ID',
+      'locale jv-ID setelah reload',
+    );
+    const jvStored = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').settings?.locale || ''`);
+    await evalValue(`location.hash = '#/skenario/task-scam'`);
+    const jvScenario = await waitFor(
+      `document.querySelector('#app h1')?.textContent?.trim() || ''`,
+      (title) => title === jvWords.title,
+      'judul skenario jv-ID',
+    );
+    await evalValue(`(() => {
+      const labels = new Set([${JSON.stringify(jvWords.start)}, ${JSON.stringify(jvWords.replay)}].filter(Boolean));
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => labels.has(node.textContent.trim())
+          || /^(Wiwiti|Baleni|Main)/.test(node.textContent.trim()));
+      button?.click();
+    })()`);
+    const jvStep = await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes(jvWords.step),
+      'langkah skenario jv-ID',
+    );
+
+    await evalValue(`location.hash = '#/pengaturan'`);
+    await waitFor(
+      `Boolean(document.querySelector('[data-language-select]'))`,
+      Boolean,
+      'pengaturan sebelum id',
+    );
+    reload = cdp.wait('Page.loadEventFired', session);
+    await evalValue(`document.querySelector('[data-language-select] button[data-value="id"]').click()`);
+    await reload;
+    await waitFor(
+      `document.documentElement.lang`,
+      (value) => value === 'id',
+      'locale id setelah reload',
+    );
+    const idStored = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').settings?.locale || ''`);
+    await evalValue(`location.hash = '#/'`);
+    const idHome = await waitFor(
+      `document.querySelector('#app h1')?.textContent?.trim() || ''`,
+      (heading) => heading === offlineShell.heading,
+      'beranda id kembali identik',
+    );
+    const i18n = {
+      en: { lang: 'en', stored: enStored, title: enScenario, step: enStep.includes(enWords.step), settings: enSettings.includes(enWords.language || 'Language') },
+      jv: { lang: 'jv-ID', stored: jvStored, title: jvScenario, step: jvStep.includes(jvWords.step) },
+      id: { lang: 'id', stored: idStored, heading: idHome === offlineShell.heading },
+    };
+
     const pass = networkBlocked === true
       && offlineShell.controlled
       && offlineShell.heading.length > 0
@@ -935,6 +1052,9 @@ async function main() {
       && studioLoaded === true
       && studioValid.includes('Paket valid')
       && studioRejects.includes('JSON tidak valid')
+      && i18n.en.lang === 'en' && i18n.en.stored === 'en' && i18n.en.step && i18n.en.settings
+      && i18n.jv.lang === 'jv-ID' && i18n.jv.stored === 'jv-ID' && i18n.jv.step
+      && i18n.id.lang === 'id' && i18n.id.stored === 'id' && i18n.id.heading
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -987,6 +1107,7 @@ async function main() {
           valid: studioValid.includes('Paket valid'),
           rejectsInvalidJson: studioRejects.includes('JSON tidak valid'),
         },
+        i18n,
         data: offlineData,
         networkFailures: pageFailures.length,
       },

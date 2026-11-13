@@ -6,6 +6,7 @@ import { showToast } from './components/toast.js';
 import { hasPassedFinalExam } from './core/exam.js';
 import { closeModal } from './components/modal.js';
 import { h, replace } from './core/dom.js';
+import { localizeDom } from './core/i18n.js';
 
 const ROUTES = [
   { name: 'home', pattern: /^\/?$/, load: () => import('./screens/home.js') },
@@ -169,6 +170,7 @@ async function performNavigate(force = false) {
     currentName = 'home';
     setImmersive(false);
     updateNav('home');
+    localizeDom(appEl);
     emit('route:change', { from: null, to: 'home', path });
     return;
   }
@@ -191,6 +193,7 @@ async function performNavigate(force = false) {
   try {
     const module = await matched.load();
     const result = await module.render(appEl, { params, path });
+    localizeDom(appEl);
     cleanup = typeof result === 'function' ? result : null;
     emit('route:change', { from: previous, to: matched.name, path });
   } catch (err) {

@@ -11,8 +11,9 @@
     "test:store": "node scripts/test-store.mjs",
     "test:exam": "node scripts/test-exam.mjs",
     "test:reminder": "node scripts/test-reminder.mjs",
+    "test:i18n": "node scripts/test-i18n.mjs",
     "audit:assets": "node scripts/audit-assets.mjs",
-    "check": "node scripts/validate-data.mjs && node scripts/test-store.mjs && node scripts/test-exam.mjs && node scripts/test-reminder.mjs && node scripts/test-studio.mjs && node scripts/audit-assets.mjs && node scripts/prerender-home.mjs --check && node --check sw.js && node --check js/main.js && node --check js/router.js",
+    "check": "node scripts/validate-data.mjs && node scripts/test-store.mjs && node scripts/test-exam.mjs && node scripts/test-reminder.mjs && node scripts/test-i18n.mjs && node scripts/test-studio.mjs && node scripts/audit-assets.mjs && node scripts/prerender-home.mjs --check && node --check sw.js && node --check js/main.js && node --check js/router.js",
     "test:studio": "node scripts/test-studio.mjs"
   }
 }

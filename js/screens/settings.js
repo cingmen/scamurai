@@ -7,6 +7,7 @@ import { h, clear } from '../core/dom.js';
 import { showToast } from '../components/toast.js';
 import { confirmModal } from '../components/modal.js';
 import { dateTimeID } from '../core/format.js';
+import { setLocale } from '../core/i18n.js';
 
 const BACKUP_REASONS = {
   parse: 'JSON tidak bisa dibaca',
@@ -38,6 +39,7 @@ function seg(options, current, onPick, { disabled = false } = {}) {
   options.forEach((option) => {
     const button = h('button', {
       type: 'button',
+      'data-value': String(option.value),
       'aria-pressed': option.value === current ? 'true' : 'false',
       disabled,
       onclick: () => {
@@ -85,6 +87,19 @@ export async function render(root) {
   const reminder = settings.reminder;
 
   clear(root);
+
+  const language = h('section', { class: 'c-card', 'data-language-select': '1' },
+    h('h2', { class: 'section-title' }, 'Bahasa'),
+    row('Bahasa antarmuka', 'Indonesia adalah teks asli. Jawa dan Inggris masih draf dan belum ditinjau penutur asli.', seg([
+      { value: 'id', label: 'Indonesia' },
+      { value: 'jv-ID', label: 'Jawa (draf)' },
+      { value: 'en', label: 'English (draft)' },
+    ], settings.locale || 'id', (value) => {
+      setLocale(value);
+      window.location.reload();
+    })),
+    h('p', { class: 'u-small u-muted' }, 'Pilihan bahasa disimpan di perangkat ini dan dipakai untuk UI, skenario, ujian, sekolah, serta Studio.'),
+  );
 
   const appearance = h('section', { class: 'c-card' },
     h('h2', { class: 'section-title' }, 'Tampilan'),
@@ -378,6 +393,7 @@ export async function render(root) {
       h('h1', null, 'Atur dojo sesuai caramu'),
       h('p', null, 'Semua perubahan tersimpan di perangkat ini saja. Tidak ada yang dikirim ke server.'),
     ),
+    language,
     appearance,
     rhythm,
     mode,

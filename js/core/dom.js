@@ -1,5 +1,6 @@
 // Helper DOM kecil. Semua teks dari data JSON masuk sebagai text node,
 // tidak pernah sebagai HTML mentah (PRD §19.6).
+import { t } from './i18n.js';
 
 /** Buat elemen. attrs: class,dataset,style,on*,aria-*, atau atribut lain. */
 export function h(tag, attrs = null, ...children) {
@@ -10,7 +11,7 @@ export function h(tag, attrs = null, ...children) {
       if (key === 'class') node.className = value;
       else if (key === 'dataset') Object.assign(node.dataset, value);
       else if (key === 'style' && typeof value === 'object') Object.assign(node.style, value);
-      else if (key === 'text') node.textContent = String(value);
+      else if (key === 'text') node.textContent = t(String(value));
       else if (key.startsWith('on') && typeof value === 'function') {
         node.addEventListener(key.slice(2).toLowerCase(), value);
       } else if (value === true) node.setAttribute(key, '');
@@ -27,7 +28,7 @@ export function append(parent, children) {
     if (child === null || child === undefined || child === false) continue;
     if (Array.isArray(child)) append(parent, child);
     else if (child instanceof Node) parent.appendChild(child);
-    else parent.appendChild(document.createTextNode(String(child)));
+    else parent.appendChild(document.createTextNode(t(String(child))));
   }
   return parent;
 }

@@ -1,6 +1,7 @@
 // Store tunggal + persistensi localStorage (app-logic.md §1–2).
 import { emit } from './events.js';
 import { fnv1a } from './format.js';
+import { normalizeLocale } from './i18n-core.js';
 
 const NS = 'scamurai.v1';
 const SW_ACK = 'scamurai.v1.sw-ack';
@@ -22,6 +23,7 @@ export function defaultState() {
     settings: {
       theme: 'sumi',
       fontScale: 'normal',
+      locale: 'id',
       mode: 'standar',
       sfx: true,
       haptics: true,
@@ -127,6 +129,11 @@ function normalizeState(raw) {
       next.settings.reminder.intervalDays = base.settings.reminder.intervalDays;
       repaired = true;
     }
+  }
+  const locale = normalizeLocale(next.settings.locale);
+  if (locale !== next.settings.locale) {
+    next.settings.locale = locale;
+    repaired = true;
   }
   if (!Array.isArray(next.vn.saves)) {
     next.vn.saves = [...base.vn.saves];
