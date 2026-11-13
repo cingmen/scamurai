@@ -512,6 +512,18 @@ async function main() {
     })()`);
     await evalValue(`new Promise((resolve) => setTimeout(resolve, 400))`);
     const reminderSettings = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').settings?.reminder || {}`);
+    const syncCode = await evalValue(`(() => {
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => node.textContent.trim() === 'Tampilkan kode');
+      if (!button) return { prefix: '', length: 0, mergeButton: false };
+      button.click();
+      const field = document.querySelector('[data-sync-code]');
+      return {
+        prefix: (field?.value || '').split('.')[0] || '',
+        length: (field?.value || '').length,
+        mergeButton: Boolean(document.querySelector('[data-sync-merge]')),
+      };
+    })()`);
     await evalValue(`location.hash = '#/'`);
     const practiceReminder = await waitFor(
       `(() => {
@@ -863,6 +875,9 @@ async function main() {
       && certificateState.code === certificateAction.code
       && reminderSettings.enabled === true
       && reminderSettings.intervalDays === 3
+      && syncCode.prefix === 'SCR2'
+      && syncCode.length > 200
+      && syncCode.mergeButton === true
       && practiceReminder.found === true
       && practiceReminder.href.includes(practiceReminder.scenario)
       && newScenarioIntro.title.includes('Tiket yang Tak Pernah Ada')
@@ -909,6 +924,7 @@ async function main() {
         certificateIssued: certificateAction.clicked === true && certificateAction.code.startsWith('SCM-'),
         certificateState: { name: certificateState.name, score: certificateState.score, code: certificateState.code },
         reminderSettings,
+        syncCode,
         practiceReminder,
         newScenarioFound: newScenarioIntro.title.includes('Tiket yang Tak Pernah Ada'),
         newScenarioCover: newScenarioIntro.cover,

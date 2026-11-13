@@ -112,7 +112,7 @@ scripts/              validator konten + generator/check shell beranda
 
 ## Privasi
 
-Tidak ada backend, akun, cookie, atau analitik pihak ketiga. Font dan seluruh aset di-host sendiri. Progres hanya tersimpan di `localStorage` perangkat dan dapat diekspor sebagai kode `SCR1.…`, diimpor, atau dihapus dari Pengaturan.
+Tidak ada backend, akun, cookie, atau analitik pihak ketiga. Font dan seluruh aset di-host sendiri. Progres hanya tersimpan di `localStorage` perangkat dan dapat diekspor sebagai kode `SCR2.…` (termasuk metadata ekspor), diimpor, digabung dengan perangkat lain, atau dihapus dari Pengaturan.
 
 ## Menambah konten
 

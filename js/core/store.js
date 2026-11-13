@@ -438,22 +438,201 @@ function fromBase64(code) {
   return new TextDecoder().decode(bytes);
 }
 
-export function exportCode() {
-  const payload = toBase64(JSON.stringify(state));
-  const sum = fnv1a(payload).toString(16).padStart(8, '0');
-  return `SCR1.${sum}.${payload}`;
+function checksum(payload) {
+  return fnv1a(payload).toString(16).padStart(8, '0');
 }
 
-export function importCode(code) {
+function clone(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function timeValue(value) {
+  const time = Date.parse(value);
+  return Number.isFinite(time) ? time : 0;
+}
+
+function moreProgress(a, b) {
+  const rank = (value) => (value?.status === 'selesai' ? 3 : value?.status === 'mulai' ? 2 : 1);
+  const score = (value) => [
+    rank(value),
+    value?.debriefDone ? 1 : 0,
+    Array.isArray(value?.endingsSeen) ? value.endingsSeen.length : 0,
+    Number(value?.bestRank) || -1,
+    Number(value?.flags?.found) || 0,
+    Number(value?.lastStep) || 0,
+    timeValue(value?.updatedAt),
+  ];
+  const left = score(a);
+  const right = score(b);
+  for (let index = 0; index < left.length; index += 1) {
+    if (left[index] !== right[index]) return left[index] > right[index] ? a : b;
+  }
+  return a;
+}
+
+function mergeProgress(left = {}, right = {}) {
+  const a = isPlainObject(left) ? left : {};
+  const b = isPlainObject(right) ? right : {};
+  const winner = moreProgress(a, b);
+  const status = (a.status === 'selesai' || b.status === 'selesai')
+    ? 'selesai'
+    : (a.status === 'mulai' || b.status === 'mulai' ? 'mulai' : 'belum');
+  const endings = [...new Set([
+    ...(Array.isArray(a.endingsSeen) ? a.endingsSeen : []),
+    ...(Array.isArray(b.endingsSeen) ? b.endingsSeen : []),
+  ])];
+  return {
+    ...clone(winner),
+    status,
+    debriefDone: Boolean(a.debriefDone || b.debriefDone),
+    endingsSeen: endings,
+    flags: {
+      found: Math.max(Number(a.flags?.found) || 0, Number(b.flags?.found) || 0),
+      missed: Math.max(Number(a.flags?.missed) || 0, Number(b.flags?.missed) || 0),
+    },
+    bestRank: Math.max(Number(a.bestRank) || -1, Number(b.bestRank) || -1),
+    lastStep: Math.max(Number(a.lastStep) || 0, Number(b.lastStep) || 0),
+    updatedAt: timeValue(a.updatedAt) >= timeValue(b.updatedAt) ? a.updatedAt : b.updatedAt,
+  };
+}
+
+function mergeDex(left = {}, right = {}) {
+  const a = isPlainObject(left) ? left : {};
+  const b = isPlainObject(right) ? right : {};
+  const out = {};
+  for (const id of new Set([...Object.keys(a), ...Object.keys(b)])) {
+    const first = a[id] || {};
+    const second = b[id] || {};
+    out[id] = {
+      ...first,
+      ...second,
+      unlocked: Boolean(first.unlocked || second.unlocked),
+      variants: [...new Set([
+        ...(Array.isArray(first.variants) ? first.variants : []),
+        ...(Array.isArray(second.variants) ? second.variants : []),
+      ])],
+    };
+  }
+  return out;
+}
+
+function mergeQuiz(left = {}, right = {}) {
+  const a = isPlainObject(left) ? left : {};
+  const b = isPlainObject(right) ? right : {};
+  const better = (Number(b.best) || 0) > (Number(a.best) || 0) ? b : a;
+  return {
+    ...a,
+    attempts: Math.max(Number(a.attempts) || 0, Number(b.attempts) || 0),
+    best: Math.max(Number(a.best) || 0, Number(b.best) || 0),
+    passed: Boolean(a.passed || b.passed),
+    lastPool: Array.isArray(better.lastPool) ? [...better.lastPool] : [],
+  };
+}
+
+function mergeStates(current, incoming) {
+  const local = clone(current);
+  const remote = isPlainObject(incoming) ? incoming : {};
+  const progress = {};
+  for (const id of new Set([...Object.keys(local.progress || {}), ...Object.keys(remote.progress || {})])) {
+    progress[id] = mergeProgress(local.progress?.[id], remote.progress?.[id]);
+  }
+  const localBest = Number(local.exam?.best) || 0;
+  const remoteBest = Number(remote.exam?.best) || 0;
+  const examWinner = remoteBest > localBest ? remote.exam : local.exam;
+  const localCertScore = Number(local.certificate?.score) || 0;
+  const remoteCertScore = Number(remote.certificate?.score) || 0;
+  const preferRemoteCertificate = remoteCertScore > localCertScore
+    || (!local.certificate?.code && Boolean(remote.certificate?.code));
+  const certificate = preferRemoteCertificate
+    ? { ...local.certificate, ...remote.certificate }
+    : { ...remote.certificate, ...local.certificate };
+  return {
+    ...local,
+    schemaVersion: SCHEMA_VERSION,
+    createdAt: timeValue(local.createdAt) && timeValue(remote.createdAt)
+      ? (timeValue(remote.createdAt) < timeValue(local.createdAt) ? remote.createdAt : local.createdAt)
+      : local.createdAt || remote.createdAt,
+    profile: {
+      ...local.profile,
+      name: local.profile?.name || remote.profile?.name || '',
+      onboarded: Boolean(local.profile?.onboarded || remote.profile?.onboarded),
+    },
+    progress,
+    dex: mergeDex(local.dex, remote.dex),
+    exam: {
+      ...local.exam,
+      attempts: Math.max(Number(local.exam?.attempts) || 0, Number(remote.exam?.attempts) || 0),
+      best: Math.max(localBest, remoteBest),
+      passed: Boolean(local.exam?.passed || remote.exam?.passed),
+      lastPool: Array.isArray(examWinner?.lastPool) ? [...examWinner.lastPool] : [],
+    },
+    certificate,
+    sekolah: {
+      ...local.sekolah,
+      classLabel: local.sekolah?.classLabel || remote.sekolah?.classLabel || '',
+      packagesDone: [...new Set([
+        ...(Array.isArray(local.sekolah?.packagesDone) ? local.sekolah.packagesDone : []),
+        ...(Array.isArray(remote.sekolah?.packagesDone) ? remote.sekolah.packagesDone : []),
+      ])],
+      quiz: mergeQuiz(local.sekolah?.quiz, remote.sekolah?.quiz),
+    },
+    stats: {
+      flagsTotal: Math.max(Number(local.stats?.flagsTotal) || 0, Number(remote.stats?.flagsTotal) || 0),
+      flagsCorrect: Math.max(Number(local.stats?.flagsCorrect) || 0, Number(remote.stats?.flagsCorrect) || 0),
+      scenariosCompleted: Math.max(Number(local.stats?.scenariosCompleted) || 0, Number(remote.stats?.scenariosCompleted) || 0),
+      playTimeMs: Math.max(Number(local.stats?.playTimeMs) || 0, Number(remote.stats?.playTimeMs) || 0),
+    },
+    meta: {
+      ...local.meta,
+      lastSeen: timeValue(remote.meta?.lastSeen) > timeValue(local.meta?.lastSeen)
+        ? remote.meta.lastSeen
+        : local.meta?.lastSeen,
+    },
+  };
+}
+
+export function exportCode({ legacy = false } = {}) {
+  if (legacy) {
+    const payload = toBase64(JSON.stringify(state));
+    return `SCR1.${checksum(payload)}.${payload}`;
+  }
+  const envelope = {
+    format: 'scamurai-progress',
+    version: 2,
+    exportedAt: new Date().toISOString(),
+    schemaVersion: state.schemaVersion,
+    state,
+  };
+  const payload = toBase64(JSON.stringify(envelope));
+  return `SCR2.${checksum(payload)}.${payload}`;
+}
+
+function decodeCode(code) {
   const cleaned = String(code || '').replace(/\s+/g, '');
   const parts = cleaned.split('.');
-  if (parts.length !== 3 || parts[0] !== 'SCR1') throw new Error('Format kode progres tidak dikenali.');
+  if (parts.length !== 3 || !['SCR1', 'SCR2'].includes(parts[0])) {
+    throw new Error('Format kode progres tidak dikenali.');
+  }
   const [, sum, payload] = parts;
-  if (fnv1a(payload).toString(16).padStart(8, '0') !== sum) {
+  if (checksum(payload) !== sum) {
     throw new Error('Kode progres rusak (checksum tidak cocok).');
   }
-  const parsed = JSON.parse(fromBase64(payload));
-  replace(parsed);
+  let parsed;
+  try {
+    parsed = JSON.parse(fromBase64(payload));
+  } catch {
+    throw new Error('Kode progres rusak: isi tidak bisa dibaca.');
+  }
+  if (parts[0] === 'SCR1') return { state: parsed, legacy: true };
+  if (!isPlainObject(parsed) || parsed.format !== 'scamurai-progress' || parsed.version !== 2 || !isPlainObject(parsed.state)) {
+    throw new Error('Kode SCR2 tidak dikenali.');
+  }
+  return { state: parsed.state, legacy: false, exportedAt: parsed.exportedAt };
+}
+
+export function importCode(code, { merge = false } = {}) {
+  const parsed = decodeCode(code);
+  replace(merge ? mergeStates(state, parsed.state) : parsed.state);
   persist();
   return state;
 }

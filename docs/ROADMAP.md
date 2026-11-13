@@ -194,7 +194,7 @@
 
 ## 10. Backlog Pasca-v1.0 (di luar 100% roadmap ini)
 
-1. Sinkronisasi progres antar perangkat (opsional via kode ekspor yang lebih kaya).
+1. [x] Sinkronisasi progres antar perangkat via kode SCR2: metadata ekspor, impor penuh, impor gabung (progres/ScamDEX/ujian/sertifikat/sekolah), kompatibel SCR1; diuji store + browser 13 Nov 2026.
 2. Statistik agregat anonim opsional (opt-in, self-host sederhana atau GitHub Issues bot) untuk angka "63% pemain salah di sini" yang hidup.
 3. Skenario tambahan:
    - [x] Penipuan tiket konser — "Tiket yang Tak Pernah Ada" (14 langkah, 4 ending, ScamDEX, cover, precache; diuji browser lokal/live 13 Nov 2026).

@@ -264,6 +264,109 @@ test('interval pengingat rusak dinormalkan dan dicadangkan', async () => {
   assert.ok(backupRaw(storage), 'interval rusak harus dinormalkan dan dicadangkan');
 });
 
+test('kode SCR2 membawa metadata dan bisa diimpor', async () => {
+  const raw = JSON.stringify({
+    schemaVersion: 1,
+    profile: { name: 'Rani', onboarded: true },
+    progress: {
+      'task-scam': {
+        status: 'selesai',
+        debriefDone: true,
+        bestEnding: 'aman',
+        bestRank: 3,
+        endingsSeen: ['aman'],
+        flags: { found: 2, missed: 1 },
+        lastStep: 14,
+        updatedAt: '2026-11-13T10:00:00.000Z',
+      },
+    },
+  });
+  const { store } = await loadStore(raw);
+  const code = store.exportCode();
+  assert.match(code, /^SCR2\./);
+  const envelope = JSON.parse(Buffer.from(code.split('.')[2], 'base64').toString('utf8'));
+  assert.equal(envelope.format, 'scamurai-progress');
+  assert.equal(envelope.version, 2);
+  assert.equal(envelope.schemaVersion, 1);
+  assert.equal(envelope.state.profile.name, 'Rani');
+
+  store.resetAll();
+  assert.equal(store.all().profile.name, '');
+  store.importCode(code);
+  assert.equal(store.all().profile.name, 'Rani');
+  assert.equal(store.all().progress['task-scam'].status, 'selesai');
+});
+
+test('kode SCR1 lama tetap bisa diimpor', async () => {
+  const { store } = await loadStore(JSON.stringify({
+    schemaVersion: 1,
+    profile: { name: 'Lama', onboarded: true },
+    progress: { 'bank-otp': { status: 'selesai', debriefDone: true } },
+  }));
+  const legacy = store.exportCode({ legacy: true });
+  assert.match(legacy, /^SCR1\./);
+  store.resetAll();
+  store.importCode(legacy);
+  assert.equal(store.all().profile.name, 'Lama');
+  assert.equal(store.all().progress['bank-otp'].status, 'selesai');
+});
+
+test('kode SCR2 rusak ditolak tanpa mengubah state', async () => {
+  const { store } = await loadStore(JSON.stringify({
+    schemaVersion: 1,
+    profile: { name: 'Tetap', onboarded: true },
+  }));
+  const code = store.exportCode();
+  const before = JSON.stringify(store.all());
+  const last = code.endsWith('A') ? 'B' : 'A';
+  assert.throws(() => store.importCode(`${code.slice(0, -1)}${last}`), /checksum/);
+  assert.equal(JSON.stringify(store.all()), before);
+});
+
+test('impor gabung mempertahankan progres lokal dan menambah progres kode', async () => {
+  const local = await loadStore(JSON.stringify({
+    schemaVersion: 1,
+    profile: { name: 'Lokal', onboarded: true },
+    dojo: { saldo: 777000 },
+    progress: {
+      'bank-otp': {
+        status: 'selesai', debriefDone: true, endingsSeen: ['aman'],
+        flags: { found: 1, missed: 0 }, lastStep: 15,
+      },
+    },
+    dex: { 'bank-otp': { unlocked: true, variants: ['var-bank'] } },
+    exam: { attempts: 1, best: 100, passed: true },
+    stats: { scenariosCompleted: 1 },
+  }));
+  const remote = await loadStore(JSON.stringify({
+    schemaVersion: 1,
+    profile: { name: 'Remote', onboarded: true },
+    progress: {
+      'task-scam': {
+        status: 'selesai', debriefDone: true, endingsSeen: ['kena'],
+        flags: { found: 3, missed: 0 }, lastStep: 12,
+      },
+    },
+    dex: { 'task-scam': { unlocked: true, variants: [] } },
+    exam: { attempts: 2, best: 90, passed: false },
+    certificate: { name: 'Remote', code: 'SCM-REMOTE-2026', score: 95, date: '2026-11-13T10:00:00.000Z' },
+    stats: { scenariosCompleted: 1 },
+  }));
+  local.store.importCode(remote.store.exportCode(), { merge: true });
+  const merged = local.store.all();
+  assert.equal(merged.profile.name, 'Lokal');
+  assert.equal(merged.dojo.saldo, 777000);
+  assert.equal(merged.progress['bank-otp'].status, 'selesai');
+  assert.equal(merged.progress['task-scam'].status, 'selesai');
+  assert.deepEqual(merged.dex['bank-otp'].variants, ['var-bank']);
+  assert.equal(merged.dex['task-scam'].unlocked, true);
+  assert.equal(merged.exam.best, 100);
+  assert.equal(merged.exam.passed, true);
+  assert.equal(merged.certificate.code, 'SCM-REMOTE-2026');
+  assert.equal(merged.stats.scenariosCompleted, 1);
+});
+
+
 let failed = 0;
 for (const { name, fn } of tests) {
   try {

@@ -174,13 +174,14 @@ export async function render(root) {
     class: 'c-code',
     readOnly: true,
     rows: '3',
+    'data-sync-code': '1',
     placeholder: 'Tekan “Buat kode” untuk menampilkan kode progres.',
     'aria-label': 'Kode progres',
   });
   const importBox = h('textarea', {
     class: 'c-code',
     rows: '3',
-    placeholder: 'Tempel kode SCR1.… di sini',
+    placeholder: 'Tempel kode SCR2.… di sini',
     'aria-label': 'Kode progres untuk diimpor',
   });
 
@@ -236,7 +237,7 @@ export async function render(root) {
 
   const backup = h('section', { class: 'c-card' },
     h('h2', { class: 'section-title' }, 'Cadangan progres'),
-    h('p', { class: 'u-small u-muted' }, 'Kode ini berisi seluruh progresmu. Simpan di tempat aman; siapa pun yang memilikinya bisa memakainya. Tidak dikirim ke mana pun.'),
+    h('p', { class: 'u-small u-muted' }, 'Kode SCR2 berisi seluruh progres dan metadata ekspor. Simpan di tempat aman; siapa pun yang memilikinya bisa memakainya. Tidak dikirim ke mana pun.'),
     h('div', { class: 'u-row u-mt-3' },
       h('button', {
         type: 'button',
@@ -288,6 +289,28 @@ export async function render(root) {
           }
         },
       }, 'Impor kode'),
+      h('button', {
+        type: 'button',
+        class: 'c-btn c-btn--ghost c-btn--sm',
+        'data-sync-merge': '1',
+        onclick: async () => {
+          const ok = await confirmModal({
+            title: 'Gabungkan kode ini?',
+            message: 'Progres lokal dan progres dari kode akan digabung. Skenario dan ScamDEX yang sudah selesai tidak hilang; saldo dan pengaturan lokal dipertahankan.',
+            confirmLabel: 'Gabungkan',
+            cancelLabel: 'Batal',
+            danger: false,
+          });
+          if (!ok) return;
+          try {
+            importCode(importBox.value, { merge: true });
+            showToast('Progres digabung. Memuat ulang…', { timeout: 3000 });
+            setTimeout(() => window.location.reload(), 800);
+          } catch (err) {
+            showToast(err?.message || 'Kode tidak valid.', { timeout: 4000 });
+          }
+        },
+      }, 'Gabungkan kode'),
     ),
     h('p', { class: 'u-small u-faint u-mt-2' }, storageOk()
       ? 'Penyimpanan lokal aktif. Data hanya ada di perangkat ini.'
