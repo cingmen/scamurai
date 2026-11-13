@@ -199,7 +199,7 @@
 3. Skenario tambahan:
    - [x] Penipuan tiket konser — "Tiket yang Tak Pernah Ada" (14 langkah, 4 ending, ScamDEX, cover, precache; diuji browser lokal/live 13 Nov 2026).
    - [x] QRIS palsu — "QRIS yang Berpindah Tangan" (14 langkah, 4 ending, nama merchant, PIN/OTP; diuji browser lokal/live 13 Nov 2026).
-   - [ ] Menu cloning.
+   - [x] Menu cloning — "Menu yang Tidak Pernah Ada" (14 langkah, 5 ending, menu/DP/biaya kurir palsu; diuji browser lokal/live 13 Nov 2026).
    - [x] Voice clone — "Suara yang Tidak Pernah Ada" (14 langkah, 5 ending, mekanik telepon + tautan verifikasi; diuji browser lokal/live 13 Nov 2026).
    - [x] Investasi crypto — "Cuan yang Tidak Pernah Ada" (14 langkah, 5 ending, dashboard palsu + pajak/recovery phrase; diuji browser lokal/live 13 Nov 2026).
 4. Editor skenario komunitas (belajar dari PhisQuest: validasi + ekspor paket).

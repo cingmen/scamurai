@@ -778,6 +778,55 @@ async function main() {
       'ending aman crypto',
     );
 
+    await evalValue(`location.hash = '#/skenario/menu-cloning'`);
+    const menuIntro = await waitFor(
+      `(() => ({
+        hash: location.hash,
+        title: document.querySelector('#app h1')?.textContent?.trim() || '',
+        cover: document.querySelector('#app img')?.getAttribute('src') || '',
+      }))()`,
+      (value) => value?.hash === '#/skenario/menu-cloning'
+        && value.title.includes('Menu yang Tidak Pernah Ada')
+        && value.cover.includes('menu-cloning.svg'),
+      'pengantar menu cloning',
+    );
+    const startedMenu = await evalValue(`(() => {
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => node.textContent.trim() === 'Mulai simulasi');
+      if (!button) return false;
+      button.click();
+      return true;
+    })()`);
+    await waitFor(
+      `document.querySelector('.c-lesson')?.innerText || ''`,
+      (text) => text.includes('Menu dan ulasan bisa disalin'),
+      'pelajaran menu cloning',
+    );
+    await clickNewScenarioButton('Mengerti', 'pelajaran menu cloning');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('promo Jumat!') && text.includes('DP Rp 150.000'),
+      'tawaran menu cloning',
+    );
+    await clickNewScenarioButton('Lanjut', 'chat menu cloning');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Nasi Bakar Bu Sari') && text.includes('Pesan sekarang'),
+      'menu palsu',
+    );
+    await clickNewScenarioButton('Pesan sekarang', 'menu palsu');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Cek alamat dan pesan lewat kanal resmi'),
+      'pilihan menu cloning',
+    );
+    await clickNewScenarioButton('Cek alamat dan pesan lewat kanal resmi', 'pilihan menu cloning');
+    const menuEnding = await waitFor(
+      `document.querySelector('.c-ending')?.innerText || ''`,
+      (text) => text.includes('Pesanan lewat kanal resmi'),
+      'ending aman menu cloning',
+    );
+
     const offlineData = await evalValue(`(async () => {
       const response = await fetch('./data/scenarios/${SCENARIO_ID}.json');
       const body = await response.json();
@@ -829,6 +878,9 @@ async function main() {
       && cryptoIntro.title.includes('Cuan yang Tidak Pernah Ada')
       && startedCrypto === true
       && cryptoEnding.includes('Izin dicek sebelum uang berpindah')
+      && menuIntro.title.includes('Menu yang Tidak Pernah Ada')
+      && startedMenu === true
+      && menuEnding.includes('Pesanan lewat kanal resmi')
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -872,6 +924,9 @@ async function main() {
         cryptoScenarioFound: cryptoIntro.title.includes('Cuan yang Tidak Pernah Ada'),
         cryptoScenarioStarted: startedCrypto === true,
         cryptoScenarioEnding: cryptoEnding.includes('Izin dicek sebelum uang berpindah'),
+        menuScenarioFound: menuIntro.title.includes('Menu yang Tidak Pernah Ada'),
+        menuScenarioStarted: startedMenu === true,
+        menuScenarioEnding: menuEnding.includes('Pesanan lewat kanal resmi'),
         data: offlineData,
         networkFailures: pageFailures.length,
       },

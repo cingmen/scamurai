@@ -1,0 +1,397 @@
+{
+  "id": "menu-cloning",
+  "type": "sim",
+  "title": "Menu yang Tidak Pernah Ada",
+  "modus": "Menu Cloning",
+  "difficulty": 2,
+  "app": "chatriang",
+  "brief": {
+    "goal": "Promo katering 50% datang dari akun yang memakai nama dan foto restoran terkenal. Uji apakah kamu bisa memesan lewat kanal resmi sebelum mentransfer DP.",
+    "rules": [
+      "Menu, foto, dan ulasan bisa disalin dari restoran lain.",
+      "DP ke rekening pribadi bukan bukti pesanan masuk.",
+      "Periksa alamat, nomor resmi, dan kanal pembayaran restoran.",
+      "Semua nama, nomor, dan menu di sini fiktif."
+    ],
+    "saldoAwal": 4000000
+  },
+  "steps": [
+    {
+      "type": "chat",
+      "dir": "narator",
+      "text": "Jumat, 11.48 · promo makan siang di pesan pribadi",
+      "delayMs": 500
+    },
+    {
+      "type": "lesson",
+      "title": "Menu dan ulasan bisa disalin",
+      "body": "Penipu menyalin foto, menu, dan ulasan restoran asli, lalu membuat akun baru dengan nama yang mirip. DP dan biaya tambahan diminta ke rekening pribadi. Pesan lewat kanal resmi dan jangan transfer sebelum alamat serta nomornya cocok.",
+      "refDex": "Menu Cloning"
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Bu Sari Catering",
+      "time": "11.48",
+      "text": "Halo, promo Jumat! Paket katering 20 porsi diskon 50%, tinggal Rp 300.000. Menu dan foto ada di link ini. DP Rp 150.000 dulu ya, slot tinggal 2. Transfer ke Rina Kartika supaya langsung diproses.",
+      "auto": false
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": {
+        "title": "BrowserMini",
+        "sub": "Menu Bu Sari"
+      },
+      "url": "https://menubukusari-promo.xyz/jumat",
+      "secure": true,
+      "page": {
+        "logo": "Nasi Bakar Bu Sari · Promo Jumat",
+        "lines": [
+          "Paket 20 porsi: nasi bakar ayam, lalapan, sambal, dan es teh.",
+          "Harga normal Rp 600.000 → promo Rp 300.000.",
+          "DP Rp 150.000 ke rekening pribadi, sisa dibayar ke kurir."
+        ],
+        "countdown": "Promo berakhir dalam 01.37",
+        "foot": "Menu bisa disalin dari restoran mana pun. Cocokkan alamat dan kanal pembayaran resmi sebelum memesan."
+      },
+      "inspect": {
+        "real": "akun dan kanal resmi Bu Sari Catering yang kamu cari sendiri",
+        "notes": [
+          "Domain memakai nama restoran dan akhiran .xyz, bukan kanal resmi.",
+          "DP diminta ke rekening pribadi, bukan rekening usaha atau kanal pesanan.",
+          "Tidak ada alamat dapur, nomor telepon tetap, atau halaman pesanan resmi."
+        ]
+      },
+      "hint": "Menu terlihat meyakinkan, tetapi alamat dan rekeningnya tidak cocok. Periksa kanal resmi.",
+      "hotspots": [
+        {
+          "flagId": "mc-domain",
+          "x": 52,
+          "y": 20,
+          "title": "Domain menubukusari-promo.xyz",
+          "why": "Domain promosi tidak sama dengan kanal resmi restoran. Nama baik dan foto mudah disalin.",
+          "do": "Cari restoran lewat aplikasi atau nomor yang kamu tahu sendiri, bukan tautan ini."
+        },
+        {
+          "flagId": "mc-dp",
+          "x": 55,
+          "y": 67,
+          "title": "DP ke Rina Kartika",
+          "why": "Rekening pribadi bukan rekening usaha. Setelah DP masuk, penipu bisa memblokir kamu.",
+          "do": "Jangan transfer. Pesan lewat kanal resmi dengan pembayaran yang bisa dilacak."
+        },
+        {
+          "flagId": "mc-countdown",
+          "x": 62,
+          "y": 84,
+          "title": "Promo berakhir 01.37",
+          "why": "Hitung mundur membuatmu tidak sempat memeriksa alamat atau ulasan.",
+          "do": "Abaikan tenggat; promo yang memaksa transfer cepat bukan alasan untuk melewati verifikasi."
+        },
+        {
+          "flagId": "mc-menu",
+          "x": 32,
+          "y": 44,
+          "title": "Foto dan menu terlihat profesional",
+          "decoy": true,
+          "why": "Foto dan ulasan bisa diambil dari restoran asli. Tampilan rapi bukan bukti pemiliknya sama.",
+          "do": "Cocokkan nama, alamat, dan nomor dengan kanal resmi."
+        }
+      ],
+      "button": {
+        "label": "Pesan sekarang",
+        "goto": 4
+      }
+    },
+    {
+      "type": "choice",
+      "prompt": "Akun meminta DP Rp 150.000 ke rekening pribadi. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        {
+          "id": "transfer",
+          "label": "Transfer DP agar slot pesanan dikunci",
+          "goto": 5
+        },
+        {
+          "id": "verifikasi",
+          "label": "Cek alamat dan pesan lewat kanal resmi restoran",
+          "goto": 12
+        },
+        {
+          "id": "lapor",
+          "label": "Tutup chat, simpan bukti, dan laporkan akun",
+          "goto": 13
+        }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": {
+        "title": "Bank Jayakarta",
+        "sub": "DP katering"
+      },
+      "data": {
+        "title": "DP Paket Katering Bu Sari",
+        "recipient": "Rina Kartika",
+        "account": "8821 4400 7712",
+        "amount": 150000,
+        "fee": 6500,
+        "note": "DP 20 porsi",
+        "warning": "Rekening tujuan adalah rekening pribadi, bukan rekening usaha katering."
+      },
+      "button": {
+        "label": "Transfer DP",
+        "goto": 6
+      }
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Bu Sari Catering",
+      "time": "11.53",
+      "text": "DP sudah masuk, pesanan dikunci. Kurir butuh biaya kemasan dan asuransi Rp 95.000. Isi data kartu di link pembayaran ini supaya pesanan bisa dikirim siang ini.",
+      "auto": false
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": {
+        "title": "BrowserMini",
+        "sub": "Pembayaran kurir"
+      },
+      "url": "https://menubukusari-promo.xyz/bayar",
+      "secure": true,
+      "page": {
+        "logo": "Bu Sari · Pembayaran Kurir",
+        "lines": [
+          "Biaya kemasan dan asuransi: Rp 95.000",
+          "Pesanan akan dibatalkan bila tidak dibayar dalam 05.00.",
+          "Masukkan nomor kartu, masa berlaku, CVV, dan OTP."
+        ],
+        "form": [
+          {
+            "placeholder": "Nomor kartu",
+            "label": "Nomor kartu"
+          },
+          {
+            "placeholder": "CVV",
+            "label": "CVV"
+          },
+          {
+            "placeholder": "Kode OTP",
+            "label": "OTP"
+          }
+        ],
+        "countdown": "Sisa waktu 05.00",
+        "foot": "Kurir atau restoran tidak meminta CVV dan OTP lewat tautan chat."
+      },
+      "inspect": {
+        "real": "halaman pembayaran resmi di aplikasi restoran atau marketplace",
+        "notes": [
+          "Halaman meminta CVV dan OTP — data yang tidak diperlukan untuk biaya pengiriman.",
+          "Tautan berasal dari domain promo yang sama, bukan kanal pembayaran resmi.",
+          "Biaya baru muncul setelah DP; ini pola tambahan biaya berulang."
+        ]
+      },
+      "hint": "Biaya baru muncul setelah DP dan halaman meminta CVV/OTP. Itu bukan pembayaran kurir.",
+      "hotspots": [
+        {
+          "flagId": "mc-cvv",
+          "x": 53,
+          "y": 61,
+          "title": "CVV dan OTP diminta",
+          "why": "CVV dan OTP bisa dipakai untuk transaksi kartu. Kurir tidak membutuhkannya.",
+          "do": "Jangan isi. Tutup halaman dan hubungi bank bila data sudah dimasukkan."
+        },
+        {
+          "flagId": "mc-biaya",
+          "x": 48,
+          "y": 34,
+          "title": "Biaya baru Rp 95.000",
+          "why": "Biaya yang muncul setelah DP adalah taktik untuk menambah kerugian sebelum korban sadar.",
+          "do": "Jangan bayar. Pesanan yang sah tidak menagih biaya tak terduga lewat chat."
+        }
+      ],
+      "button": {
+        "label": "Bayar biaya kurir",
+        "goto": 8
+      }
+    },
+    {
+      "type": "choice",
+      "prompt": "Halaman meminta kartu, CVV, dan OTP. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        {
+          "id": "bayar",
+          "label": "Bayar Rp 95.000 agar pesanan segera dikirim",
+          "goto": 9
+        },
+        {
+          "id": "kartu",
+          "label": "Isi data kartu dan OTP supaya kurir memproses",
+          "goto": 10
+        },
+        {
+          "id": "tutup",
+          "label": "Tutup halaman dan cek pesanan lewat kanal resmi",
+          "goto": 11
+        },
+        {
+          "id": "lapor",
+          "label": "Simpan bukti dan laporkan akun serta domain",
+          "goto": 13
+        }
+      ]
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "DP dan biaya kurir untuk dapur yang tidak ada",
+      "text": "Kamu mentransfer DP Rp 150.000 dan biaya kurir Rp 95.000. Pesanan tidak pernah datang, nomor admin tidak aktif, dan alamat dapur di menu ternyata milik restoran lain. Total kerugian Rp 245.000."
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena-data",
+      "title": "Kartu dan OTP diambil lewat menu palsu",
+      "text": "Kamu mengisi nomor kartu, CVV, dan OTP. Penipu memakai data itu untuk transaksi lain. DP Rp 150.000 sudah hilang, dan sekarang kartu serta kode transaksimu juga berada di tangan mereka."
+    },
+    {
+      "type": "consequence",
+      "endingId": "hampir-kena",
+      "title": "Berhenti sebelum kartu ikut hilang",
+      "text": "Kamu menutup halaman sebelum mengisi data kartu. DP Rp 150.000 kemungkinan sudah hilang, tetapi kamu tidak membocorkan CVV atau OTP. Hubungi bank, blokir rekening penerima, dan laporkan akun tersebut."
+    },
+    {
+      "type": "consequence",
+      "endingId": "aman",
+      "title": "Pesanan lewat kanal resmi",
+      "text": "Kamu mencari alamat dan nomor Bu Sari Catering lewat aplikasi resmi. Akun promo itu memakai foto dan menu restoran asli, tetapi bukan kanal pemesanan mereka. Kamu memesan lewat kanal resmi dan tidak mentransfer DP ke rekening pribadi."
+    },
+    {
+      "type": "consequence",
+      "endingId": "lapor",
+      "title": "Menu palsu dilaporkan sebelum korban lain",
+      "text": "Kamu menyimpan tautan menu, nama akun, nomor, dan rekening tujuan, lalu melaporkannya ke platform, Aduan Konten Komdigi, dan lapor.go.id. Kamu juga memberi tahu teman yang mungkin menerima promo serupa."
+    }
+  ],
+  "endings": {
+    "kena": {
+      "label": "DP dan biaya kurir hilang",
+      "saldoDelta": -245000,
+      "rank": 0,
+      "tone": "bad",
+      "dexCard": "menu-cloning"
+    },
+    "kena-data": {
+      "label": "Data kartu dan OTP dicuri",
+      "saldoDelta": -150000,
+      "rank": 0,
+      "tone": "bad",
+      "dexCard": "menu-cloning",
+      "dexVariant": "var-menu-cloning"
+    },
+    "hampir-kena": {
+      "label": "Berhenti sebelum mengisi kartu",
+      "saldoDelta": -150000,
+      "rank": 1,
+      "tone": "neutral",
+      "dexCard": "menu-cloning"
+    },
+    "aman": {
+      "label": "Pesan lewat kanal resmi",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best",
+      "dexCard": "menu-cloning"
+    },
+    "lapor": {
+      "label": "Tutup chat dan laporkan",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good",
+      "dexCard": "menu-cloning"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      {
+        "t": "11.48",
+        "judul": "Nama dan foto restoran asli",
+        "naskah": "Promo 50%, menu, dan ulasan terlihat meyakinkan.",
+        "tujuanPenipu": "Meminjam kepercayaan restoran yang sudah dikenal agar korban tidak memeriksa akun."
+      },
+      {
+        "t": "11.50",
+        "judul": "DP ke rekening pribadi",
+        "naskah": "Transfer Rp 150.000 ke Rina Kartika.",
+        "tujuanPenipu": "Mengunci korban dengan rasa memiliki slot dan uang yang sudah masuk."
+      },
+      {
+        "t": "11.53",
+        "judul": "Biaya kurir baru",
+        "naskah": "Bayar Rp 95.000 dan isi kartu, CVV, OTP.",
+        "tujuanPenipu": "Menambah kerugian dan mencuri data kartu setelah korban sudah berkomitmen."
+      },
+      {
+        "t": "H+1",
+        "judul": "Dapur tidak ada",
+        "naskah": "Nomor mati; alamat milik restoran lain.",
+        "tujuanPenipu": "Menghilang sebelum korban menyadari menu itu hanya salinan."
+      }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran menu cloning: menu salinan, DP, biaya kurir, dan data kartu",
+      "nodes": [
+        {
+          "id": "menu",
+          "label": "Menu dan foto disalin"
+        },
+        {
+          "id": "dp",
+          "label": "DP ke rekening pribadi",
+          "tone": "danger"
+        },
+        {
+          "id": "biaya",
+          "label": "Biaya kurir palsu",
+          "tone": "danger"
+        },
+        {
+          "id": "kartu",
+          "label": "CVV dan OTP dicuri",
+          "tone": "danger"
+        }
+      ],
+      "edges": [
+        {
+          "from": "menu",
+          "to": "dp",
+          "label": "promo 50%"
+        },
+        {
+          "from": "dp",
+          "to": "biaya",
+          "label": "pesanan dikunci"
+        },
+        {
+          "from": "biaya",
+          "to": "kartu",
+          "label": "link pembayaran"
+        }
+      ]
+    },
+    "pulihkan": [
+      "Hubungi bank untuk memblokir rekening penerima dan kartu bila CVV/OTP sudah diberikan.",
+      "Ubah kata sandi dan cabut sesi perangkat; aktifkan verifikasi dua langkah.",
+      "Simpan tautan menu, nama akun, nomor, rekening, dan tangkapan layar.",
+      "Laporkan ke platform, Aduan Konten Komdigi, lapor.go.id, dan OJK bila terkait pinjaman.",
+      "Beri tahu teman dan keluarga agar memeriksa kanal resmi sebelum memesan promo serupa."
+    ],
+    "linkPhisquest": true
+  }
+}

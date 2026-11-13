@@ -361,6 +361,39 @@
           "desc": "Halaman penarikan palsu meminta pajak dan recovery phrase. Saldo dashboard hanyalah angka; kunci wallet adalah hadiah sebenarnya."
         }
       ]
+    },
+    {
+      "id": "menu-cloning",
+      "name": "Menu Cloning",
+      "alias": "Katering promo / DP palsu",
+      "icon": "./assets/img/scenarios/menu-cloning.svg",
+      "severity": 2,
+      "psychology": "Foto makanan dan ulasan membuat restoran terasa nyata. Promo terbatas dan DP kecil menurunkan kewaspadaan sebelum biaya tambahan muncul.",
+      "flags": [
+        "Nama dan foto restoran terkenal tetapi akun baru",
+        "Promo 50% dengan hitung mundur",
+        "DP ke rekening pribadi",
+        "Biaya kurir baru setelah DP",
+        "Halaman meminta nomor kartu, CVV, dan OTP"
+      ],
+      "verify": [
+        "Cari alamat dan nomor restoran lewat aplikasi atau kanal resmi.",
+        "Pastikan pembayaran masuk ke rekening usaha atau kanal pesanan resmi.",
+        "Jangan pernah mengirim CVV atau OTP lewat tautan chat."
+      ],
+      "report": [
+        "Simpan tautan menu, nama akun, nomor, rekening, dan tangkapan layar.",
+        "Laporkan ke platform, Aduan Konten Komdigi, dan lapor.go.id.",
+        "Hubungi bank untuk memblokir kartu bila CVV/OTP sudah diberikan."
+      ],
+      "variants": [
+        {
+          "id": "var-menu-cloning",
+          "name": "Varian: Biaya Kurir & Kartu",
+          "unlockEnding": "kena-data",
+          "desc": "Setelah DP masuk, penipu menagih biaya kemasan dan meminta data kartu lewat halaman pembayaran palsu."
+        }
+      ]
     }
   ]
 }

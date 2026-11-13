@@ -219,6 +219,24 @@
       ],
       "requirements": null,
       "order": 12
+    },
+    {
+      "id": "menu-cloning",
+      "type": "sim",
+      "title": "Menu yang Tidak Pernah Ada",
+      "modus": "Menu Cloning",
+      "app": "chatriang",
+      "cover": "./assets/img/scenarios/menu-cloning.svg",
+      "difficulty": 2,
+      "minutes": 10,
+      "summary": "Akun katering memakai foto dan menu restoran asli untuk promo 50%, lalu meminta DP ke rekening pribadi dan biaya kurir lewat halaman kartu palsu.",
+      "learning": [
+        "Menu dan ulasan mudah disalin",
+        "DP ke rekening pribadi bukan bukti pesanan",
+        "CVV dan OTP tidak diminta lewat tautan chat"
+      ],
+      "requirements": null,
+      "order": 13
     }
   ],
   "minigames": [

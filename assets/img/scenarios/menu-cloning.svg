@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Ilustrasi skenario Menu yang Tidak Pernah Ada">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3B2416"/><stop offset="1" stop-color="#140C08"/></linearGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#ffffff" stroke-opacity=".06"/></pattern>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <rect width="640" height="360" fill="url(#grid)"/>
+  <circle cx="524" cy="48" r="132" fill="#F0B45E" opacity=".07"/>
+  <text x="52" y="64" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="2.5" fill="#F0B45E">MENU CLONING</text>
+  <text x="50" y="113" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Menu yang</text>
+  <text x="50" y="151" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Tidak Pernah Ada</text>
+  <g transform="translate(380 56)">
+    <rect width="204" height="246" rx="18" fill="#F7F0E3"/>
+    <rect x="12" y="12" width="180" height="66" rx="10" fill="#D97742"/>
+    <circle cx="44" cy="44" r="19" fill="#F0B45E"/>
+    <path d="M33 46c4-10 18-10 22 0" fill="none" stroke="#3B2416" stroke-width="3" stroke-linecap="round"/>
+    <text x="78" y="40" font-family="system-ui, sans-serif" font-size="11" font-weight="800" fill="#FFF7E8">NASI BAKAR</text>
+    <text x="78" y="56" font-family="system-ui, sans-serif" font-size="11" font-weight="800" fill="#FFF7E8">BU SARI</text>
+    <text x="20" y="102" font-family="system-ui, sans-serif" font-size="9" font-weight="700" letter-spacing="1.2" fill="#8B5E3C">PROMO JUMAT · 50%</text>
+    <text x="20" y="126" font-family="system-ui, sans-serif" font-size="16" font-weight="800" fill="#3B2416">Rp 300.000</text>
+    <text x="20" y="142" font-family="system-ui, sans-serif" font-size="9" fill="#8B5E3C">20 porsi · menu disalin</text>
+    <path d="M20 158H184" stroke="#D9C7AD"/>
+    <text x="20" y="180" font-family="system-ui, sans-serif" font-size="10" fill="#3B2416">DP Rp 150.000</text>
+    <text x="20" y="198" font-family="system-ui, sans-serif" font-size="9" fill="#9E3B2F">rekening pribadi</text>
+    <text x="20" y="216" font-family="system-ui, sans-serif" font-size="9" fill="#9E3B2F">+ biaya kurir 95.000</text>
+    <rect x="20" y="228" width="118" height="8" rx="4" fill="#D9C7AD"/>
+    <rect x="20" y="228" width="92" height="8" rx="4" fill="#D97742"/>
+  </g>
+  <g transform="translate(52 210)">
+    <rect width="256" height="58" rx="12" fill="#ffffff" opacity=".08"/>
+    <text x="14" y="22" font-family="system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.1" fill="#F0B45E">DP DULU, MAKAN KEMUDIAN</text>
+    <text x="14" y="40" font-family="system-ui, sans-serif" font-size="10" fill="#ffffff" opacity=".78">foto asli · akun salinan · dapur fiktif</text>
+  </g>
+  <g transform="translate(52 288)">
+    <rect width="270" height="22" rx="11" fill="#F0B45E" opacity=".16"/>
+    <text x="11" y="15" font-family="system-ui, sans-serif" font-size="9" font-weight="700" letter-spacing="1" fill="#F0B45E">PROMO 50% ≠ RESTORAN YANG SAMA</text>
+  </g>
+  <text x="452" y="344" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff" opacity=".35">scamurai</text>
+</svg>
