@@ -201,6 +201,24 @@
       ],
       "requirements": null,
       "order": 11
+    },
+    {
+      "id": "crypto-invest",
+      "type": "sim",
+      "title": "Cuan yang Tidak Pernah Ada",
+      "modus": "Investasi Crypto",
+      "app": "chatriang",
+      "cover": "./assets/img/scenarios/crypto-invest.svg",
+      "difficulty": 3,
+      "minutes": 12,
+      "summary": "Grup VIP menjanjikan profit crypto tetap setiap hari, lalu meminta setoran ke rekening pribadi serta pajak dan recovery phrase saat penarikan. Dashboard hijau bukan bukti izin.",
+      "learning": [
+        "Profit tetap adalah tanda bahaya",
+        "Cek izin dan rekening resmi sebelum menyetor",
+        "Recovery phrase tidak pernah diberikan ke halaman web"
+      ],
+      "requirements": null,
+      "order": 12
     }
   ],
   "minigames": [

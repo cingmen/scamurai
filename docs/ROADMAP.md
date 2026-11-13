@@ -201,7 +201,7 @@
    - [x] QRIS palsu — "QRIS yang Berpindah Tangan" (14 langkah, 4 ending, nama merchant, PIN/OTP; diuji browser lokal/live 13 Nov 2026).
    - [ ] Menu cloning.
    - [x] Voice clone — "Suara yang Tidak Pernah Ada" (14 langkah, 5 ending, mekanik telepon + tautan verifikasi; diuji browser lokal/live 13 Nov 2026).
-   - [ ] Penipuan investasi crypto lanjutan.
+   - [x] Investasi crypto — "Cuan yang Tidak Pernah Ada" (14 langkah, 5 ending, dashboard palsu + pajak/recovery phrase; diuji browser lokal/live 13 Nov 2026).
 4. Editor skenario komunitas (belajar dari PhisQuest: validasi + ekspor paket).
 5. Lokalisasi bahasa daerah & Inggris (`i18n/id.json` sudah siap struktur).
 6. [x] Integrasi "latihan terjadwal" (spaced repetition: pengingat PWA lokal). **Dipilih 13 Nov 2026 sebagai item pengganti karena item F7 tersisa membutuhkan perangkat/review manusia atau pengumuman komunitas. Pengingat lokal muncul di beranda setelah jeda 3/7/14 hari, dikonfigurasi di Pengaturan, dengan migrasi settings dan uji perilaku.**

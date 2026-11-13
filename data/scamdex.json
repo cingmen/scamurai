@@ -328,6 +328,39 @@
           "desc": "Halaman rumah sakit palsu meminta kode keluarga dan OTP. Suara kloning dipakai untuk membuat korban menuruti tautan tersebut."
         }
       ]
+    },
+    {
+      "id": "crypto-invest",
+      "name": "Investasi Crypto",
+      "alias": "CuanPagi / AI trading",
+      "icon": "./assets/img/scenarios/crypto-invest.svg",
+      "severity": 3,
+      "psychology": "Janji profit tetap dan testimoni member memicu rasa takut ketinggalan. Penipu menambahkan tenggat slot VIP agar korban tidak memeriksa izin.",
+      "flags": [
+        "Profit harian tetap 3–5% tanpa risiko",
+        "Domain kampanye dengan akhiran acak",
+        "Setoran ke rekening pribadi, bukan exchange",
+        "Pajak penarikan diminta lewat rekening pribadi",
+        "Halaman meminta recovery phrase 12 kata"
+      ],
+      "verify": [
+        "Cari nama platform di daftar pedagang aset kripto berizin Bappebti.",
+        "Pastikan setoran masuk ke rekening perusahaan exchange, bukan rekening pribadi.",
+        "Coba penarikan kecil lebih dulu dan jangan pernah membagikan recovery phrase."
+      ],
+      "report": [
+        "Simpan nama grup, nomor admin, domain, rekening, dan tangkapan layar.",
+        "Laporkan ke platform, Aduan Konten Komdigi, lapor.go.id, dan Bappebti.",
+        "Hubungi bank untuk menahan transaksi dan amankan wallet bila recovery phrase sudah bocor."
+      ],
+      "variants": [
+        {
+          "id": "var-crypto-invest",
+          "name": "Varian: Pajak & Recovery Phrase",
+          "unlockEnding": "kena-data",
+          "desc": "Halaman penarikan palsu meminta pajak dan recovery phrase. Saldo dashboard hanyalah angka; kunci wallet adalah hadiah sebenarnya."
+        }
+      ]
     }
   ]
 }

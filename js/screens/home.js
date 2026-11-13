@@ -122,7 +122,7 @@ export async function render(root) {
   const quickGrid = h('section', { class: 'c-quick-grid' },
     h('a', { class: 'c-quick', href: '#/scamdex' },
       h('span', { class: 'c-quick__icon', 'aria-hidden': 'true' }, '▤'),
-      h('span', null, h('span', { class: 'c-quick__title' }, 'ScamDEX'), h('span', { class: 'c-quick__sub' }, '11 kartu modus + varian')),
+      h('span', null, h('span', { class: 'c-quick__title' }, 'ScamDEX'), h('span', { class: 'c-quick__sub' }, '12 kartu modus + varian')),
     ),
     h('a', { class: 'c-quick', href: '#/ujian' },
       h('span', { class: 'c-quick__icon', 'aria-hidden': 'true' }, '✎'),

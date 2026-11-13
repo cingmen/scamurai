@@ -1,0 +1,393 @@
+{
+  "id": "crypto-invest",
+  "type": "sim",
+  "title": "Cuan yang Tidak Pernah Ada",
+  "modus": "Investasi Crypto",
+  "difficulty": 3,
+  "app": "chatriang",
+  "brief": {
+    "goal": "Sebuah grup investasi menjanjikan profit crypto tetap setiap hari. Uji apakah kamu bisa membedakan dashboard yang dibuat-buat dari izin dan rekening resmi.",
+    "rules": [
+      "Imbal hasil tetap dan tanpa risiko adalah tanda bahaya, bukan bukti keahlian.",
+      "Setoran ke rekening pribadi bukan investasi di exchange berizin.",
+      "Jangan pernah membagikan seed phrase, PIN, atau OTP wallet.",
+      "Semua nama, nomor, dan platform di sini fiktif."
+    ],
+    "saldoAwal": 12000000
+  },
+  "steps": [
+    {
+      "type": "chat",
+      "dir": "narator",
+      "text": "Kamis, 09.12 · grup CuanPagi VIP",
+      "delayMs": 500
+    },
+    {
+      "type": "lesson",
+      "title": "Profit tetap bukan jaminan",
+      "body": "Penipu crypto membuat dashboard yang selalu hijau dan bonus referral yang terasa nyata. Cek izin platform, alamat rekening, dan apakah penarikan benar-benar bisa dilakukan sebelum menyetor.",
+      "refDex": "Investasi Crypto"
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Admin CuanPagi",
+      "time": "09.12",
+      "text": "Selamat pagi! Slot VIP tinggal 3. Bot AI kami profit 3–5% per hari, modal kembali dalam 30 hari. Minimum setoran Rp 3.000.000. Klik dashboard untuk lihat hasil member lain.",
+      "auto": false
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": {
+        "title": "BrowserMini",
+        "sub": "CuanPagi Invest"
+      },
+      "url": "https://cuanpagi-invest.xyz/dashboard",
+      "secure": true,
+      "page": {
+        "logo": "CuanPagi · AI Trading",
+        "lines": [
+          "Profit hari ini: +4,8% · 12.408 member",
+          "Modal kamu: Rp 3.000.000 → estimasi Rp 4.500.000",
+          "Penarikan konon diproses 5 menit, 24 jam."
+        ],
+        "countdown": "Slot VIP tersisa 02.14",
+        "foot": "Investasi berizin pun tidak menjanjikan profit tetap. Dashboard bisa dibuat siapa saja."
+      },
+      "inspect": {
+        "real": "Bappebti · daftar pedagang aset kripto berizin",
+        "notes": [
+          "Domain memakai nama kampanye dan akhiran .xyz — bukan domain exchange berizin.",
+          "Profit harian tetap 3–5% tidak masuk akal untuk produk investasi mana pun.",
+          "Tidak ada nomor izin, badan hukum, atau alamat kantor yang bisa diverifikasi."
+        ]
+      },
+      "hint": "Dashboard ini menjanjikan profit tetap. Periksa izin dan rekening sebelum menyetor.",
+      "hotspots": [
+        {
+          "flagId": "ci-profit",
+          "x": 52,
+          "y": 38,
+          "title": "Profit tetap 3–5% per hari",
+          "why": "Imbal hasil tinggi yang dijanjikan pasti adalah ciri skema Ponzi. Pasar crypto bisa naik dan turun, bukan profit tetap.",
+          "do": "Jangan menyetor. Bandingkan dengan produk berizin yang menjelaskan risikonya."
+        },
+        {
+          "flagId": "ci-domain",
+          "x": 54,
+          "y": 20,
+          "title": "Domain cuanpagi-invest.xyz",
+          "why": "Domain kampanye tidak sama dengan domain exchange berizin. Penipu memakai nama yang terdengar resmi.",
+          "do": "Cek daftar pedagang aset kripto di situs Bappebti, bukan tautan dari grup."
+        },
+        {
+          "flagId": "ci-countdown",
+          "x": 58,
+          "y": 83,
+          "title": "Slot VIP tersisa 02.14",
+          "why": "Hitung mundur membuatmu merasa harus segera menyetor tanpa memeriksa izin.",
+          "do": "Abaikan tenggat; keputusan investasi tidak sah hanya karena waktu habis."
+        },
+        {
+          "flagId": "ci-testimonial",
+          "x": 35,
+          "y": 55,
+          "title": "Testimoni member",
+          "decoy": true,
+          "why": "Testimoni dan tangkapan layar profit mudah dibuat atau dipalsukan.",
+          "do": "Minta bukti penarikan dan izin resmi; jangan percaya tangkapan layar."
+        }
+      ],
+      "button": {
+        "label": "Mulai investasi",
+        "goto": 4
+      }
+    },
+    {
+      "type": "choice",
+      "prompt": "Admin meminta setoran Rp 3.000.000 ke rekening pribadi. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        {
+          "id": "setor",
+          "label": "Setor sekarang agar tidak kehabisan slot VIP",
+          "goto": 5
+        },
+        {
+          "id": "verifikasi",
+          "label": "Cek izin platform dan rekening resmi sebelum menyetor",
+          "goto": 11
+        },
+        {
+          "id": "lapor",
+          "label": "Tutup grup, simpan bukti, dan laporkan akun",
+          "goto": 13
+        }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": {
+        "title": "Bank Jayakarta",
+        "sub": "Setoran investasi"
+      },
+      "data": {
+        "title": "Setoran modal CuanPagi",
+        "recipient": "Dimas Saputra",
+        "account": "8821 4400 7712",
+        "amount": 3000000,
+        "fee": 6500,
+        "note": "Slot VIP CuanPagi",
+        "warning": "Penerima adalah rekening pribadi, bukan rekening perusahaan exchange berizin."
+      },
+      "button": {
+        "label": "Setor sekarang",
+        "goto": 6
+      }
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Admin CuanPagi",
+      "time": "09.17",
+      "text": "Setoran diterima. Saldo dashboard kamu sudah Rp 3.150.000. Untuk menarik profit, klik halaman penarikan dan bayar pajak crypto 20% serta isi recovery phrase wallet supaya dana bisa dipindahkan.",
+      "auto": false
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": {
+        "title": "BrowserMini",
+        "sub": "Penarikan CuanPagi"
+      },
+      "url": "https://cuanpagi-invest.xyz/withdraw",
+      "secure": true,
+      "page": {
+        "logo": "CuanPagi · Penarikan",
+        "lines": [
+          "Saldo tersedia: Rp 3.150.000",
+          "Pajak crypto 20%: Rp 1.200.000",
+          "Isi recovery phrase 12 kata untuk memindahkan dana ke wallet kamu."
+        ],
+        "form": [
+          {
+            "placeholder": "12 kata recovery phrase",
+            "label": "Recovery phrase"
+          },
+          {
+            "placeholder": "Kode OTP",
+            "label": "OTP"
+          }
+        ],
+        "countdown": "Verifikasi kedaluwarsa dalam 04.59",
+        "foot": "Exchange berizin tidak meminta recovery phrase lewat browser. Pajak tidak dibayar ke rekening pribadi."
+      },
+      "inspect": {
+        "real": "aplikasi exchange resmi yang kamu pasang sendiri",
+        "notes": [
+          "Halaman meminta recovery phrase 12 kata — siapa pun yang mendapatkannya bisa mengambil seluruh wallet.",
+          "Pajak dikirim ke rekening pribadi, bukan ke kas negara atau exchange.",
+          "Saldo di dashboard hanyalah angka yang bisa diubah penipu."
+        ]
+      },
+      "hint": "Halaman penarikan meminta pajak dan recovery phrase. Itu bukan prosedur exchange.",
+      "hotspots": [
+        {
+          "flagId": "ci-seed",
+          "x": 54,
+          "y": 58,
+          "title": "Recovery phrase 12 kata",
+          "why": "Recovery phrase adalah kunci penuh wallet. Tidak ada exchange sah yang memintanya lewat halaman web.",
+          "do": "Jangan isi. Pindahkan aset hanya lewat aplikasi resmi yang kamu pasang sendiri."
+        },
+        {
+          "flagId": "ci-tax",
+          "x": 48,
+          "y": 40,
+          "title": "Pajak 20% ke rekening pribadi",
+          "why": "Pajak investasi tidak dibayar ke rekening pribadi admin. Ini biaya tambahan untuk mencuri lebih banyak.",
+          "do": "Jangan bayar. Simpan bukti dan laporkan."
+        }
+      ],
+      "button": {
+        "label": "Bayar pajak dan buka penarikan",
+        "goto": 8
+      }
+    },
+    {
+      "type": "choice",
+      "prompt": "Halaman meminta pajak dan recovery phrase. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        {
+          "id": "pajak",
+          "label": "Bayar pajak Rp 1.200.000 agar saldo cair",
+          "goto": 9
+        },
+        {
+          "id": "seed",
+          "label": "Isi recovery phrase agar wallet terhubung",
+          "goto": 10
+        },
+        {
+          "id": "tutup",
+          "label": "Tutup halaman dan cek platform di daftar resmi",
+          "goto": 12
+        },
+        {
+          "id": "lapor",
+          "label": "Simpan bukti dan laporkan admin serta domain",
+          "goto": 13
+        }
+      ]
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "Pajak palsu di atas setoran palsu",
+      "text": "Kamu membayar Rp 1.200.000 tambahan. Saldo dashboard tetap tidak bisa ditarik, admin memblokir kamu, dan rekening tujuan sudah kosong. Total kerugian Rp 4.200.000. Angka profit itu hanya tulisan di halaman yang dibuat penipu."
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena-data",
+      "title": "Recovery phrase membuka seluruh wallet",
+      "text": "Kamu mengisi recovery phrase. Dalam hitungan detik, seluruh aset di wallet itu dipindahkan ke alamat lain. Penipu tidak memerlukan passwordmu; recovery phrase adalah kunci penuh. Setoran Rp 3.000.000 juga tidak kembali."
+    },
+    {
+      "type": "consequence",
+      "endingId": "aman",
+      "title": "Izin dicek sebelum uang berpindah",
+      "text": "Kamu mencari nama platform di daftar pedagang aset kripto berizin dan tidak menemukannya. Rekening tujuan juga atas nama pribadi. Kamu tidak menyetor, memblokir admin, dan menyimpan bukti. Tidak ada profit yang hilang karena tidak ada investasi yang nyata."
+    },
+    {
+      "type": "consequence",
+      "endingId": "hampir-kena",
+      "title": "Setoran berhenti, kerugian dibatasi",
+      "text": "Kamu menutup halaman penarikan sebelum membayar pajak atau mengisi recovery phrase. Setoran Rp 3.000.000 kemungkinan sudah hilang, tetapi kamu tidak menambah kerugian dan tidak membocorkan kunci wallet. Hubungi bank dan laporkan rekening penerima segera."
+    },
+    {
+      "type": "consequence",
+      "endingId": "lapor",
+      "title": "Bukti disimpan sebelum admin menghilang",
+      "text": "Kamu menyimpan nama grup, nomor admin, domain, rekening tujuan, dan tangkapan layar dashboard. Kamu melaporkannya ke platform, Aduan Konten Komdigi, dan lapor.go.id, lalu memperingatkan anggota grup lain."
+    }
+  ],
+  "endings": {
+    "kena": {
+      "label": "Setoran dan pajak palsu hilang",
+      "saldoDelta": -4200000,
+      "rank": 0,
+      "tone": "bad",
+      "dexCard": "crypto-invest"
+    },
+    "kena-data": {
+      "label": "Recovery phrase wallet dicuri",
+      "saldoDelta": -3000000,
+      "rank": 0,
+      "tone": "bad",
+      "dexCard": "crypto-invest",
+      "dexVariant": "var-crypto-invest"
+    },
+    "aman": {
+      "label": "Cek izin sebelum menyetor",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best",
+      "dexCard": "crypto-invest"
+    },
+    "hampir-kena": {
+      "label": "Berhenti sebelum membayar pajak",
+      "saldoDelta": -3000000,
+      "rank": 1,
+      "tone": "neutral",
+      "dexCard": "crypto-invest"
+    },
+    "lapor": {
+      "label": "Tutup grup dan laporkan",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good",
+      "dexCard": "crypto-invest"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      {
+        "t": "09.12",
+        "judul": "Slot VIP tinggal tiga",
+        "naskah": "Profit 3–5% per hari, modal kembali 30 hari.",
+        "tujuanPenipu": "Menciptakan kelangkaan dan janji pasti agar korban berhenti menghitung risiko."
+      },
+      {
+        "t": "09.15",
+        "judul": "Rekening pribadi",
+        "naskah": "Transfer ke Dimas Saputra, bukan exchange.",
+        "tujuanPenipu": "Memindahkan uang ke rekening yang cepat dikosongkan dan sulit dilacak."
+      },
+      {
+        "t": "09.17",
+        "judul": "Pajak dan recovery phrase",
+        "naskah": "Bayar 20% dan isi 12 kata.",
+        "tujuanPenipu": "Mengambil biaya tambahan sekaligus kunci penuh wallet korban."
+      },
+      {
+        "t": "H+1",
+        "judul": "Dashboard hilang",
+        "naskah": "Admin memblokir; saldo hanya angka.",
+        "tujuanPenipu": "Kabur sebelum korban menyadari tidak ada penarikan yang nyata."
+      }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran investasi crypto palsu: janji profit, setoran, pajak, dan recovery phrase",
+      "nodes": [
+        {
+          "id": "janji",
+          "label": "Janji profit tetap"
+        },
+        {
+          "id": "setoran",
+          "label": "Setoran ke rekening pribadi",
+          "tone": "danger"
+        },
+        {
+          "id": "pajak",
+          "label": "Pajak palsu",
+          "tone": "danger"
+        },
+        {
+          "id": "seed",
+          "label": "Recovery phrase dicuri",
+          "tone": "danger"
+        }
+      ],
+      "edges": [
+        {
+          "from": "janji",
+          "to": "setoran",
+          "label": "slot VIP"
+        },
+        {
+          "from": "setoran",
+          "to": "pajak",
+          "label": "penarikan ditahan"
+        },
+        {
+          "from": "setoran",
+          "to": "seed",
+          "label": "hubungkan wallet"
+        }
+      ]
+    },
+    "pulihkan": [
+      "Hubungi bank untuk memblokir rekening penerima dan menahan transaksi bila masih memungkinkan.",
+      "Jika recovery phrase sudah diberikan, pindahkan sisa aset ke wallet baru dan buat recovery phrase baru.",
+      "Ubah kata sandi, cabut sesi perangkat, dan aktifkan verifikasi dua langkah di exchange resmi.",
+      "Simpan nama grup, nomor admin, domain, rekening, dan tangkapan layar untuk laporan.",
+      "Laporkan ke platform, Aduan Konten Komdigi, lapor.go.id, dan Bappebti; beri tahu anggota grup lain."
+    ],
+    "linkPhisquest": true
+  }
+}

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Ilustrasi skenario Cuan yang Tidak Pernah Ada">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#132C2A"/><stop offset="1" stop-color="#080F12"/></linearGradient>
+    <linearGradient id="line" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#E9B949"/><stop offset="1" stop-color="#8BE3C4"/></linearGradient>
+    <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M34 0H0V34" fill="none" stroke="#ffffff" stroke-opacity=".055"/></pattern>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <rect width="640" height="360" fill="url(#grid)"/>
+  <circle cx="552" cy="52" r="138" fill="#8BE3C4" opacity=".06"/>
+  <text x="52" y="64" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="2.5" fill="#8BE3C4">INVESTASI CRYPTO</text>
+  <text x="50" y="113" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Cuan yang</text>
+  <text x="50" y="151" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Tidak Pernah Ada</text>
+  <g transform="translate(330 76)">
+    <rect width="258" height="196" rx="16" fill="#0B1518" stroke="#ffffff" stroke-opacity=".12"/>
+    <text x="20" y="30" font-family="system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.4" fill="#8BE3C4">CUANPAGI · AI TRADING</text>
+    <text x="20" y="58" font-family="system-ui, sans-serif" font-size="20" font-weight="800" fill="#E9B949">+4,8%</text>
+    <text x="94" y="58" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff" opacity=".55">profit hari ini</text>
+    <path d="M20 156 L48 142 L74 148 L102 118 L128 126 L154 92 L180 100 L208 58 L236 36" fill="none" stroke="url(#line)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="236" cy="36" r="5" fill="#E9B949"/>
+    <path d="M20 172H238" stroke="#ffffff" stroke-opacity=".12"/>
+    <text x="20" y="188" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff" opacity=".45">grafik dibuat untuk meyakinkan</text>
+  </g>
+  <g transform="translate(52 205)">
+    <rect width="230" height="64" rx="12" fill="#ffffff" opacity=".08"/>
+    <text x="14" y="23" font-family="system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.1" fill="#E9B949">SLOT VIP · 02.14</text>
+    <text x="14" y="43" font-family="system-ui, sans-serif" font-size="10" fill="#ffffff" opacity=".78">setoran ke rekening pribadi</text>
+    <text x="14" y="57" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff" opacity=".5">pajak + recovery phrase menanti</text>
+  </g>
+  <g transform="translate(52 290)">
+    <rect width="250" height="22" rx="11" fill="#E9B949" opacity=".14"/>
+    <text x="11" y="15" font-family="system-ui, sans-serif" font-size="9" font-weight="700" letter-spacing="1" fill="#E9B949">PROFIT TETAP ≠ IZIN RESMI</text>
+  </g>
+  <text x="452" y="344" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff" opacity=".35">scamurai</text>
+</svg>

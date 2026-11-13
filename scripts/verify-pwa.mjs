@@ -729,6 +729,55 @@ async function main() {
       'ending aman voice clone',
     );
 
+    await evalValue(`location.hash = '#/skenario/crypto-invest'`);
+    const cryptoIntro = await waitFor(
+      `(() => ({
+        hash: location.hash,
+        title: document.querySelector('#app h1')?.textContent?.trim() || '',
+        cover: document.querySelector('#app img')?.getAttribute('src') || '',
+      }))()`,
+      (value) => value?.hash === '#/skenario/crypto-invest'
+        && value.title.includes('Cuan yang Tidak Pernah Ada')
+        && value.cover.includes('crypto-invest.svg'),
+      'pengantar investasi crypto',
+    );
+    const startedCrypto = await evalValue(`(() => {
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => node.textContent.trim() === 'Mulai simulasi');
+      if (!button) return false;
+      button.click();
+      return true;
+    })()`);
+    await waitFor(
+      `document.querySelector('.c-lesson')?.innerText || ''`,
+      (text) => text.includes('Profit tetap bukan jaminan'),
+      'pelajaran crypto',
+    );
+    await clickNewScenarioButton('Mengerti', 'pelajaran crypto');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Slot VIP tinggal 3'),
+      'tawaran crypto',
+    );
+    await clickNewScenarioButton('Lanjut', 'chat crypto');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('CuanPagi') && text.includes(' +4,8%'),
+      'dashboard crypto',
+    );
+    await clickNewScenarioButton('Mulai investasi', 'dashboard crypto');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Cek izin platform dan rekening resmi'),
+      'pilihan crypto',
+    );
+    await clickNewScenarioButton('Cek izin platform dan rekening resmi', 'pilihan crypto');
+    const cryptoEnding = await waitFor(
+      `document.querySelector('.c-ending')?.innerText || ''`,
+      (text) => text.includes('Izin dicek sebelum uang berpindah'),
+      'ending aman crypto',
+    );
+
     const offlineData = await evalValue(`(async () => {
       const response = await fetch('./data/scenarios/${SCENARIO_ID}.json');
       const body = await response.json();
@@ -777,6 +826,9 @@ async function main() {
       && voiceIntro.title.includes('Suara yang Tidak Pernah Ada')
       && startedVoice === true
       && voiceEnding.includes('Pertanyaan yang tidak bisa dijawab suara palsu')
+      && cryptoIntro.title.includes('Cuan yang Tidak Pernah Ada')
+      && startedCrypto === true
+      && cryptoEnding.includes('Izin dicek sebelum uang berpindah')
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -817,6 +869,9 @@ async function main() {
         voiceScenarioFound: voiceIntro.title.includes('Suara yang Tidak Pernah Ada'),
         voiceScenarioStarted: startedVoice === true,
         voiceScenarioEnding: voiceEnding.includes('Pertanyaan yang tidak bisa dijawab suara palsu'),
+        cryptoScenarioFound: cryptoIntro.title.includes('Cuan yang Tidak Pernah Ada'),
+        cryptoScenarioStarted: startedCrypto === true,
+        cryptoScenarioEnding: cryptoEnding.includes('Izin dicek sebelum uang berpindah'),
         data: offlineData,
         networkFailures: pageFailures.length,
       },
