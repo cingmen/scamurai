@@ -34,6 +34,7 @@ Semua path relatif, jadi aplikasi juga berjalan dari subfolder GitHub Pages (`/s
 npm run check                    # data + uji store + audit aset + sinkronisasi shell beranda + sintaks inti
 npm run test:store               # migrasi data lama, data korup, dan normalisasi state
 npm run test:i18n                # pemilihan locale, fallback, dan cakupan data
+npm run i18n:review              # status reviewer dan 26 istilah keamanan
 npm run test:exam                # pool 10/20 soal, anti-repetisi, dan penilaian ujian
 npm run audit:assets             # anggaran audio, gambar, dan bundle aplikasi
 npm run prerender:home           # tulis ulang shell index.html setelah mengubah home.js
@@ -62,7 +63,7 @@ CI menjalankan `npm run check` dan mem-parse semua modul pada setiap push dan pu
 
 Katalog ada di `i18n/id.json`, `i18n/jv-ID.json`, dan `i18n/en.json`. Katalog memakai teks Indonesia sebagai kunci; kunci yang belum ada kembali ke teks Indonesia, lalu ke kunci asli. Pilihan bahasa disimpan di `settings.locale` dan dipertahankan setelah reload. UI memakai katalog lewat helper DOM, sedangkan data skenario, ScamDEX, ujian, bantuan, sekolah, dan Studio dilokalkan di loader JSON.
 
-`jv-ID` dan `en` adalah **draf mesin**, bukan terjemahan tervalidasi. Keduanya belum diverifikasi oleh penutur asli; jangan menganggap lokalisasi selesai sebelum ada review satu penutur asli Jawa dan satu editor bahasa Inggris. Tes `npm run test:i18n` memeriksa pemilihan/fallback serta memastikan seluruh string data 13 skenario ada di kedua katalog.
+`jv-ID` dan `en` adalah **draf mesin**, bukan terjemahan tervalidasi. Keduanya belum diverifikasi oleh penutur asli; jangan menganggap lokalisasi selesai sebelum ada review satu penutur asli Jawa dan satu editor bahasa Inggris. Tes `npm run test:i18n` memeriksa pemilihan/fallback serta memastikan seluruh string data 13 skenario ada di kedua katalog. Prosedur review, sign-off, dan daftar periksa 26 istilah keamanan ada di [`docs/I18N-REVIEW.md`](docs/I18N-REVIEW.md); manifest statusnya ada di `i18n/review-status.json`.
 
 ## Verifikasi PWA & performa
 

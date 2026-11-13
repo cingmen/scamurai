@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "description": "Istilah keamanan yang tidak boleh diterjemahkan secara longgar. Nilai katalog harus sama dengan istilah kanonis ini.",
+  "terms": [
+    {
+      "id": "OTP",
+      "en": "OTP",
+      "jv": "OTP",
+      "severity": "critical",
+      "note": "Pertahankan singkatan OTP; jangan mengubahnya menjadi kode biasa tanpa konteks."
+    },
+    {
+      "id": "PIN",
+      "en": "PIN",
+      "jv": "PIN",
+      "severity": "critical",
+      "note": "Pertahankan PIN; jangan menyamakan dengan password."
+    },
+    {
+      "id": "CVV",
+      "en": "CVV",
+      "jv": "CVV",
+      "severity": "critical",
+      "note": "Pertahankan CVV; jangan menerjemahkan menjadi kode rahasia kartu."
+    },
+    {
+      "id": "Phishing",
+      "en": "Phishing",
+      "jv": "Phishing",
+      "severity": "critical",
+      "note": "Pertahankan istilah phishing; jangan memakai phising."
+    },
+    {
+      "id": "Rekening",
+      "en": "Account",
+      "jv": "Rekening",
+      "severity": "high",
+      "note": "Dalam konteks bank berarti rekening, bukan akun media sosial."
+    },
+    {
+      "id": "Rekening penerima",
+      "en": "Recipient account",
+      "jv": "Rekening panampa",
+      "severity": "critical",
+      "note": "Harus jelas bahwa uang masuk ke pihak lain."
+    },
+    {
+      "id": "Transfer",
+      "en": "Transfer",
+      "jv": "Transfer",
+      "severity": "critical",
+      "note": "Pertahankan transfer; jangan memakai kirim hadiah."
+    },
+    {
+      "id": "Transfer bank",
+      "en": "Bank transfer",
+      "jv": "Transfer bank",
+      "severity": "critical",
+      "note": "Bedakan dari transfer dompet digital."
+    },
+    {
+      "id": "Escrow",
+      "en": "Escrow",
+      "jv": "Escrow",
+      "severity": "high",
+      "note": "Pertahankan escrow atau jelaskan sebagai dana ditahan platform."
+    },
+    {
+      "id": "Money mule",
+      "en": "Money mule",
+      "jv": "Money mule",
+      "severity": "critical",
+      "note": "Pertahankan istilah teknis; jangan memakai kurir uang."
+    },
+    {
+      "id": "Pinjol ilegal",
+      "en": "Illegal online loan",
+      "jv": "Pinjol ilegal",
+      "severity": "critical",
+      "note": "Harus menyatakan ilegal/tidak berizin OJK, bukan sekadar pinjaman online."
+    },
+    {
+      "id": "Red flag",
+      "en": "Red flag",
+      "jv": "Tanda bahaya",
+      "severity": "high",
+      "note": "Harus bermakna tanda bahaya yang bisa diperiksa, bukan sekadar kecurigaan."
+    },
+    {
+      "id": "Deepfake",
+      "en": "Deepfake",
+      "jv": "Deepfake",
+      "severity": "critical",
+      "note": "Pertahankan deepfake; jelaskan media palsu bila perlu."
+    },
+    {
+      "id": "Recovery phrase",
+      "en": "Recovery phrase",
+      "jv": "Frasa pemulihan",
+      "severity": "critical",
+      "note": "Jangan pernah menyarankan membagikan frasa ini."
+    },
+    {
+      "id": "Seed phrase",
+      "en": "Seed phrase",
+      "jv": "Frasa seed",
+      "severity": "critical",
+      "note": "Pertahankan sebagai rahasia dompet kripto."
+    },
+    {
+      "id": "QRIS",
+      "en": "QRIS",
+      "jv": "QRIS",
+      "severity": "high",
+      "note": "Pertahankan nama sistem pembayaran QRIS."
+    },
+    {
+      "id": "Merchant",
+      "en": "Merchant",
+      "jv": "Merchant",
+      "severity": "high",
+      "note": "Pertahankan merchant atau penjual terdaftar; jangan menyamakan dengan rekening pribadi."
+    },
+    {
+      "id": "OJK",
+      "en": "OJK",
+      "jv": "OJK",
+      "severity": "critical",
+      "note": "Pertahankan nama otoritas; jangan diterjemahkan."
+    },
+    {
+      "id": "lapor.go.id",
+      "en": "lapor.go.id",
+      "jv": "lapor.go.id",
+      "severity": "critical",
+      "note": "Alamat kanal resmi harus tetap persis."
+    },
+    {
+      "id": "cekrekening.id",
+      "en": "cekrekening.id",
+      "jv": "cekrekening.id",
+      "severity": "critical",
+      "note": "Alamat kanal resmi harus tetap persis."
+    },
+    {
+      "id": "Komdigi",
+      "en": "Komdigi",
+      "jv": "Komdigi",
+      "severity": "critical",
+      "note": "Pertahankan nama kementerian/kanal resmi."
+    },
+    {
+      "id": "SIM swap",
+      "en": "SIM swap",
+      "jv": "SIM swap",
+      "severity": "high",
+      "note": "Pertahankan istilah teknis; jelaskan pengambilalihan nomor."
+    },
+    {
+      "id": "Remote access",
+      "en": "Remote access",
+      "jv": "Akses jarak jauh",
+      "severity": "critical",
+      "note": "Harus jelas bahwa orang lain bisa mengendalikan perangkat."
+    },
+    {
+      "id": "APK",
+      "en": "APK",
+      "jv": "APK",
+      "severity": "high",
+      "note": "Pertahankan APK; jangan menyebutnya aplikasi biasa tanpa peringatan."
+    },
+    {
+      "id": "Kode OTP",
+      "en": "OTP code",
+      "jv": "Kode OTP",
+      "severity": "critical",
+      "note": "Jangan diterjemahkan menjadi kode verifikasi umum."
+    },
+    {
+      "id": "Kode verifikasi",
+      "en": "Verification code",
+      "jv": "Kode verifikasi",
+      "severity": "critical",
+      "note": "Boleh dipakai untuk kode non-OTP, tetapi jangan menyamarkan OTP."
+    }
+  ]
+}

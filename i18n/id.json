@@ -3150,7 +3150,24 @@
   "Jawa (draf)": "Jawa (draf)",
   "English (draft)": "English (draft)",
   "Indonesia": "Indonesia",
-  "SIMULASI": "SIMULASI"
+  "SIMULASI": "SIMULASI",
+  "OTP": "OTP",
+  "PIN": "PIN",
+  "CVV": "CVV",
+  "Rekening": "Rekening",
+  "Rekening penerima": "Rekening penerima",
+  "Transfer bank": "Transfer bank",
+  "Deepfake": "Deepfake",
+  "Seed phrase": "Seed phrase",
+  "QRIS": "QRIS",
+  "Merchant": "Merchant",
+  "OJK": "OJK",
+  "lapor.go.id": "lapor.go.id",
+  "cekrekening.id": "cekrekening.id",
+  "Komdigi": "Komdigi",
+  "SIM swap": "SIM swap",
+  "Remote access": "Remote access",
+  "APK": "APK"
  },
  "patterns": {}
 }

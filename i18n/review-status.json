@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "catalogVersion": 1,
+  "updatedAt": "2026-11-13",
+  "status": "pending-native-review",
+  "requiredRoles": {
+    "jv-ID": "Satu penutur asli Jawa (ngoko)",
+    "en": "Satu editor bahasa Inggris"
+  },
+  "locales": {
+    "jv-ID": {
+      "status": "pending-native-review",
+      "reviewer": "",
+      "reviewedAt": "",
+      "catalogVersion": 1,
+      "checklist": {
+        "ui": "pending",
+        "scenarios": "pending",
+        "securityTerms": "pending",
+        "pwa": "pending"
+      }
+    },
+    "en": {
+      "status": "pending-native-review",
+      "reviewer": "",
+      "reviewedAt": "",
+      "catalogVersion": 1,
+      "checklist": {
+        "ui": "pending",
+        "scenarios": "pending",
+        "securityTerms": "pending",
+        "pwa": "pending"
+      }
+    }
+  },
+  "policy": {
+    "approvedRequiresReviewer": true,
+    "approvedRequiresDate": true,
+    "approvedRequiresAllChecklistItems": true,
+    "approvedRequiresMatchingCatalogVersion": true,
+    "unresolvedCriticalTermBlocksApproval": true
+  }
+}
