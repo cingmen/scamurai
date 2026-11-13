@@ -915,6 +915,54 @@ async function main() {
       'UI en setelah reload',
     );
     const enStored = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').settings?.locale || ''`);
+    const scanI18nUi = async (locale) => {
+      await evalValue(`(async () => {
+        const [id, localeCatalog] = await Promise.all([
+          fetch('./i18n/id.json').then((r) => r.json()),
+          fetch('./i18n/${locale}.json').then((r) => r.json()),
+        ]);
+        window.__i18nScan = { id, locale: localeCatalog };
+        return true;
+      })()`);
+      const routes = ['#/', '#/skenario', '#/skenario/task-scam', '#/scamdex', '#/bantuan', '#/tentang', '#/latihan', '#/sekolah', '#/studio', '#/pengaturan', '#/ujian'];
+      const leftovers = [];
+      for (const route of routes) {
+        await evalValue(`location.hash = ${JSON.stringify(route)}`);
+        await sleep(300);
+        const found = await evalValue(`(() => {
+          const scan = window.__i18nScan;
+          if (!scan) return [{ source: '[catalog]', translated: '' }];
+          const texts = new Set();
+          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+              const parent = node.parentElement;
+              if (!parent || ['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEXTAREA'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+              if (parent.closest('[data-i18n-skip]')) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            },
+          });
+          while (walker.nextNode()) {
+            const text = walker.currentNode.nodeValue.trim();
+            if (text) texts.add(text);
+          }
+          document.querySelectorAll('[title], [aria-label], [placeholder], [alt]').forEach((node) => {
+            for (const attr of ['title', 'aria-label', 'placeholder', 'alt']) {
+              const text = (node.getAttribute(attr) || '').trim();
+              if (text) texts.add(text);
+            }
+          });
+          const leftovers = [];
+          for (const [source, translated] of Object.entries(scan.locale.strings || {})) {
+            if (translated === source) continue;
+            if (texts.has(source)) leftovers.push({ source, translated });
+          }
+          return leftovers;
+        })()`);
+        for (const item of found || []) leftovers.push({ route, ...item });
+      }
+      return leftovers;
+    };
+    const enLeftovers = await scanI18nUi('en');
     await evalValue(`location.hash = '#/skenario/task-scam'`);
     const enScenario = await waitFor(
       `document.querySelector('#app h1')?.textContent?.trim() || ''`,
@@ -957,6 +1005,7 @@ async function main() {
       'locale jv-ID setelah reload',
     );
     const jvStored = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').settings?.locale || ''`);
+    const jvLeftovers = await scanI18nUi('jv-ID');
     await evalValue(`location.hash = '#/skenario/task-scam'`);
     const jvScenario = await waitFor(
       `document.querySelector('#app h1')?.textContent?.trim() || ''`,
@@ -998,8 +1047,8 @@ async function main() {
       'beranda id kembali identik',
     );
     const i18n = {
-      en: { lang: 'en', stored: enStored, title: enScenario, step: enStep.includes(enWords.step), settings: enSettings.includes(enWords.language || 'Language') },
-      jv: { lang: 'jv-ID', stored: jvStored, title: jvScenario, step: jvStep.includes(jvWords.step) },
+      en: { lang: 'en', stored: enStored, title: enScenario, step: enStep.includes(enWords.step), settings: enSettings.includes(enWords.language || 'Language'), leftovers: enLeftovers },
+      jv: { lang: 'jv-ID', stored: jvStored, title: jvScenario, step: jvStep.includes(jvWords.step), leftovers: jvLeftovers },
       id: { lang: 'id', stored: idStored, heading: idHome === offlineShell.heading },
     };
 
@@ -1053,7 +1102,9 @@ async function main() {
       && studioValid.includes('Paket valid')
       && studioRejects.includes('JSON tidak valid')
       && i18n.en.lang === 'en' && i18n.en.stored === 'en' && i18n.en.step && i18n.en.settings
+      && i18n.en.leftovers.length === 0
       && i18n.jv.lang === 'jv-ID' && i18n.jv.stored === 'jv-ID' && i18n.jv.step
+      && i18n.jv.leftovers.length === 0
       && i18n.id.lang === 'id' && i18n.id.stored === 'id' && i18n.id.heading
       && offlineData.status === 200
       && offlineData.cssStatus === 200

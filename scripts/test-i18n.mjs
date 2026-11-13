@@ -93,6 +93,8 @@ for (const locale of ['en', 'jv-ID']) {
   assert.equal(catalog.reviewStatus, 'pending-native-review');
   const missing = [...dataStrings].filter((text) => !(text in catalog.strings));
   assert.deepEqual(missing, [], `${locale}: konten data belum lengkap (${missing.length})`);
+  const empty = Object.entries(catalog.strings).filter(([source, value]) => source.trim() && !value);
+  assert.deepEqual(empty, [], `${locale}: ada terjemahan kosong (${empty.length})`);
 }
 const idCatalog = JSON.parse(readFileSync('i18n/id.json', 'utf8'));
 assert.equal(idCatalog.locale, 'id');

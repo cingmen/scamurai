@@ -71,7 +71,9 @@ Katalog yang direview:
    ```
 
    Uji juga `en` dan `jv-ID`; pastikan tidak ada layar kosong, `consoleErrors`
-   kosong, dan pilihan bahasa tetap setelah reload.
+   kosong, dan pilihan bahasa tetap setelah reload. Skrip ini juga memindai
+   rute utama dan gagal bila teks sumber Indonesia masih tampil di locale
+   yang seharusnya sudah diterjemahkan.
 8. **Catat temuan.** Temuan kritis (istilah keamanan salah, langkah berbahaya
    menjadi ambigu, atau teks Indonesia yang membingungkan) harus diperbaiki
    dan direview ulang sebelum sign-off.
