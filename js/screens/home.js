@@ -6,6 +6,7 @@ import { rupiah } from '../core/format.js';
 import { scenarioCard, minigameCard, katana } from '../components/scenario-card.js';
 import { lineProgress } from '../components/line-progress.js';
 import { completedCount } from '../core/progress.js';
+import { practiceReminder } from '../core/reminder.js';
 
 export async function render(root) {
   const manifest = await loadJSON('./data/manifest.json');
@@ -83,6 +84,11 @@ export async function render(root) {
     )
     : null;
 
+  const reminder = !inProgress ? practiceReminder(state) : null;
+  const reminderScenario = reminder
+    ? manifest.scenarios.find((item) => item.id === reminder.scenarioId)
+    : null;
+
   const continueDebrief = !inProgress
     ? manifest.scenarios
       .map((item) => ({ item, p: state.progress?.[item.id] }))
@@ -99,6 +105,19 @@ export async function render(root) {
       minigameCard(manifest.minigames[0]),
     ),
   );
+
+  const reminderCard = reminder && reminderScenario
+    ? h('section', { class: 'c-card c-card--accent', 'data-practice-reminder': reminder.scenarioId },
+      h('div', { class: 'u-spread' },
+        h('div', null,
+          h('p', { class: 'scr-head__eyebrow' }, 'Latihan terjadwal'),
+          h('h2', { style: { fontSize: 'var(--s-fs-700)' } }, `Saatnya mengulang ${reminderScenario.title}`),
+          h('p', { class: 'u-small u-muted' }, `Latihan terakhir ${reminder.daysSince === 0 ? 'hari ini' : `${reminder.daysSince} hari lalu`}. Ulangi satu skenario agar instingmu tetap tajam.`),
+        ),
+        h('a', { class: 'c-btn c-btn--primary', href: `#/skenario/${reminder.scenarioId}` }, 'Ulangi sekarang'),
+      ),
+    )
+    : null;
 
   const quickGrid = h('section', { class: 'c-quick-grid' },
     h('a', { class: 'c-quick', href: '#/scamdex' },
@@ -171,6 +190,7 @@ export async function render(root) {
       )
       : null,
     stats,
+    reminderCard,
     scenarioSection,
     quickGrid,
     glossary,

@@ -61,7 +61,7 @@ function row(title, sub, control) {
   );
 }
 
-function toggleSwitch(key, label) {
+function toggleSwitch(key, label, onChange = null) {
   const button = h('button', {
     type: 'button',
     class: 'c-switch',
@@ -72,6 +72,7 @@ function toggleSwitch(key, label) {
       button.setAttribute('aria-pressed', next ? 'true' : 'false');
       set(key, next);
       persist();
+      if (onChange) onChange(next);
     },
   });
   return button;
@@ -81,6 +82,7 @@ export async function render(root) {
   const state = all();
   const settings = state.settings;
   const elder = settings.mode === 'lansia';
+  const reminder = settings.reminder;
 
   clear(root);
 
@@ -152,6 +154,20 @@ export async function render(root) {
     row('Efek suara', 'Bunyi pendek saat mengetuk dan menyelesaikan langkah.', toggleSwitch('settings.sfx', 'Efek suara')),
     row('Getaran', 'Hanya di perangkat yang mendukung.', toggleSwitch('settings.haptics', 'Getaran')),
     row('Petunjuk Kenji', 'Pengingat sebelum aksi kritis, muncul sekali per skenario.', toggleSwitch('settings.kenjiTips', 'Petunjuk Kenji')),
+  );
+
+  const schedule = h('section', { class: 'c-card' },
+    h('h2', { class: 'section-title' }, 'Jadwal latihan'),
+    row('Pengingat ulang', 'Tampil di beranda saat aplikasi dibuka setelah jeda latihan. Tidak mengirim notifikasi keluar.', toggleSwitch('settings.reminder.enabled', 'Pengingat latihan', () => render(root))),
+    row('Jarak ulang', 'Pilih seberapa sering kamu ingin diingatkan untuk mengulang.', seg([
+      { value: 3, label: '3 hari' },
+      { value: 7, label: '7 hari' },
+      { value: 14, label: '14 hari' },
+    ], reminder.intervalDays, (value) => {
+      set('settings.reminder.intervalDays', Number(value));
+      persist();
+    }, { disabled: !reminder.enabled })),
+    h('p', { class: 'u-small u-muted' }, 'Pengingat dihitung dari skenario terakhir yang selesai. Semua data tetap lokal; tidak ada push atau akun.'),
   );
 
   const codeBox = h('textarea', {
@@ -337,6 +353,7 @@ export async function render(root) {
     rhythm,
     mode,
     feedback,
+    schedule,
     recovery,
     backup,
     about,

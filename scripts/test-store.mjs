@@ -243,6 +243,27 @@ test('resetAll eksplisit membersihkan backup dan membuka proteksi tulis', async 
   assert.equal(storage.getItem(BACKUP), null);
 });
 
+test('settings pengingat lama mendapat default mati tanpa backup', async () => {
+  const raw = JSON.stringify({
+    schemaVersion: 1,
+    settings: { theme: 'washi' },
+  });
+  const { store, storage } = await loadStore(raw);
+  assert.deepEqual(store.all().settings.reminder, { enabled: false, intervalDays: 7 });
+  assert.equal(store.all().settings.theme, 'washi');
+  assert.equal(storage.getItem(BACKUP), null, 'field default baru tidak perlu dicadangkan');
+});
+
+test('interval pengingat rusak dinormalkan dan dicadangkan', async () => {
+  const raw = JSON.stringify({
+    schemaVersion: 1,
+    settings: { reminder: { enabled: true, intervalDays: 999 } },
+  });
+  const { store, storage } = await loadStore(raw);
+  assert.deepEqual(store.all().settings.reminder, { enabled: true, intervalDays: 7 });
+  assert.ok(backupRaw(storage), 'interval rusak harus dinormalkan dan dicadangkan');
+});
+
 let failed = 0;
 for (const { name, fn } of tests) {
   try {

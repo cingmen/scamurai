@@ -207,10 +207,10 @@ async function main() {
           saved.profile = { ...(saved.profile || {}), onboarded: true, rhythm: 'normal' };
           saved.progress = {
             ...(saved.progress || {}),
-            'task-scam': { ...(saved.progress?.['task-scam'] || {}), status: 'selesai', debriefDone: true },
-            'bank-otp': { ...(saved.progress?.['bank-otp'] || {}), status: 'selesai', debriefDone: true },
-            'marketplace': { ...(saved.progress?.['marketplace'] || {}), status: 'selesai', debriefDone: true },
-            'phishing': { ...(saved.progress?.['phishing'] || {}), status: 'selesai', debriefDone: true },
+            'task-scam': { ...(saved.progress?.['task-scam'] || {}), status: 'selesai', debriefDone: true, updatedAt: '2026-10-01T00:00:00.000Z' },
+            'bank-otp': { ...(saved.progress?.['bank-otp'] || {}), status: 'selesai', debriefDone: true, updatedAt: '2026-10-02T00:00:00.000Z' },
+            'marketplace': { ...(saved.progress?.['marketplace'] || {}), status: 'selesai', debriefDone: true, updatedAt: '2026-10-03T00:00:00.000Z' },
+            'phishing': { ...(saved.progress?.['phishing'] || {}), status: 'selesai', debriefDone: true, updatedAt: '2026-10-04T00:00:00.000Z' },
           };
           localStorage.setItem(key, JSON.stringify(saved));
         } catch {}
@@ -492,6 +492,43 @@ async function main() {
     })()`);
     const certificateState = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').certificate || {}`);
 
+    await evalValue(`location.hash = '#/pengaturan'`);
+    await waitFor(
+      `Boolean(document.querySelector('button[aria-label="Pengingat latihan"]'))`,
+      Boolean,
+      'pengaturan pengingat latihan',
+    );
+    await evalValue(`document.querySelector('button[aria-label="Pengingat latihan"]').click()`);
+    await waitFor(
+      `document.querySelector('button[aria-label="Pengingat latihan"]')?.getAttribute('aria-pressed') === 'true'`,
+      Boolean,
+      'pengingat latihan aktif',
+    );
+    await evalValue(`(() => {
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => node.textContent.trim() === '3 hari');
+      button?.click();
+      return Boolean(button);
+    })()`);
+    await evalValue(`new Promise((resolve) => setTimeout(resolve, 400))`);
+    const reminderSettings = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').settings?.reminder || {}`);
+    await evalValue(`location.hash = '#/'`);
+    const practiceReminder = await waitFor(
+      `(() => {
+        const card = document.querySelector('[data-practice-reminder]');
+        return {
+          found: Boolean(card),
+          scenario: card?.getAttribute('data-practice-reminder') || '',
+          href: card?.querySelector('a')?.getAttribute('href') || '',
+          text: card?.innerText || '',
+        };
+      })()`,
+      (value) => value?.found === true
+        && value.scenario.length > 0
+        && value.href.startsWith('#/skenario/'),
+      'kartu pengingat latihan di beranda',
+    );
+
     const offlineData = await evalValue(`(async () => {
       const response = await fetch('./data/scenarios/${SCENARIO_ID}.json');
       const body = await response.json();
@@ -526,6 +563,10 @@ async function main() {
       && certificateState.name === 'Rani Uji'
       && certificateState.score === 100
       && certificateState.code === certificateAction.code
+      && reminderSettings.enabled === true
+      && reminderSettings.intervalDays === 3
+      && practiceReminder.found === true
+      && practiceReminder.href.includes(practiceReminder.scenario)
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -553,6 +594,8 @@ async function main() {
         certificateCanvas: certificateRoute.canvas ? `${certificateRoute.width}x${certificateRoute.height}` : null,
         certificateIssued: certificateAction.clicked === true && certificateAction.code.startsWith('SCM-'),
         certificateState: { name: certificateState.name, score: certificateState.score, code: certificateState.code },
+        reminderSettings,
+        practiceReminder,
         data: offlineData,
         networkFailures: pageFailures.length,
       },

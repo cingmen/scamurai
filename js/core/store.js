@@ -27,6 +27,7 @@ export function defaultState() {
       haptics: true,
       kenjiTips: true,
       textSpeed: 1,
+      reminder: { enabled: false, intervalDays: 7 },
     },
     dojo: { saldo: STARTER_SALDO, belt: 0 },
     progress: {},
@@ -111,6 +112,22 @@ function normalizeState(raw) {
     }
   }
 
+  if (!isPlainObject(next.settings.reminder)) {
+    next.settings.reminder = { ...base.settings.reminder };
+    repaired = true;
+  } else {
+    if (typeof next.settings.reminder.enabled !== 'boolean') {
+      next.settings.reminder.enabled = base.settings.reminder.enabled;
+      repaired = true;
+    }
+    const intervalDays = Number(next.settings.reminder.intervalDays);
+    if (Number.isFinite(intervalDays) && intervalDays >= 1 && intervalDays <= 365) {
+      next.settings.reminder.intervalDays = Math.round(intervalDays);
+    } else {
+      next.settings.reminder.intervalDays = base.settings.reminder.intervalDays;
+      repaired = true;
+    }
+  }
   if (!Array.isArray(next.vn.saves)) {
     next.vn.saves = [...base.vn.saves];
     repaired = true;

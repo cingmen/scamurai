@@ -199,7 +199,7 @@
 3. Skenario tambahan: QRIS/menu cloning, penipuan tiket konser, "telepon keluarga palsu (voice clone)", penipuan investasi crypto lanjutan.
 4. Editor skenario komunitas (belajar dari PhisQuest: validasi + ekspor paket).
 5. Lokalisasi bahasa daerah & Inggris (`i18n/id.json` sudah siap struktur).
-6. Integrasi "latihan terjadwal" (spaced repetition: pengingat PWA lokal).
+6. [x] Integrasi "latihan terjadwal" (spaced repetition: pengingat PWA lokal). **Dipilih 13 Nov 2026 sebagai item pengganti karena item F7 tersisa membutuhkan perangkat/review manusia atau pengumuman komunitas. Pengingat lokal muncul di beranda setelah jeda 3/7/14 hari, dikonfigurasi di Pengaturan, dengan migrasi settings dan uji perilaku.**
 
 ## 11. Prinsip Anti-Gojek Selama Pengerjaan
 
