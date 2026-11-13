@@ -1,0 +1,405 @@
+{
+  "id": "qris-palsu",
+  "type": "sim",
+  "title": "QRIS yang Berpindah Tangan",
+  "modus": "QRIS Palsu",
+  "difficulty": 2,
+  "app": "chatriang",
+  "brief": {
+    "goal": "Kamu memesan katering kecil dan penjual mengirim gambar QRIS. Di layar, nama penerima tidak cocok dengan nama toko. Uji apakah kamu berhenti sebelum saldo berpindah ke tangan yang salah.",
+    "rules": [
+      "QRIS yang sah menampilkan nama merchant yang sesuai dengan toko.",
+      "Memindai kode bukan berarti pembayaran sudah diverifikasi penjual.",
+      "Jangan pernah mengisi PIN atau OTP di halaman pembayaran pihak ketiga.",
+      "Semua toko, QRIS, dan rekening di sini fiktif."
+    ],
+    "saldoAwal": 5000000
+  },
+  "steps": [
+    {
+      "type": "chat",
+      "dir": "narator",
+      "text": "Jumat, 20.10 · pesanan katering untuk besok",
+      "delayMs": 500
+    },
+    {
+      "type": "lesson",
+      "title": "QRIS punya nama merchant",
+      "body": "Sebelum memindai, pastikan nama merchant di aplikasi pembayaran sama dengan nama toko yang kamu hubungi. QRIS bisa ditempel ulang atau dikirim oleh pihak lain. Memindai dan membayar bukan bukti bahwa pesananmu tercatat di toko.",
+      "refDex": "QRIS Palsu"
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Dapur Bu Rani",
+      "time": "20.11",
+      "text": "Pesanan 20 kotak makan sudah kami siapkan ya. Total Rp 350.000. Ini QRIS toko, tinggal pindai dan kirim bukti. Besok pagi kami antar.",
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "header": {
+        "title": "ChatRiang",
+        "sub": "Chat dengan Dapur Bu Rani"
+      },
+      "hint": "Periksa pesan dan nama penerima sebelum memindai.",
+      "blocks": [
+        {
+          "text": "Dapur Bu Rani · 20.11",
+          "head": true
+        },
+        {
+          "text": "Pesanan 20 kotak makan sudah kami siapkan. Total Rp 350.000."
+        },
+        {
+          "text": "Ini QRIS toko, tinggal pindai dan kirim bukti. Nama penerima: Andi Pratama."
+        }
+      ],
+      "hotspots": [
+        {
+          "flagId": "qr-nama",
+          "x": 58,
+          "y": 74,
+          "title": "Nama penerima bukan nama toko",
+          "why": "QRIS menampilkan nama merchant. Jika nama penerima adalah orang lain, kode itu bukan milik Dapur Bu Rani.",
+          "do": "Batalkan pembayaran dan minta QRIS resmi yang menampilkan nama toko."
+        },
+        {
+          "flagId": "qr-tekanan",
+          "x": 58,
+          "y": 45,
+          "title": "Pesanan sudah disiapkan, tinggal bayar",
+          "why": "Rasa urgensi dan janji pengiriman membuat kamu ingin segera menyelesaikan pembayaran tanpa memeriksa detail.",
+          "do": "Periksa nama merchant dan status pesanan sebelum membayar."
+        },
+        {
+          "flagId": "qr-akun",
+          "x": 30,
+          "y": 16,
+          "title": "Akun penjual tanpa identitas toko",
+          "why": "Nama akun chat mudah dibuat. Tanpa alamat atau verifikasi toko, kamu tidak punya tempat menagih jika pesanan tidak datang.",
+          "do": "Cari toko di platform resmi dan hubungi kanal yang terverifikasi."
+        },
+        {
+          "flagId": "qr-jumlah",
+          "x": 45,
+          "y": 36,
+          "title": "Total Rp 350.000 disebut jelas",
+          "decoy": true,
+          "why": "Nominal yang jelas adalah hal normal dalam transaksi. Angka itu tidak membuktikan QRIS milik toko.",
+          "do": "Fokus pada nama merchant dan sumber kode QRIS."
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "prompt": "Dapur Bu Rani menunggu bukti transfer.",
+      "critical": true,
+      "options": [
+        {
+          "id": "scan",
+          "label": "Pindai QRIS dan bayar sekarang",
+          "goto": 5
+        },
+        {
+          "id": "resmi",
+          "label": "Minta QRIS atas nama toko dan cek pesanannya",
+          "goto": 7
+        },
+        {
+          "id": "lapor",
+          "label": "Batalkan pesanan dan laporkan akun",
+          "goto": 13
+        }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": {
+        "title": "Bank Jayakarta",
+        "sub": "Pembayaran QRIS"
+      },
+      "data": {
+        "title": "Bayar QRIS",
+        "recipient": "Andi Pratama",
+        "account": "QRIS · 9360 1188 4412",
+        "amount": 350000,
+        "fee": 0,
+        "note": "Katering 20 kotak",
+        "warning": "Nama merchant tidak cocok dengan Dapur Bu Rani. QRIS ini terdaftar atas nama pribadi, bukan toko."
+      },
+      "button": {
+        "label": "Bayar QRIS sekarang",
+        "goto": 6
+      }
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "Saldo berpindah, pesanan tidak datang",
+      "text": "Pembayaran QRIS Rp 350.000 masuk ke rekening pribadi Andi Pratama. Dapur Bu Rani mengatakan tidak pernah menerima pembayaran dan tidak punya pesanan atas namamu. Kode QRIS itu ternyata dikirim dari akun lain yang menyamar sebagai toko."
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Dapur Bu Rani",
+      "time": "20.17",
+      "text": "Kak, QRIS tadi salah. Sistem toko belum membaca pembayaran. Buka link ini dan masukkan PIN/OTP supaya dana diteruskan ke rekening toko. Jangan sampai pesanan dibatalkan.",
+      "auto": false
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": {
+        "title": "BrowserMini",
+        "sub": "Konfirmasi QRIS"
+      },
+      "url": "https://qris-dapurpay.xyz/konfirmasi",
+      "secure": true,
+      "page": {
+        "logo": "QRIS DapurPay · Konfirmasi Merchant",
+        "lines": [
+          "Pembayaran Rp 350.000 sedang ditahan.",
+          "Masukkan PIN dan OTP untuk meneruskan dana ke merchant.",
+          "Konfirmasi dalam 09.18 atau pembayaran dibatalkan."
+        ],
+        "form": [
+          {
+            "placeholder": "Nomor kartu / rekening",
+            "label": "Nomor kartu"
+          },
+          {
+            "placeholder": "PIN",
+            "label": "PIN"
+          },
+          {
+            "placeholder": "Kode OTP",
+            "label": "OTP"
+          }
+        ],
+        "countdown": "Sisa waktu 09.18",
+        "foot": "QRIS tidak pernah meminta PIN atau OTP lewat halaman konfirmasi."
+      },
+      "inspect": {
+        "real": "qris-resmi.co.id",
+        "notes": [
+          "Domain memakai tanda hubung dan akhiran .xyz — bukan halaman resmi QRIS.",
+          "Halaman meminta PIN dan OTP, padahal QRIS tidak membutuhkannya.",
+          "Tidak ada nama merchant atau nomor pesanan yang bisa dicocokkan."
+        ]
+      },
+      "hint": "Halaman ini mengaku halaman QRIS. Periksa alamat dan data yang diminta.",
+      "hotspots": [
+        {
+          "flagId": "qr-domain",
+          "x": 50,
+          "y": 23,
+          "title": "Domain qris-dapurpay.xyz",
+          "why": "Halaman resmi QRIS tidak memakai gabungan nama toko, tanda hubung, dan akhiran acak.",
+          "do": "Tutup halaman dan buka aplikasi pembayaran resmi."
+        },
+        {
+          "flagId": "qr-pin",
+          "x": 56,
+          "y": 67,
+          "title": "PIN dan OTP diminta",
+          "why": "PIN dan OTP adalah kunci rekening. Merchant tidak perlu keduanya untuk menerima pembayaran QRIS.",
+          "do": "Jangan isi. Hubungi bank lewat aplikasi resmi bila data sudah dimasukkan."
+        },
+        {
+          "flagId": "qr-hold",
+          "x": 55,
+          "y": 44,
+          "title": "Dana ditahan, konfirmasi 09.18",
+          "why": "Cerita dana ditahan dan hitung mundur membuat kamu panik dan menuruti permintaan data rahasia.",
+          "do": "Abaikan tenggat; cek status pembayaran di aplikasi resmi."
+        },
+        {
+          "flagId": "qr-logo",
+          "x": 27,
+          "y": 14,
+          "title": "Logo QRIS terlihat resmi",
+          "decoy": true,
+          "why": "Logo mudah ditempel di halaman mana pun. Logo bukan bukti keaslian.",
+          "do": "Periksa domain dan data yang diminta, bukan logonya."
+        }
+      ],
+      "button": {
+        "label": "Konfirmasi pembayaran",
+        "goto": 9
+      }
+    },
+    {
+      "type": "choice",
+      "prompt": "Halaman meminta PIN dan OTP. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        {
+          "id": "isi",
+          "label": "Isi PIN dan OTP agar dana diteruskan",
+          "goto": 10
+        },
+        {
+          "id": "tutup",
+          "label": "Tutup halaman dan cek pembayaran di aplikasi bank",
+          "goto": 12
+        },
+        {
+          "id": "lapor",
+          "label": "Simpan bukti dan laporkan penjual",
+          "goto": 13
+        }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": {
+        "title": "Bank Jayakarta",
+        "sub": "Transfer konfirmasi"
+      },
+      "data": {
+        "title": "Transfer konfirmasi QRIS",
+        "recipient": "Andi Pratama",
+        "account": "9360 1188 4412",
+        "amount": 350000,
+        "fee": 0,
+        "note": "Konfirmasi QRIS Dapur Bu Rani",
+        "warning": "Halaman meminta PIN/OTP dan mengarahkan transfer ulang ke rekening pribadi. Bank tidak pernah meminta PIN lewat halaman merchant."
+      },
+      "button": {
+        "label": "Kirim konfirmasi",
+        "goto": 11
+      }
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena-data",
+      "title": "PIN dan OTP jatuh ke tangan penipu",
+      "text": "Kamu mengirim PIN dan OTP melalui halaman palsu. Dana Rp 350.000 berpindah lagi, lalu muncul transaksi lain di rekening. Penjual tidak pernah mengantar pesanan; data perbankanmu sudah cukup untuk mengambil alih akses."
+    },
+    {
+      "type": "consequence",
+      "endingId": "aman",
+      "title": "Kamu memeriksa merchant, bukan hanya QRIS",
+      "text": "Kamu menutup halaman palsu dan membuka aplikasi bank. Pembayaran tidak pernah masuk ke Dapur Bu Rani karena nama merchant tidak cocok. Kamu membatalkan pesanan dan mencari toko dengan QRIS yang menampilkan nama usaha yang benar."
+    },
+    {
+      "type": "consequence",
+      "endingId": "lapor",
+      "title": "Bukti disimpan, akun dilaporkan",
+      "text": "Kamu menyimpan gambar QRIS, tautan, dan percakapan, lalu melaporkan akun ke platform dan kanal aduan. Laporanmu membantu calon pembeli lain yang hampir memindai QRIS yang sama."
+    }
+  ],
+  "endings": {
+    "kena": {
+      "label": "QRIS pribadi, pesanan fiktif",
+      "saldoDelta": -350000,
+      "rank": 0,
+      "tone": "bad",
+      "dexCard": "qris-palsu"
+    },
+    "kena-data": {
+      "label": "PIN dan OTP dicuri",
+      "saldoDelta": -700000,
+      "rank": 0,
+      "tone": "bad",
+      "dexCard": "qris-palsu",
+      "dexVariant": "var-qris-palsu"
+    },
+    "aman": {
+      "label": "Merchant cocok, pembayaran aman",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best",
+      "dexCard": "qris-palsu"
+    },
+    "lapor": {
+      "label": "Laporkan QRIS dan akun",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good",
+      "dexCard": "qris-palsu"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      {
+        "t": "20.11",
+        "judul": "Pesanan terasa nyata",
+        "naskah": "Pesanan sudah disiapkan, tinggal pindai QRIS.",
+        "tujuanPenipu": "Membuat korban merasa transaksi sudah berjalan dan tinggal menyelesaikan pembayaran."
+      },
+      {
+        "t": "20.12",
+        "judul": "Nama merchant tidak cocok",
+        "naskah": "QRIS terdaftar sebagai Andi Pratama, bukan Dapur Bu Rani.",
+        "tujuanPenipu": "Mengalihkan dana ke rekening pribadi yang bisa langsung ditarik."
+      },
+      {
+        "t": "20.17",
+        "judul": "Halaman konfirmasi palsu",
+        "naskah": "Masukkan PIN dan OTP agar dana diteruskan.",
+        "tujuanPenipu": "Mengambil kunci rekening setelah korban panik karena pembayaran dianggap gagal."
+      },
+      {
+        "t": "H+1",
+        "judul": "Pesanan tidak datang",
+        "naskah": "Akun penjual menghilang.",
+        "tujuanPenipu": "Kabur sebelum korban menyadari tidak ada merchant yang menerima uang."
+      }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran QRIS palsu: korban ke rekening pribadi lalu data PIN dan OTP",
+      "nodes": [
+        {
+          "id": "korban",
+          "label": "Kamu · pindai QRIS"
+        },
+        {
+          "id": "rekening",
+          "label": "Rekening pribadi penerima",
+          "tone": "danger"
+        },
+        {
+          "id": "data",
+          "label": "PIN dan OTP di halaman palsu",
+          "tone": "danger"
+        },
+        {
+          "id": "hilang",
+          "label": "Dana ditarik / akun diambil alih",
+          "tone": "danger"
+        }
+      ],
+      "edges": [
+        {
+          "from": "korban",
+          "to": "rekening",
+          "label": "QRIS salah nama"
+        },
+        {
+          "from": "korban",
+          "to": "data",
+          "label": "konfirmasi palsu"
+        },
+        {
+          "from": "rekening",
+          "to": "hilang",
+          "label": "sulit dilacak"
+        }
+      ]
+    },
+    "pulihkan": [
+      "Hubungi bank melalui aplikasi atau call center resmi; minta pemblokiran rekening dan penahanan transaksi.",
+      "Ubah PIN dan kata sandi, lalu aktifkan verifikasi dua langkah.",
+      "Simpan gambar QRIS, tautan, percakapan, dan bukti pembayaran.",
+      "Laporkan akun dan QRIS ke platform, Aduan Konten Komdigi, dan lapor.go.id.",
+      "Jangan membayar “biaya pengembalian” kepada pihak yang mengaku bisa mengembalikan dana."
+    ],
+    "linkPhisquest": true
+  }
+}

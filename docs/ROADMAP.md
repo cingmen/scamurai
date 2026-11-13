@@ -198,7 +198,8 @@
 2. Statistik agregat anonim opsional (opt-in, self-host sederhana atau GitHub Issues bot) untuk angka "63% pemain salah di sini" yang hidup.
 3. Skenario tambahan:
    - [x] Penipuan tiket konser — "Tiket yang Tak Pernah Ada" (14 langkah, 4 ending, ScamDEX, cover, precache; diuji browser lokal/live 13 Nov 2026).
-   - [ ] QRIS/menu cloning.
+   - [x] QRIS palsu — "QRIS yang Berpindah Tangan" (14 langkah, 4 ending, nama merchant, PIN/OTP; diuji browser lokal/live 13 Nov 2026).
+   - [ ] Menu cloning.
    - [ ] "Telepon keluarga palsu" (voice clone).
    - [ ] Penipuan investasi crypto lanjutan.
 4. Editor skenario komunitas (belajar dari PhisQuest: validasi + ekspor paket).

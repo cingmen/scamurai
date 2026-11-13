@@ -26,7 +26,7 @@ function teacherSheet(manifest) {
     h('article', { class: 'c-teacher-sheet' },
       h('p', { style: { fontSize: '.75rem', letterSpacing: '.12em', textTransform: 'uppercase', color: '#7B756A' } }, 'Scamurai · Lembar guru · SIMULASI'),
       h('h1', { style: { fontSize: '1.7rem', margin: '.2em 0' } }, 'Dojo anti-penipuan: 45 menit'),
-      h('p', null, 'Kelas mengenali sembilan modus penipuan Indonesia lewat simulasi ponsel tiruan. Semua data, nomor, dan rekening fiktif; tidak ada akun atau server.'),
+      h('p', null, 'Kelas mengenali sepuluh modus penipuan Indonesia lewat simulasi ponsel tiruan. Semua data, nomor, dan rekening fiktif; tidak ada akun atau server.'),
       h('h2', null, 'Tujuan pembelajaran'),
       h('ul', null,
         h('li', null, 'Siswa dapat menunjukkan red flag pada pesan, telepon, dan halaman palsu.'),

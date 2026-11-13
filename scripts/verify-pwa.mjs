@@ -612,6 +612,73 @@ async function main() {
       'ending aman tiket konser',
     );
 
+    await evalValue(`location.hash = '#/skenario/qris-palsu'`);
+    const qrisIntro = await waitFor(
+      `(() => ({
+        hash: location.hash,
+        title: document.querySelector('#app h1')?.textContent?.trim() || '',
+        cover: document.querySelector('#app img')?.getAttribute('src') || '',
+      }))()`,
+      (value) => value?.hash === '#/skenario/qris-palsu'
+        && value.title.includes('QRIS yang Berpindah Tangan')
+        && value.cover.includes('qris-palsu.svg'),
+      'pengantar QRIS palsu',
+    );
+    const startedQris = await evalValue(`(() => {
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => node.textContent.trim() === 'Mulai simulasi');
+      if (!button) return false;
+      button.click();
+      return true;
+    })()`);
+    await waitFor(
+      `document.querySelector('.c-lesson')?.innerText || ''`,
+      (text) => text.includes('QRIS punya nama merchant'),
+      'pelajaran QRIS',
+    );
+    await clickNewScenarioButton('Mengerti', 'pelajaran QRIS');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Dapur Bu Rani') && text.includes('Rp 350.000'),
+      'tawaran QRIS',
+    );
+    await clickNewScenarioButton('Lanjut', 'chat QRIS');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Periksa pesan dan nama penerima'),
+      'red flag QRIS',
+    );
+    await clickNewScenarioButton('Lanjut', 'red flag QRIS');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Dapur Bu Rani menunggu bukti transfer'),
+      'pilihan QRIS',
+    );
+    await clickNewScenarioButton('Minta QRIS atas nama toko', 'pilihan cek QRIS');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('QRIS tadi salah'),
+      'chat konfirmasi QRIS',
+    );
+    await clickNewScenarioButton('Lanjut', 'chat konfirmasi QRIS');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('QRIS DapurPay') && text.includes('PIN'),
+      'halaman konfirmasi QRIS',
+    );
+    await clickNewScenarioButton('Konfirmasi pembayaran', 'halaman QRIS');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Halaman meminta PIN dan OTP'),
+      'pilihan konfirmasi QRIS',
+    );
+    await clickNewScenarioButton('Tutup halaman dan cek pembayaran', 'pilihan tutup QRIS');
+    const qrisEnding = await waitFor(
+      `document.querySelector('.c-ending')?.innerText || ''`,
+      (text) => text.includes('Kamu memeriksa merchant'),
+      'ending aman QRIS',
+    );
+
     const offlineData = await evalValue(`(async () => {
       const response = await fetch('./data/scenarios/${SCENARIO_ID}.json');
       const body = await response.json();
@@ -654,6 +721,9 @@ async function main() {
       && startedNewScenario === true
       && newScenarioFirstStep.hash === '#/main/tiket-konser'
       && newScenarioEnding.includes('Kamu memilih jalur resmi')
+      && qrisIntro.title.includes('QRIS yang Berpindah Tangan')
+      && startedQris === true
+      && qrisEnding.includes('Kamu memeriksa merchant')
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -688,6 +758,9 @@ async function main() {
         newScenarioStarted: startedNewScenario === true,
         newScenarioFirstStep: newScenarioFirstStep.text.includes('Sabtu, 19.04'),
         newScenarioEnding: newScenarioEnding.includes('Kamu memilih jalur resmi'),
+        qrisScenarioFound: qrisIntro.title.includes('QRIS yang Berpindah Tangan'),
+        qrisScenarioStarted: startedQris === true,
+        qrisScenarioEnding: qrisEnding.includes('Kamu memeriksa merchant'),
         data: offlineData,
         networkFailures: pageFailures.length,
       },

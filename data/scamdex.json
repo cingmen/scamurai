@@ -262,6 +262,39 @@
           "desc": "Halaman e-tiket meminta CVV dan transfer tambahan. Tiket tidak pernah diterbitkan; data kartu bisa dipakai untuk transaksi lain."
         }
       ]
+    },
+    {
+      "id": "qris-palsu",
+      "name": "QRIS Palsu",
+      "alias": "Nama merchant tidak cocok",
+      "icon": "./assets/img/scenarios/qris-palsu.svg",
+      "severity": 2,
+      "psychology": "Pesanan terasa nyata dan pembayaran terlihat sederhana. Nama merchant yang tidak cocok mudah terlewat karena korban fokus pada nominal dan janji pengiriman.",
+      "flags": [
+        "Nama merchant QRIS berbeda dari nama toko",
+        "Pembayaran diarahkan ke rekening pribadi",
+        "Halaman konfirmasi meminta PIN atau OTP",
+        "Dana dianggap tertahan dengan hitung mundur",
+        "Akun penjual tanpa identitas atau verifikasi toko"
+      ],
+      "verify": [
+        "Cocokkan nama merchant di aplikasi pembayaran dengan nama toko.",
+        "Buka aplikasi bank sendiri untuk melihat status pembayaran.",
+        "Jangan pernah memasukkan PIN atau OTP di halaman merchant."
+      ],
+      "report": [
+        "Simpan gambar QRIS, tautan, percakapan, dan bukti transfer.",
+        "Laporkan akun dan QRIS ke platform serta Aduan Konten Komdigi/lapor.go.id.",
+        "Hubungi bank untuk memblokir rekening dan mengganti PIN bila data sudah diberikan."
+      ],
+      "variants": [
+        {
+          "id": "var-qris-palsu",
+          "name": "Varian: Konfirmasi PIN & OTP",
+          "unlockEnding": "kena-data",
+          "desc": "Halaman konfirmasi palsu meminta PIN dan OTP setelah pembayaran. QRIS tidak pernah meminta data rahasia tersebut."
+        }
+      ]
     }
   ]
 }

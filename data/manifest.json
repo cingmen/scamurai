@@ -165,6 +165,24 @@
       ],
       "requirements": null,
       "order": 9
+    },
+    {
+      "id": "qris-palsu",
+      "type": "sim",
+      "title": "QRIS yang Berpindah Tangan",
+      "modus": "QRIS Palsu",
+      "app": "chatriang",
+      "cover": "./assets/img/scenarios/qris-palsu.svg",
+      "difficulty": 2,
+      "minutes": 10,
+      "summary": "QRIS untuk pesanan katering ternyata atas nama pribadi. Setelah pembayaran, penjual mengirim halaman konfirmasi palsu yang meminta PIN dan OTP.",
+      "learning": [
+        "Nama merchant QRIS harus cocok dengan toko",
+        "QRIS tidak meminta PIN atau OTP lewat halaman pihak ketiga",
+        "Simpan bukti dan hubungi bank lewat kanal resmi"
+      ],
+      "requirements": null,
+      "order": 10
     }
   ],
   "minigames": [
