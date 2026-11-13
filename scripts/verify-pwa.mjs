@@ -679,6 +679,56 @@ async function main() {
       'ending aman QRIS',
     );
 
+    await evalValue(`location.hash = '#/skenario/voice-clone'`);
+    const voiceIntro = await waitFor(
+      `(() => ({
+        hash: location.hash,
+        title: document.querySelector('#app h1')?.textContent?.trim() || '',
+        cover: document.querySelector('#app img')?.getAttribute('src') || '',
+      }))()`,
+      (value) => value?.hash === '#/skenario/voice-clone'
+        && value.title.includes('Suara yang Tidak Pernah Ada')
+        && value.cover.includes('voice-clone.svg'),
+      'pengantar voice clone',
+    );
+    const startedVoice = await evalValue(`(() => {
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => node.textContent.trim() === 'Mulai simulasi');
+      if (!button) return false;
+      button.click();
+      return true;
+    })()`);
+    await waitFor(
+      `document.querySelector('.c-lesson')?.innerText || ''`,
+      (text) => text.includes('Suara bukan identitas'),
+      'pelajaran voice clone',
+    );
+    await clickNewScenarioButton('Mengerti', 'pelajaran voice clone');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Minta bukti dan verifikasi lewat nomor yang aku simpan'),
+      'pilihan telepon voice clone',
+      15000,
+    );
+    await clickNewScenarioButton('Minta bukti dan verifikasi', 'pilihan telepon voice clone');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('voice note terakhir'),
+      'chat voice clone',
+    );
+    await clickNewScenarioButton('Lanjut', 'chat voice clone');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Tanya hal yang hanya Raka tahu'),
+      'pilihan verifikasi voice clone',
+    );
+    await clickNewScenarioButton('Tanya hal yang hanya Raka tahu', 'pilihan verifikasi voice clone');
+    const voiceEnding = await waitFor(
+      `document.querySelector('.c-ending')?.innerText || ''`,
+      (text) => text.includes('Pertanyaan yang tidak bisa dijawab suara palsu'),
+      'ending aman voice clone',
+    );
+
     const offlineData = await evalValue(`(async () => {
       const response = await fetch('./data/scenarios/${SCENARIO_ID}.json');
       const body = await response.json();
@@ -724,6 +774,9 @@ async function main() {
       && qrisIntro.title.includes('QRIS yang Berpindah Tangan')
       && startedQris === true
       && qrisEnding.includes('Kamu memeriksa merchant')
+      && voiceIntro.title.includes('Suara yang Tidak Pernah Ada')
+      && startedVoice === true
+      && voiceEnding.includes('Pertanyaan yang tidak bisa dijawab suara palsu')
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -761,6 +814,9 @@ async function main() {
         qrisScenarioFound: qrisIntro.title.includes('QRIS yang Berpindah Tangan'),
         qrisScenarioStarted: startedQris === true,
         qrisScenarioEnding: qrisEnding.includes('Kamu memeriksa merchant'),
+        voiceScenarioFound: voiceIntro.title.includes('Suara yang Tidak Pernah Ada'),
+        voiceScenarioStarted: startedVoice === true,
+        voiceScenarioEnding: voiceEnding.includes('Pertanyaan yang tidak bisa dijawab suara palsu'),
         data: offlineData,
         networkFailures: pageFailures.length,
       },

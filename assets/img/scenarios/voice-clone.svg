@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Ilustrasi skenario Suara yang Tidak Pernah Ada">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3A1A2E"/><stop offset="1" stop-color="#130A11"/></linearGradient>
+    <pattern id="grid" width="38" height="38" patternUnits="userSpaceOnUse"><path d="M38 0H0V38" fill="none" stroke="#ffffff" stroke-opacity=".06"/></pattern>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <rect width="640" height="360" fill="url(#grid)"/>
+  <circle cx="520" cy="56" r="130" fill="#ffffff" opacity=".05"/>
+  <text x="52" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="2.5" fill="#F2A7C3">VOICE CLONE</text>
+  <text x="50" y="116" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Suara yang</text>
+  <text x="50" y="154" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Tidak Pernah Ada</text>
+  <g transform="translate(386 48)">
+    <rect width="188" height="250" rx="28" fill="#0B0910" opacity=".65"/>
+    <rect x="8" y="8" width="172" height="234" rx="22" fill="#F4F1EA"/>
+    <circle cx="94" cy="62" r="27" fill="#F2A7C3"/>
+    <text x="94" y="70" text-anchor="middle" font-family="system-ui, sans-serif" font-size="24" fill="#3A1A2E">☎</text>
+    <text x="94" y="108" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="800" fill="#3A1A2E">ANAKKU · RAKA</text>
+    <text x="94" y="124" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#8C6A7A">+62 812-7788-4411</text>
+    <g transform="translate(36 150)" fill="#F2A7C3">
+      <rect x="0" y="18" width="5" height="24" rx="2.5"/><rect x="11" y="8" width="5" height="44" rx="2.5"/><rect x="22" y="0" width="5" height="60" rx="2.5"/><rect x="33" y="12" width="5" height="36" rx="2.5"/><rect x="44" y="22" width="5" height="16" rx="2.5"/><rect x="55" y="4" width="5" height="52" rx="2.5"/><rect x="66" y="16" width="5" height="28" rx="2.5"/><rect x="77" y="8" width="5" height="44" rx="2.5"/><rect x="88" y="20" width="5" height="20" rx="2.5"/><rect x="99" y="2" width="5" height="56" rx="2.5"/><rect x="110" y="14" width="5" height="32" rx="2.5"/>
+    </g>
+    <text x="94" y="226" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#9E3B2F">MIRIP, TAPI BUKAN BUKTI</text>
+  </g>
+  <g transform="translate(52 270)">
+    <rect width="170" height="46" rx="12" fill="#ffffff" opacity=".1"/>
+    <text x="14" y="19" font-family="system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.2" fill="#F2A7C3">RAHASIA + URGENSI</text>
+    <text x="14" y="35" font-family="system-ui, sans-serif" font-size="10" fill="#ffffff" opacity=".7">isolasi dari keluarga lain</text>
+  </g>
+  <g transform="translate(48 330)"><rect width="128" height="18" rx="9" fill="#ffffff" opacity=".12"/><text x="10" y="13" font-family="system-ui, sans-serif" font-size="9" font-weight="700" letter-spacing="1" fill="#ffffff" opacity=".75">SIMULASI · FIKTIF</text></g>
+  <text x="452" y="344" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff" opacity=".35">scamurai</text>
+</svg>

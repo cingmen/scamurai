@@ -183,6 +183,24 @@
       ],
       "requirements": null,
       "order": 10
+    },
+    {
+      "id": "voice-clone",
+      "type": "sim",
+      "title": "Suara yang Tidak Pernah Ada",
+      "modus": "Voice Clone",
+      "app": "chatriang",
+      "cover": "./assets/img/scenarios/voice-clone.svg",
+      "difficulty": 3,
+      "minutes": 11,
+      "summary": "Telepon tengah malam memakai suara yang terdengar seperti anakmu, meminta biaya rumah sakit dan merahasiakannya. Suara bisa direkam; identitas harus diverifikasi lewat jalur sendiri.",
+      "learning": [
+        "Suara mirip bukan bukti identitas",
+        "Rahasia dan urgensi adalah alat isolasi",
+        "Verifikasi lewat nomor yang kamu simpan sendiri"
+      ],
+      "requirements": null,
+      "order": 11
     }
   ],
   "minigames": [

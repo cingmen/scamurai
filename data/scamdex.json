@@ -295,6 +295,39 @@
           "desc": "Halaman konfirmasi palsu meminta PIN dan OTP setelah pembayaran. QRIS tidak pernah meminta data rahasia tersebut."
         }
       ]
+    },
+    {
+      "id": "voice-clone",
+      "name": "Voice Clone",
+      "alias": "Telepon keluarga palsu",
+      "icon": "./assets/img/scenarios/voice-clone.svg",
+      "severity": 3,
+      "psychology": "Suara keluarga memicu respons emosional otomatis. Penipu menambah panik, rasa bersalah, dan permintaan rahasia agar korban tidak menghubungi orang lain.",
+      "flags": [
+        "Suara mirip keluarga tetapi nomor tidak dikenal",
+        "Cerita darurat dan desakan transfer segera",
+        "Diminta merahasiakan panggilan dari keluarga lain",
+        "Tautan verifikasi meminta kode keluarga atau OTP",
+        "Penelepon tidak bisa menjawab hal personal"
+      ],
+      "verify": [
+        "Tutup telepon dan hubungi keluarga lewat nomor yang kamu simpan sendiri.",
+        "Ajukan pertanyaan yang jawabannya tidak ada di media sosial.",
+        "Jangan memakai tautan atau nomor baru dari penelepon."
+      ],
+      "report": [
+        "Simpan nomor, rekaman, tautan, dan bukti transfer.",
+        "Laporkan ke platform, Aduan Konten Komdigi, dan lapor.go.id.",
+        "Hubungi bank untuk menahan transaksi dan mengganti kode akses bila perlu."
+      ],
+      "variants": [
+        {
+          "id": "var-voice-clone",
+          "name": "Varian: Tautan Verifikasi Keluarga",
+          "unlockEnding": "kena-data",
+          "desc": "Halaman rumah sakit palsu meminta kode keluarga dan OTP. Suara kloning dipakai untuk membuat korban menuruti tautan tersebut."
+        }
+      ]
     }
   ]
 }

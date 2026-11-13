@@ -1,0 +1,376 @@
+{
+  "id": "voice-clone",
+  "type": "sim",
+  "title": "Suara yang Tidak Pernah Ada",
+  "modus": "Voice Clone",
+  "difficulty": 3,
+  "app": "chatriang",
+  "brief": {
+    "goal": "Malam-malam kamu menerima telepon yang terdengar seperti suara anakmu, meminta bantuan darurat. Uji apakah kamu bisa memisahkan suara dari bukti identitas.",
+    "rules": [
+      "Suara bisa direkam dan dipalsukan; kemiripan suara bukan bukti identitas.",
+      "Jangan pernah mengirim uang hanya karena penelepon mengaku keluarga.",
+      "Tutup telepon, lalu hubungi orang itu melalui nomor yang kamu simpan sendiri.",
+      "Semua nama, nomor, dan rekaman di sini fiktif."
+    ],
+    "saldoAwal": 20000000
+  },
+  "steps": [
+    {
+      "type": "chat",
+      "dir": "narator",
+      "text": "Rabu, 22.41 · telepon dari nomor tak dikenal",
+      "delayMs": 500
+    },
+    {
+      "type": "lesson",
+      "title": "Suara bukan identitas",
+      "body": "Rekaman suara beberapa detik cukup untuk membuat kloning suara. Penipu memakai panik dan rahasia untuk membuatmu tidak memeriksa. Tutup telepon dan hubungi keluarga lewat nomor yang kamu simpan sendiri.",
+      "refDex": "Voice Clone"
+    },
+    {
+      "type": "call",
+      "app": "call",
+      "header": {
+        "title": "Telepon",
+        "sub": "Panggilan masuk"
+      },
+      "caller": "Anakku · Raka",
+      "number": "+62 812-7788-4411",
+      "autoAccept": true,
+      "beats": [
+        {
+          "speaker": "Penelepon",
+          "text": "Bu, ini Raka. Aku kecelakaan di jalan tol. HP-ku rusak, ini pinjam HP teman. Aku butuh biaya rumah sakit sekarang."
+        },
+        {
+          "speaker": "Penelepon",
+          "text": "Jangan telepon Papa dulu, nanti dia panik. Transfer Rp 15.000.000 ke rekening teman yang bawa aku, nanti aku ganti."
+        },
+        {
+          "speaker": "Penelepon",
+          "text": "Cepat ya Bu, aku takut ditahan pihak rumah sakit. Jangan tutup telepon, aku butuh kamu sekarang."
+        }
+      ],
+      "choices": [
+        {
+          "id": "ikut",
+          "label": "Ikuti permintaan dan transfer sekarang",
+          "goto": 3
+        },
+        {
+          "id": "verifikasi",
+          "label": "Minta bukti dan verifikasi lewat nomor yang aku simpan",
+          "goto": 5
+        },
+        {
+          "id": "tutup",
+          "label": "Tutup telepon dan hubungi Raka langsung",
+          "goto": 12
+        }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": {
+        "title": "Bank Jayakarta",
+        "sub": "Transfer darurat"
+      },
+      "data": {
+        "title": "Transfer biaya rumah sakit",
+        "recipient": "Dimas Saputra",
+        "account": "8821 4400 7712",
+        "amount": 15000000,
+        "fee": 6500,
+        "note": "Biaya RS Raka",
+        "warning": "Rekening tujuan bukan atas nama Raka. Penelepon meminta Rahasia dan transfer segera."
+      },
+      "button": {
+        "label": "Transfer sekarang",
+        "goto": 4
+      }
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "Uang darurat untuk suara palsu",
+      "text": "Kamu mentransfer Rp 15.000.000 ke rekening Dimas Saputra. Nomor penelepon langsung tidak aktif. Saat kamu menelepon Raka di nomor lamanya, ia sedang di rumah dan tidak pernah mengalami kecelakaan. Suaranya direkam dari unggahan media sosial."
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Raka",
+      "time": "22.44",
+      "text": "Bu, kalau belum percaya, ini voice note terakhir dari aku. Buka link verifikasi ini dan masukkan kode keluarga supaya rumah sakit bisa mencairkan dana. Jangan sampai aku terlambat.",
+      "auto": false
+    },
+    {
+      "type": "choice",
+      "prompt": "Penelepon mengirim voice note dan tautan. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        {
+          "id": "tanya",
+          "label": "Tanya hal yang hanya Raka tahu, lalu telepon nomor lamanya",
+          "goto": 10
+        },
+        {
+          "id": "link",
+          "label": "Buka tautan verifikasi dan masukkan kode keluarga",
+          "goto": 7
+        },
+        {
+          "id": "lapor",
+          "label": "Tutup telepon, simpan bukti, dan laporkan nomor",
+          "goto": 12
+        }
+      ]
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": {
+        "title": "BrowserMini",
+        "sub": "Verifikasi keluarga"
+      },
+      "url": "https://rs-raka-verifikasi.xyz/keluarga",
+      "secure": true,
+      "page": {
+        "logo": "Rumah Sakit Sehat · Verifikasi Keluarga",
+        "lines": [
+          "Pasien: Raka Pratama · ruang gawat darurat",
+          "Dana darurat Rp 15.000.000 sedang ditahan.",
+          "Masukkan kode keluarga dan OTP untuk mencairkan dana."
+        ],
+        "form": [
+          {
+            "placeholder": "Kode keluarga",
+            "label": "Kode keluarga"
+          },
+          {
+            "placeholder": "Kode OTP",
+            "label": "OTP"
+          }
+        ],
+        "countdown": "Sisa waktu 07.12",
+        "foot": "Rumah sakit tidak meminta kode keluarga atau OTP lewat tautan pribadi."
+      },
+      "inspect": {
+        "real": "rs-sehat.co.id",
+        "notes": [
+          "Domain memakai nama pasien dan akhiran .xyz — bukan domain rumah sakit.",
+          "Halaman meminta kode keluarga dan OTP, padahal pendaftaran pasien tidak begitu.",
+          "Tidak ada nomor rekam medis atau kanal pembayaran resmi."
+        ]
+      },
+      "hint": "Halaman ini mengaku milik rumah sakit. Periksa alamat dan data yang diminta.",
+      "hotspots": [
+        {
+          "flagId": "vc-domain",
+          "x": 50,
+          "y": 23,
+          "title": "Domain rs-raka-verifikasi.xyz",
+          "why": "Domain resmi rumah sakit tidak dibentuk dari nama pasien dan akhiran acak. Penipu membuat alamat yang terasa personal.",
+          "do": "Tutup tautan dan hubungi rumah sakit lewat nomor resmi."
+        },
+        {
+          "flagId": "vc-otp",
+          "x": 56,
+          "y": 67,
+          "title": "Kode keluarga dan OTP diminta",
+          "why": "OTP adalah kunci transaksi. Rumah sakit tidak meminta OTP lewat halaman verifikasi pribadi.",
+          "do": "Jangan isi. Hubungi bank dan keluarga melalui nomor yang kamu simpan."
+        },
+        {
+          "flagId": "vc-countdown",
+          "x": 64,
+          "y": 84,
+          "title": "Hitung mundur 07.12",
+          "why": "Tenggat palsu membuatmu tidak sempat menelepon Raka atau bertanya kepada keluarga lain.",
+          "do": "Abaikan tenggat; verifikasi lewat kanal yang kamu tahu sendiri."
+        },
+        {
+          "flagId": "vc-logo",
+          "x": 27,
+          "y": 14,
+          "title": "Logo rumah sakit terlihat resmi",
+          "decoy": true,
+          "why": "Logo mudah ditiru. Logo bukan bukti bahwa halaman itu milik rumah sakit.",
+          "do": "Periksa domain dan data yang diminta, bukan logonya."
+        }
+      ],
+      "button": {
+        "label": "Kirim kode verifikasi",
+        "goto": 8
+      }
+    },
+    {
+      "type": "choice",
+      "prompt": "Halaman meminta kode keluarga dan OTP. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        {
+          "id": "kirim",
+          "label": "Kirim kode agar dana darurat dicairkan",
+          "goto": 9
+        },
+        {
+          "id": "tutup",
+          "label": "Tutup halaman dan telepon Raka di nomor lamanya",
+          "goto": 11
+        },
+        {
+          "id": "lapor",
+          "label": "Simpan bukti dan laporkan nomor penelepon",
+          "goto": 12
+        }
+      ]
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena-data",
+      "title": "Kode keluarga dan OTP diambil",
+      "text": "Kamu mengirim kode keluarga dan OTP. Penipu memakai akses itu untuk mencoba transaksi lain, sementara rumah sakit menyatakan tidak ada pasien bernama Raka. Suara di telepon adalah hasil kloning dari video lama."
+    },
+    {
+      "type": "consequence",
+      "endingId": "aman",
+      "title": "Pertanyaan yang tidak bisa dijawab suara palsu",
+      "text": "Kamu bertanya nama guru SD dan warna tas Raka. Penelepon tersendat, lalu menutup telepon. Kamu menelepon Raka di nomor lamanya dan ia sedang di rumah. Suara bisa dipalsukan; pengetahuan keluarga dan nomor yang kamu simpan sendiri tidak."
+    },
+    {
+      "type": "consequence",
+      "endingId": "hampir-kena",
+      "title": "Berhenti sebelum mengirim kode",
+      "text": "Kamu menutup halaman verifikasi dan menelepon Raka di nomor yang kamu simpan. Raka sehat dan tidak pernah menelepon. Kamu tidak kehilangan uang, tetapi suara palsu itu hampir membuatmu membocorkan kode keluarga."
+    },
+    {
+      "type": "lesson",
+      "title": "Verifikasi lewat jalur yang kamu mulai sendiri",
+      "body": "Tutup telepon, jangan gunakan tautan dari penelepon, lalu hubungi keluarga lewat nomor yang tersimpan. Minta orang terdekat menjawab pertanyaan yang tidak ada di media sosial. Jika uang sudah terkirim, hubungi bank dan simpan semua bukti."
+    },
+    {
+      "type": "consequence",
+      "endingId": "lapor",
+      "title": "Nomor dilaporkan, bukti disimpan",
+      "text": "Kamu menutup telepon, menyimpan nomor, rekaman, dan tangkapan layar, lalu melaporkannya ke platform dan kanal aduan. Kamu juga memperingatkan keluarga agar tidak panik bila menerima telepon serupa."
+    }
+  ],
+  "endings": {
+    "kena": {
+      "label": "Transfer darurat ke rekening pribadi",
+      "saldoDelta": -15000000,
+      "rank": 0,
+      "tone": "bad",
+      "dexCard": "voice-clone"
+    },
+    "kena-data": {
+      "label": "Kode keluarga dan OTP dicuri",
+      "saldoDelta": 0,
+      "rank": 0,
+      "tone": "bad",
+      "dexCard": "voice-clone",
+      "dexVariant": "var-voice-clone"
+    },
+    "aman": {
+      "label": "Verifikasi lewat pertanyaan keluarga",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best",
+      "dexCard": "voice-clone"
+    },
+    "hampir-kena": {
+      "label": "Berhenti sebelum mengirim kode",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good",
+      "dexCard": "voice-clone"
+    },
+    "lapor": {
+      "label": "Tutup telepon dan laporkan",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good",
+      "dexCard": "voice-clone"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      {
+        "t": "22.41",
+        "judul": "Suara yang terasa familier",
+        "naskah": "Bu, ini Raka. Aku kecelakaan.",
+        "tujuanPenipu": "Memanfaatkan respons otomatis orang tua terhadap suara anak untuk melewati pertimbangan."
+      },
+      {
+        "t": "22.42",
+        "judul": "Rahasia dan urgensi",
+        "naskah": "Jangan telepon Papa, transfer sekarang.",
+        "tujuanPenipu": "Mengisolasi korban dari orang lain yang bisa memverifikasi cerita."
+      },
+      {
+        "t": "22.44",
+        "judul": "Tautan verifikasi",
+        "naskah": "Masukkan kode keluarga dan OTP.",
+        "tujuanPenipu": "Mengambil kode rahasia setelah korban panik dan merasa harus segera bertindak."
+      },
+      {
+        "t": "H+1",
+        "judul": "Suara hilang",
+        "naskah": "Nomor tidak aktif; Raka sehat.",
+        "tujuanPenipu": "Kabur sebelum korban menyadari suara itu hasil rekaman."
+      }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran voice clone: rekaman suara, korban, transfer, dan data OTP",
+      "nodes": [
+        {
+          "id": "rekaman",
+          "label": "Rekaman suara dari media sosial"
+        },
+        {
+          "id": "korban",
+          "label": "Kamu · panik dan transfer",
+          "tone": "danger"
+        },
+        {
+          "id": "rekening",
+          "label": "Rekening pribadi penipu",
+          "tone": "danger"
+        },
+        {
+          "id": "data",
+          "label": "Kode keluarga dan OTP",
+          "tone": "danger"
+        }
+      ],
+      "edges": [
+        {
+          "from": "rekaman",
+          "to": "korban",
+          "label": "kloning suara"
+        },
+        {
+          "from": "korban",
+          "to": "rekening",
+          "label": "transfer darurat"
+        },
+        {
+          "from": "korban",
+          "to": "data",
+          "label": "halaman verifikasi"
+        }
+      ]
+    },
+    "pulihkan": [
+      "Tutup telepon dan hubungi anggota keluarga lewat nomor yang kamu simpan sendiri.",
+      "Hubungi bank untuk memblokir rekening penerima dan menahan transaksi bila baru terjadi.",
+      "Ubah kata sandi dan kode akses yang mungkin sudah diberikan; aktifkan verifikasi dua langkah.",
+      "Simpan nomor, rekaman, tautan, dan bukti transfer untuk laporan.",
+      "Laporkan ke platform, Aduan Konten Komdigi, dan lapor.go.id; beri tahu keluarga lain agar waspada."
+    ],
+    "linkPhisquest": true
+  }
+}

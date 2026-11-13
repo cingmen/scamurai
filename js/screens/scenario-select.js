@@ -57,7 +57,7 @@ export async function render(root) {
 
   root.append(h('div', { class: 'scr-home' },
     h('div', { class: 'scr-head' },
-      h('p', { class: 'scr-head__eyebrow' }, 'Sepuluh modus, satu dojo'),
+      h('p', { class: 'scr-head__eyebrow' }, 'Sebelas modus, satu dojo'),
       h('h1', null, 'Pilih musuhmu'),
       h('p', null, 'Setiap skenario adalah satu penipuan utuh: dari pesan pertama sampai debrief yang membongkar naskah penipu. Semua bisa diulang tanpa biaya.'),
       h('p', { class: 'u-mt-2' }, count),

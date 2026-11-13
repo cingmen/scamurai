@@ -6,9 +6,9 @@ Dojo simulasi anti-penipuan berbahasa Indonesia. Kamu memainkan penipuan sungguh
 
 ## Isi
 
-- **10 skenario:** Task Scam, Bank & OTP, Pinjol Ilegal, Marketplace, Kerja Luar Negeri, Money Mule, Love Scam (visual novel 5 bab), Phishing, Tiket Konser, dan QRIS Palsu.
+- **11 skenario:** Task Scam, Bank & OTP, Pinjol Ilegal, Marketplace, Kerja Luar Negeri, Money Mule, Love Scam (visual novel 5 bab), Phishing, Tiket Konser, QRIS Palsu, dan Voice Clone.
 - **Dojo grup:** observasi 4 hari dalam grup investasi palsu (42 beat, 7 aktor).
-- **ScamDEX:** 10 kartu modus + varian yang terbuka dari ending tertentu.
+- **ScamDEX:** 11 kartu modus + varian yang terbuka dari ending tertentu.
 - **Ujian akhir:** pool 40 soal, 20 soal per percobaan, tiga tipe soal, lulus ≥ 80.
 - **Sertifikat:** canvas 1200×850, kode deterministik, unduh/bagikan. Bukti edukasi komunitas, bukan sertifikasi resmi.
 - **Mode Lansia & Sekolah:** teks besar tanpa timer, varian Bank & OTP 8 langkah dengan maksimal dua pilihan per layar, paket 45 menit, kuis kelas 10 soal tanpa timer, lembar guru siap cetak, kartu kemajuan siswa.
