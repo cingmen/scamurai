@@ -50,6 +50,7 @@ function teacherSheet(manifest) {
       h('ul', null,
         h('li', null, 'Observasi: siswa menandai red flag sebelum mengambil keputusan.'),
         h('li', null, 'Debrief: siswa menyebut satu taktik penipu dan satu langkah pemulihan.'),
+        h('li', null, 'Kuis kelas: 10 soal acak tanpa timer (nilai lulus 80).'),
         h('li', null, 'Tugas rumah: ujian akhir 20 soal (nilai lulus 80) dan sertifikat edukasi bila lulus.'),
       ),
       h('h2', null, 'Catatan etika'),
@@ -65,6 +66,7 @@ export async function render(root, { params, path } = {}) {
   const manifest = await loadJSON('./data/manifest.json');
   const teacher = params?.[0] === 'guru' || String(path || '').endsWith('/guru');
   const state = all();
+  const quiz = state.sekolah.quiz || {};
   clear(root);
 
   if (teacher) {
@@ -94,12 +96,14 @@ export async function render(root, { params, path } = {}) {
       h('h2', { class: 'section-title' }, 'Paket 45 menit'),
       done ? h('span', { class: 'c-chip c-chip--success' }, '✓ Ditandai selesai') : h('span', { class: 'c-chip c-chip--gold' }, 'Siap dipakai'),
     ),
-    h('p', { class: 'u-small u-muted' }, 'Urutan yang sudah diuji untuk kelas: dua skenario inti, debrief berpasangan, lalu diskusi. Ujian akhir bisa menjadi tugas rumah.'),
+    h('p', { class: 'u-small u-muted' }, 'Urutan yang sudah diuji untuk kelas: dua skenario inti, debrief berpasangan, kuis kelas, lalu diskusi. Ujian akhir bisa menjadi tugas rumah.'),
+    h('p', { class: 'u-small u-muted' }, `Kuis kelas: ${quiz.passed ? `lulus (${quiz.best})` : quiz.attempts ? `skor terbaik ${quiz.best}` : 'belum dicoba'} · 10 soal · tanpa timer.`),
     h('ol', { class: 'c-brief-list u-mt-3' },
       h('li', null, h('a', { href: '#/skenario/task-scam' }, 'Task Scam'), ' — 12 menit, pola komisi dan deposit.'),
       h('li', null, h('a', { href: '#/skenario/bank-otp' }, 'Bank & OTP'), ' — 12 menit, tekanan telepon dan kode rahasia.'),
       h('li', null, 'Debrief berpasangan — 10 menit, bandingkan anatomi serangan.'),
       h('li', null, 'Diskusi kelas — 6 menit, gunakan pertanyaan di lembar guru.'),
+      h('li', null, h('a', { href: '#/sekolah/ujian' }, 'Kuis kelas 10 soal'), ' — penilaian cepat tanpa timer, lulus ≥ 80.'),
       h('li', null, h('a', { href: '#/ujian' }, 'Ujian akhir'), ' — tugas rumah, 20 soal, lulus ≥ 80.'),
     ),
     h('div', { class: 'u-row u-mt-4' },

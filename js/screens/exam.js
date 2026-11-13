@@ -5,6 +5,7 @@ import { h, clear, scrollToEnd } from '../core/dom.js';
 import { shuffle } from '../core/format.js';
 import { progressBar } from '../components/progress.js';
 import { showToast } from '../components/toast.js';
+import { buildExamPool, isAnswerCorrect, gradeExam } from '../core/exam.js';
 
 const PASS = 80;
 const POOL_SIZE = 20;
@@ -14,16 +15,6 @@ function formatTime(seconds) {
   const m = Math.max(0, Math.floor(seconds / 60));
   const s = Math.max(0, seconds % 60);
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-}
-
-function isCorrect(question, answer) {
-  if (question.type === 'pilihan') return answer === question.answer;
-  if (question.type === 'urutan') {
-    return Array.isArray(answer)
-      && answer.length === question.items.length
-      && answer.every((value, index) => value === index);
-  }
-  return Boolean(question.hotspots?.[answer]?.correct);
 }
 
 function answerLabel(question, answer) {
@@ -41,8 +32,15 @@ function correctLabel(question) {
   return question.hotspots.filter((spot) => spot.correct).map((spot) => spot.label).join(' / ');
 }
 
-export async function render(root) {
+export async function render(root, { params, path } = {}) {
+  const schoolMode = params?.[0] === 'sekolah' || /\/sekolah\/ujian\/?$/.test(path || '');
   const data = await loadJSON('./data/exam/final-exam.json');
+  const config = schoolMode ? (data.school || {}) : data;
+  const poolSize = Number(config.poolSize) || (schoolMode ? 10 : POOL_SIZE);
+  const passScore = Number(config.passScore) || PASS;
+  const minutes = schoolMode ? 0 : (Number(config.minutes) || 20);
+  const statePrefix = schoolMode ? 'sekolah.quiz' : 'exam';
+  const stateGet = (key, fallback) => get(`${statePrefix}.${key}`, fallback);
   clear(root);
   const shell = h('div', { class: 'scr-exam' });
   root.append(shell);
@@ -54,13 +52,10 @@ export async function render(root) {
   let finished = false;
   let timerId = null;
   let timerEl = null;
-  let remaining = (data.minutes || 20) * 60;
+  let remaining = minutes * 60;
 
   function makePool() {
-    const seen = new Set(get('exam.lastPool', []));
-    const fresh = data.questions.filter((question) => !seen.has(question.id));
-    const source = fresh.length >= POOL_SIZE ? fresh : data.questions;
-    return shuffle(source).slice(0, POOL_SIZE);
+    return buildExamPool(data.questions, { size: poolSize, lastPool: stateGet('lastPool', []) });
   }
 
   function start() {
@@ -74,11 +69,11 @@ export async function render(root) {
     });
     index = 0;
     finished = false;
-    remaining = (data.minutes || 20) * 60;
+    remaining = minutes * 60;
     clearInterval(timerId);
     timerId = null;
     renderQuestion();
-    if (rhythm() === 'nyata') startTimer();
+    if (!schoolMode && rhythm() === 'nyata') startTimer();
   }
 
   function startTimer() {
@@ -98,17 +93,19 @@ export async function render(root) {
   }
 
   function header(bar) {
-    const timer = rhythm() === 'nyata' ? h('span', { class: 'c-exam-timer' }, formatTime(remaining)) : null;
+    const timer = !schoolMode && rhythm() === 'nyata' ? h('span', { class: 'c-exam-timer' }, formatTime(remaining)) : null;
     timerEl = timer;
     return h('div', null,
       h('div', { class: 'u-spread' },
         h('div', null,
-          h('p', { class: 'scr-head__eyebrow' }, 'Ujian akhir'),
-          h('h1', { style: { fontSize: 'var(--s-fs-800)' } }, 'Uji pemahamanmu'),
+          h('p', { class: 'scr-head__eyebrow' }, schoolMode ? 'Kuis kelas · mode sekolah' : 'Ujian akhir'),
+          h('h1', { style: { fontSize: 'var(--s-fs-800)' } }, schoolMode ? 'Sepuluh soal untuk kelas' : 'Uji pemahamanmu'),
         ),
         timer,
       ),
-      h('p', { class: 'u-small u-muted' }, `Lulus dengan skor ≥ ${PASS}. Jawaban benar akan dijelaskan di akhir.`),
+      h('p', { class: 'u-small u-muted' }, schoolMode
+        ? `Sepuluh soal acak tanpa timer. Nilai lulus ${passScore}; jawaban benar dijelaskan di akhir.`
+        : `Lulus dengan skor ≥ ${passScore}. Jawaban benar akan dijelaskan di akhir.`),
       bar.el,
     );
   }
@@ -141,7 +138,7 @@ export async function render(root) {
   function renderQuestion() {
     const question = pool[index];
     clear(shell);
-    const bar = progressBar({ value: index, max: pool.length, label: 'Progres ujian', showCount: true });
+    const bar = progressBar({ value: index, max: pool.length, label: schoolMode ? 'Progres kuis' : 'Progres ujian', showCount: true });
     shell.append(header(bar));
 
     const card = h('div', { class: 'c-exam-card' },
@@ -265,38 +262,41 @@ export async function render(root) {
     finished = true;
     clearInterval(timerId);
     timerId = null;
-    const correct = pool.filter((question, i) => isCorrect(question, answers[i])).length;
-    const score = Math.round((correct / pool.length) * 100);
-    const passed = score >= PASS;
-    const attempts = Number(get('exam.attempts', 0)) + 1;
+    const { correct, score } = gradeExam(pool, answers);
+    const passed = score >= passScore;
+    const attempts = Number(stateGet('attempts', 0)) + 1;
     setMany([
-      ['exam.attempts', attempts],
-      ['exam.best', Math.max(Number(get('exam.best', 0)), score)],
-      ['exam.passed', Boolean(get('exam.passed', false)) || passed],
-      ['exam.lastPool', pool.map((question) => question.id)],
+      [`${statePrefix}.attempts`, attempts],
+      [`${statePrefix}.best`, Math.max(Number(stateGet('best', 0)), score)],
+      [`${statePrefix}.passed`, Boolean(stateGet('passed', false)) || passed],
+      [`${statePrefix}.lastPool`, pool.map((question) => question.id)],
     ]);
     renderResult({ score, correct, passed, auto });
   }
 
   function renderResult({ score, correct, passed, auto }) {
     clear(shell);
-    const alreadyPassed = Boolean(get('exam.passed', false));
+    const alreadyPassed = Boolean(stateGet('passed', false));
     shell.append(
       h('div', { class: 'c-exam-result' },
-        h('p', { class: 'scr-head__eyebrow' }, auto ? 'Waktu habis' : 'Ujian selesai'),
+        h('p', { class: 'scr-head__eyebrow' }, auto ? 'Waktu habis' : (schoolMode ? 'Kuis selesai' : 'Ujian selesai')),
         h('div', { class: `c-exam-result__score ${passed ? 'is-pass' : 'is-fail'}` }, String(score)),
-        h('p', { class: 'u-muted' }, `Benar ${correct} dari ${pool.length} soal. Nilai lulus ${PASS}.`),
+        h('p', { class: 'u-muted' }, `Benar ${correct} dari ${pool.length} soal. Nilai lulus ${passScore}.`),
         h('div', { class: 'c-chip c-chip--lg ' + (passed ? 'c-chip--success' : 'c-chip--warn') },
-          passed ? '✓ Lulus ujian' : 'Belum lulus — tidak ada hukuman, coba lagi'),
+          passed ? (schoolMode ? '✓ Kuis tuntas' : '✓ Lulus ujian') : 'Belum lulus — tidak ada hukuman, coba lagi'),
         h('p', { class: 'u-small u-muted', style: { maxWidth: '54ch' } },
           passed
-            ? 'Sertifikat edukasi bisa kamu buat dengan namamu. Bukan sertifikasi resmi pemerintah.'
+            ? (schoolMode
+              ? 'Kuis kelas tuntas. Tunjukkan hasil ini kepada guru, lalu lanjutkan diskusi kelas.'
+              : 'Sertifikat edukasi bisa kamu buat dengan namamu. Bukan sertifikasi resmi pemerintah.')
             : 'Baca ulang bagian yang salah di bawah, lalu ulangi. Soal akan diacak lagi dari pool yang sama.',
         ),
         h('div', { class: 'u-row' },
           passed
-            ? h('a', { class: 'c-btn c-btn--primary', href: '#/sertifikat' }, 'Buat sertifikat')
-            : h('button', { type: 'button', class: 'c-btn c-btn--primary', onclick: start }, 'Ulangi ujian'),
+            ? (schoolMode
+              ? h('a', { class: 'c-btn c-btn--primary', href: '#/sekolah' }, 'Kembali ke Mode Sekolah')
+              : h('a', { class: 'c-btn c-btn--primary', href: '#/sertifikat' }, 'Buat sertifikat'))
+            : h('button', { type: 'button', class: 'c-btn c-btn--primary', onclick: start }, schoolMode ? 'Ulangi kuis' : 'Ulangi ujian'),
           passed
             ? h('button', { type: 'button', class: 'c-btn c-btn--ghost', onclick: start }, 'Ulangi untuk skor lebih baik')
             : h('a', { class: 'c-btn c-btn--ghost', href: '#/scamdex' }, 'Baca ulang ScamDEX'),
@@ -309,7 +309,7 @@ export async function render(root) {
       h('section', { class: 'c-exam-review', 'aria-label': 'Pembahasan jawaban' },
         h('h2', { class: 'section-title' }, 'Pembahasan'),
         ...pool.map((question, i) => {
-          const right = isCorrect(question, answers[i]);
+          const right = isAnswerCorrect(question, answers[i]);
           return h('div', { class: `c-exam-review__item ${right ? 'is-right' : 'is-wrong'}` },
             h('div', { class: 'u-spread' },
               h('strong', null, `${i + 1}. ${question.prompt}`),
@@ -329,29 +329,37 @@ export async function render(root) {
     clear(shell);
     shell.append(
       h('div', { class: 'scr-head' },
-        h('p', { class: 'scr-head__eyebrow' }, 'Ujian akhir dojo'),
-        h('h1', null, 'Dua puluh soal dari pengalaman nyata'),
-        h('p', null, `Soal diambil dari konteks skenario yang sudah kamu mainkan. Nilai lulus ${PASS}; salah tidak menghapus progres.`),
+        h('p', { class: 'scr-head__eyebrow' }, schoolMode ? 'Kuis kelas · mode sekolah' : 'Ujian akhir dojo'),
+        h('h1', null, schoolMode ? 'Sepuluh soal untuk kelas' : 'Dua puluh soal dari pengalaman nyata'),
+        h('p', null, schoolMode
+          ? `Sepuluh soal acak dari bank soal yang sama, tanpa timer. Nilai lulus ${passScore}; salah tidak menghapus progres.`
+          : `Soal diambil dari konteks skenario yang sudah kamu mainkan. Nilai lulus ${passScore}; salah tidak menghapus progres.`),
       ),
       h('div', { class: 'c-card' },
         h('div', { class: 'c-stat-row' },
-          h('div', { class: 'c-stat' }, h('div', { class: 'c-stat__value' }, String(get('exam.attempts', 0))), h('div', { class: 'c-stat__label' }, 'Percobaan')),
-          h('div', { class: 'c-stat' }, h('div', { class: 'c-stat__value' }, String(get('exam.best', 0))), h('div', { class: 'c-stat__label' }, 'Skor terbaik')),
-          h('div', { class: 'c-stat' }, h('div', { class: 'c-stat__value' }, get('exam.passed', false) ? 'Lulus' : 'Belum'), h('div', { class: 'c-stat__label' }, 'Status')),
+          h('div', { class: 'c-stat' }, h('div', { class: 'c-stat__value' }, String(stateGet('attempts', 0))), h('div', { class: 'c-stat__label' }, 'Percobaan')),
+          h('div', { class: 'c-stat' }, h('div', { class: 'c-stat__value' }, String(stateGet('best', 0))), h('div', { class: 'c-stat__label' }, 'Skor terbaik')),
+          h('div', { class: 'c-stat' }, h('div', { class: 'c-stat__value' }, stateGet('passed', false) ? 'Lulus' : 'Belum'), h('div', { class: 'c-stat__label' }, 'Status')),
         ),
         h('ul', { class: 'c-brief-list u-mt-4' },
-          h('li', null, '20 soal acak dari pool 40; soal yang baru kamu kerjakan dihindari pada percobaan berikutnya.'),
+          h('li', null, schoolMode
+            ? '10 soal acak dari pool 40; soal yang baru kamu kerjakan dihindari pada percobaan berikutnya.'
+            : '20 soal acak dari pool 40; soal yang baru kamu kerjakan dihindari pada percobaan berikutnya.'),
           h('li', null, 'Tiga tipe: pilihan ganda, urutan langkah pemulihan, dan menandai red flag pada tangkapan layar.'),
-          h('li', null, 'Timer 20 menit hanya aktif pada ritme “Nyata”. Ritme lain tanpa timer.'),
-          h('li', null, `Nilai lulus ${PASS}. Gagal boleh diulang kapan saja tanpa hukuman.`),
+          h('li', null, schoolMode
+            ? 'Tanpa timer agar setiap siswa punya waktu membaca dan berdiskusi.'
+            : 'Timer 20 menit hanya aktif pada ritme “Nyata”. Ritme lain tanpa timer.'),
+          h('li', null, `Nilai lulus ${passScore}. Gagal boleh diulang kapan saja tanpa hukuman.`),
         ),
         h('div', { class: 'u-row u-mt-4' },
-          h('button', { type: 'button', class: 'c-btn c-btn--primary', onclick: start }, 'Mulai ujian'),
+          h('button', { type: 'button', class: 'c-btn c-btn--primary', onclick: start }, schoolMode ? 'Mulai kuis' : 'Mulai ujian'),
           h('a', { class: 'c-btn c-btn--ghost', href: '#/scamdex' }, 'Baca ScamDEX dulu'),
           h('a', { class: 'c-btn c-btn--quiet', href: '#/skenario' }, 'Kembali'),
         ),
       ),
-      h('p', { class: 'u-small u-faint u-center' }, 'Sertifikat adalah bukti edukasi komunitas, bukan sertifikasi resmi.'),
+      h('p', { class: 'u-small u-faint u-center' }, schoolMode
+        ? 'Kuis kelas tidak menerbitkan sertifikat; gunakan hasilnya untuk diskusi dan penilaian kelas.'
+        : 'Sertifikat adalah bukti edukasi komunitas, bukan sertifikasi resmi.'),
     );
   }
 

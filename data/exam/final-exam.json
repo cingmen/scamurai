@@ -4,6 +4,10 @@
   "passScore": 80,
   "poolSize": 20,
   "minutes": 20,
+  "school": {
+    "poolSize": 10,
+    "passScore": 80
+  },
   "questions": [
     {
       "id": "q-01",

@@ -363,6 +363,32 @@ async function main() {
     );
     const latihanHref = await evalValue(`document.querySelector('[data-phisquest-link]')?.getAttribute('href') || ''`);
 
+    await evalValue(`location.hash = '#/sekolah/ujian'`);
+    const schoolQuizIntro = await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Kuis kelas') && text.includes('10 soal'),
+      'pengantar kuis kelas 10 soal offline',
+    );
+    const startedQuiz = await evalValue(`(() => {
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => node.textContent.trim() === 'Mulai kuis');
+      if (!button) return false;
+      button.click();
+      return true;
+    })()`);
+    if (!startedQuiz) throw new Error('Tombol Mulai kuis tidak ditemukan.');
+    const schoolQuiz = await waitFor(
+      `(() => ({
+        text: document.querySelector('#app')?.innerText || '',
+        question: document.querySelector('.c-exam-q')?.textContent?.trim() || '',
+        timer: Boolean(document.querySelector('.c-exam-timer')),
+      }))()`,
+      (value) => Boolean(value?.question)
+        && value.text.toLowerCase().includes('kuis kelas')
+        && value.timer === false,
+      'soal pertama kuis kelas tanpa timer',
+    );
+
     const offlineData = await evalValue(`(async () => {
       const response = await fetch('./data/scenarios/${SCENARIO_ID}.json');
       const body = await response.json();
@@ -382,6 +408,9 @@ async function main() {
       && help.length > 0
       && latihan.length > 0
       && latihanHref === 'https://cingmen.github.io/phisquest'
+      && schoolQuizIntro.length > 0
+      && schoolQuiz.question.length > 0
+      && schoolQuiz.timer === false
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -398,6 +427,9 @@ async function main() {
         helpFound: help.length > 0,
         latihanFound: latihan.includes('Latihan kilat di PhisQuest'),
         latihanHref,
+        schoolQuizFound: schoolQuizIntro.includes('Kuis kelas') && schoolQuizIntro.includes('10 soal'),
+        schoolQuizQuestionFound: schoolQuiz.question.length > 0,
+        schoolQuizTimer: schoolQuiz.timer,
         data: offlineData,
         networkFailures: pageFailures.length,
       },
@@ -406,7 +438,7 @@ async function main() {
     console.log(JSON.stringify(report, null, 2));
 
     if (!pass) throw new Error('Verifikasi offline gagal: shell, rute, data, atau aset tidak lengkap.');
-    console.log(`\nPWA OK — ${PAGE_URL} memuat shell, skenario ${SCENARIO_ID} (${offlineData.steps} langkah), Pusat Bantuan, dan kartu PhisQuest saat offline.`);
+    console.log(`\nPWA OK — ${PAGE_URL} memuat shell, skenario ${SCENARIO_ID} (${offlineData.steps} langkah), Pusat Bantuan, kartu PhisQuest, dan kuis kelas 10 soal saat offline.`);
   } finally {
     await dispose();
   }

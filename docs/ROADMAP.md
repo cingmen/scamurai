@@ -141,7 +141,7 @@
 - [ ] `data/exam/final-exam.json` ≥ 40 soal (3 tipe) + tag skenario; layar `exam` (sampling anti-repetisi, timer nyata-only).
 - [ ] Sertifikat: input nama, kode deterministik (app-logic §9.2), render canvas 1200×850, share/unduh; disclaimer "bukan sertifikasi resmi".
 - [x] Mode Lansia: aturan paksaan settings (app-logic §10), versi disederhanakan Bank & OTP (subset JSON `simplify: true`), tanpa timer, 2-oppsi.
-- [ ] Mode Sekolah: paket 45 menit, layar `#/sekolah`, lembar guru print-friendly, kartu kemajuan siswa (canvas).
+- [x] Mode Sekolah: paket 45 menit, layar `#/sekolah`, kuis kelas 10 soal tanpa timer (`#/sekolah/ujian`), lembar guru print-friendly, kartu kemajuan siswa (canvas). **Diuji lokal/live 13 Nov 2026.**
 - [x] `data/bantuan.json` + layar `bantuan` (alur "baru saja kena", tabel kanal resmi: cekrekening.id, lapor.go.id, Aduan Konten Komdigi, OJK 157 + tanggal verifikasi). **Tautan diperiksa dengan HTTP pada 11 Nov 2026; tanggal `verifiedAt` diperbarui.**
 - [x] Route `#/latihan` → kartu integrasi PhisQuest (tautan dua arah sudah diminta ke repo PhisQuest via issue/PR README). **Layar kartu tersedia offline lewat precache SW dan diuji `npm run verify:pwa`.**
 

@@ -343,6 +343,7 @@ try {
       }
       if (!q.prompt) fail('data/exam/final-exam.json', `soal ${i}: prompt kosong`);
       if (!q.explain) fail('data/exam/final-exam.json', `soal ${i}: explain kosong`);
+      if (!q.tag) fail('data/exam/final-exam.json', `soal ${i}: tag skenario wajib`);
       if (q.type === 'pilihan') {
         if (!Array.isArray(q.options) || q.options.length < 2) fail('data/exam/final-exam.json', `soal ${i}: opsi kurang`);
         if (!Number.isInteger(q.answer) || q.answer < 0 || q.answer >= (q.options?.length || 0)) {
@@ -356,6 +357,12 @@ try {
         fail('data/exam/final-exam.json', `soal ${i}: flag-gambar butuh hotspots`);
       }
     });
+    if (!exam.school || !Number.isInteger(exam.school.poolSize) || exam.school.poolSize < 5) {
+      fail('data/exam/final-exam.json', 'school.poolSize wajib minimal 5');
+    }
+    if (!Number.isFinite(Number(exam.school?.passScore)) || Number(exam.school.passScore) < 1 || Number(exam.school.passScore) > 100) {
+      fail('data/exam/final-exam.json', 'school.passScore wajib 1–100');
+    }
   }
 } catch {
   warn('data/exam/final-exam.json', 'belum ada (F6)');

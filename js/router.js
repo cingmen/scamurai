@@ -54,6 +54,7 @@ const ROUTES = [
   { name: 'bantuan', pattern: /^\/bantuan\/?$/, load: () => import('./screens/bantuan.js') },
   { name: 'tentang', pattern: /^\/tentang\/?$/, load: () => import('./screens/about.js') },
   { name: 'pengaturan', pattern: /^\/pengaturan\/?$/, load: () => import('./screens/settings.js') },
+  { name: 'sekolah-ujian', pattern: /^\/sekolah\/ujian\/?$/, load: () => import('./screens/exam.js'), params: ['sekolah'] },
   { name: 'sekolah', pattern: /^\/sekolah\/?$/, load: () => import('./screens/sekolah.js') },
   { name: 'guru', pattern: /^\/sekolah\/guru\/?$/, load: () => import('./screens/sekolah.js'), params: ['guru'] },
   { name: 'latihan', pattern: /^\/latihan\/?$/, load: () => import('./screens/latihan.js') },
@@ -75,6 +76,7 @@ const NAV_MAP = {
   tentang: '#/tentang',
   pengaturan: '#/pengaturan',
   sekolah: '#/pengaturan',
+  'sekolah-ujian': '#/sekolah',
   guru: '#/pengaturan',
 };
 

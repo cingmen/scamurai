@@ -11,7 +11,7 @@ Dojo simulasi anti-penipuan berbahasa Indonesia. Kamu memainkan penipuan sungguh
 - **ScamDEX:** 8 kartu modus + varian yang terbuka dari ending tertentu.
 - **Ujian akhir:** pool 40 soal, 20 soal per percobaan, tiga tipe soal, lulus ≥ 80.
 - **Sertifikat:** canvas 1200×850, kode deterministik, unduh/bagikan. Bukti edukasi komunitas, bukan sertifikasi resmi.
-- **Mode Lansia & Sekolah:** teks besar tanpa timer, varian Bank & OTP 8 langkah dengan maksimal dua pilihan per layar, paket 45 menit, lembar guru siap cetak, kartu kemajuan siswa.
+- **Mode Lansia & Sekolah:** teks besar tanpa timer, varian Bank & OTP 8 langkah dengan maksimal dua pilihan per layar, paket 45 menit, kuis kelas 10 soal tanpa timer, lembar guru siap cetak, kartu kemajuan siswa.
 - **Pusat Bantuan:** alur "baru saja kena", kanal resmi (lapor.go.id, cekrekening.id, Aduan Konten Komdigi, OJK 157), tanggal verifikasi, dan langkah pemulihan — bisa dibuka offline.
 - **PWA:** service worker, cache data, dan progres lokal di `scamurai.v1`.
 
@@ -31,6 +31,7 @@ Semua path relatif, jadi aplikasi juga berjalan dari subfolder GitHub Pages (`/s
 ```bash
 npm run check                    # data + uji store + audit aset + sinkronisasi shell beranda + sintaks inti
 npm run test:store               # migrasi data lama, data korup, dan normalisasi state
+npm run test:exam                # pool 10/20 soal, anti-repetisi, dan penilaian ujian
 npm run audit:assets             # anggaran audio, gambar, dan bundle aplikasi
 npm run prerender:home           # tulis ulang shell index.html setelah mengubah home.js
 npm run verify:pwa -- http://localhost:4173/ bank-otp   # offline + metrik (Chrome/CDP)

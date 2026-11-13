@@ -35,7 +35,11 @@ export function defaultState() {
     exam: { attempts: 0, best: 0, passed: false, lastPool: [] },
     certificate: { name: '', code: '', date: '', score: 0 },
     wa: { bestExitTurn: null, reported: false },
-    sekolah: { classLabel: '', packagesDone: [] },
+    sekolah: {
+      classLabel: '',
+      packagesDone: [],
+      quiz: { attempts: 0, best: 0, passed: false, lastPool: [] },
+    },
     stats: { flagsTotal: 0, flagsCorrect: 0, scenariosCompleted: 0, playTimeMs: 0 },
     meta: { lastSeen: new Date().toISOString(), swVersion: 'v1.0.0' },
   };
@@ -119,6 +123,13 @@ function normalizeState(raw) {
   }
   if (!Array.isArray(next.sekolah.packagesDone)) {
     next.sekolah.packagesDone = [];
+    repaired = true;
+  }
+  if (!isPlainObject(next.sekolah.quiz)) {
+    next.sekolah.quiz = { ...base.sekolah.quiz };
+    repaired = true;
+  } else if (!Array.isArray(next.sekolah.quiz.lastPool)) {
+    next.sekolah.quiz.lastPool = [];
     repaired = true;
   }
 

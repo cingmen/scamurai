@@ -188,6 +188,18 @@ test('backup valid bisa dipulihkan; backup korup/future ditolak tanpa mengubah s
   assert.equal(JSON.parse(storage.getItem(NS)).profile.name, 'Pulih');
 });
 
+test('state sekolah lama mendapat kuis kelas tanpa kehilangan nama kelas', async () => {
+  const raw = JSON.stringify({
+    schemaVersion: 1,
+    sekolah: { classLabel: 'IX-B' },
+  });
+  const { store, storage } = await loadStore(raw);
+  const quiz = store.all().sekolah.quiz;
+  assert.equal(store.all().sekolah.classLabel, 'IX-B');
+  assert.deepEqual(quiz, { attempts: 0, best: 0, passed: false, lastPool: [] });
+  assert.equal(storage.getItem(BACKUP), null, 'state parsial valid tidak perlu dicadangkan');
+});
+
 test('resetAll eksplisit membersihkan backup dan membuka proteksi tulis', async () => {
   const storage = makeStorage({
     [NS]: JSON.stringify({ schemaVersion: 2 }),

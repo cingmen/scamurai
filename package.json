@@ -9,7 +9,8 @@
     "verify:pwa": "node scripts/verify-pwa.mjs",
     "prerender:home": "node scripts/prerender-home.mjs",
     "test:store": "node scripts/test-store.mjs",
+    "test:exam": "node scripts/test-exam.mjs",
     "audit:assets": "node scripts/audit-assets.mjs",
-    "check": "node scripts/validate-data.mjs && node scripts/test-store.mjs && node scripts/audit-assets.mjs && node scripts/prerender-home.mjs --check && node --check sw.js && node --check js/main.js && node --check js/router.js"
+    "check": "node scripts/validate-data.mjs && node scripts/test-store.mjs && node scripts/test-exam.mjs && node scripts/audit-assets.mjs && node scripts/prerender-home.mjs --check && node --check sw.js && node --check js/main.js && node --check js/router.js"
   }
 }
