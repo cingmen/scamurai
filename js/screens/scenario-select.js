@@ -1,4 +1,4 @@
-// Galeri 8 skenario (structure.md §3).
+// Galeri skenario (structure.md §3).
 import { loadJSON } from '../core/loader.js';
 import { get } from '../core/store.js';
 import { h, clear } from '../core/dom.js';
@@ -57,7 +57,7 @@ export async function render(root) {
 
   root.append(h('div', { class: 'scr-home' },
     h('div', { class: 'scr-head' },
-      h('p', { class: 'scr-head__eyebrow' }, 'Delapan modus, satu dojo'),
+      h('p', { class: 'scr-head__eyebrow' }, 'Sembilan modus, satu dojo'),
       h('h1', null, 'Pilih musuhmu'),
       h('p', null, 'Setiap skenario adalah satu penipuan utuh: dari pesan pertama sampai debrief yang membongkar naskah penipu. Semua bisa diulang tanpa biaya.'),
       h('p', { class: 'u-mt-2' }, count),

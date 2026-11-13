@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "site": "Scamurai",
   "tagline": "Asah intuisi, tumpas penipuan.",
-  "updatedAt": "2026-11-05",
+  "updatedAt": "2026-11-13",
   "scenarios": [
     {
       "id": "task-scam",
@@ -14,7 +14,11 @@
       "difficulty": 1,
       "minutes": 10,
       "summary": "Komisi kecil yang benar-benar dibayar, lalu paket beruntun yang menuntut deposit. Pola klasik yang menyerang rasa percaya dan keserakahan.",
-      "learning": ["Pola gratis → deposit → error → deposit lagi", "Tidak ada komisi untuk pekerjaan like/komentar", "Cara menangkap bukti dan melapor"],
+      "learning": [
+        "Pola gratis → deposit → error → deposit lagi",
+        "Tidak ada komisi untuk pekerjaan like/komentar",
+        "Cara menangkap bukti dan melapor"
+      ],
       "requirements": null,
       "order": 1
     },
@@ -28,7 +32,11 @@
       "difficulty": 2,
       "minutes": 12,
       "summary": "Telepon dari “petugas bank” soal transaksi mencurigakan, lalu permintaan OTP untuk membatalkannya. Satu digit bisa menguras tabungan.",
-      "learning": ["Bank tidak pernah meminta OTP", "Verifikasi lewat kanal resmi di aplikasi", "Aduan Konten Komdigi / OJK 157 saat panik"],
+      "learning": [
+        "Bank tidak pernah meminta OTP",
+        "Verifikasi lewat kanal resmi di aplikasi",
+        "Aduan Konten Komdigi / OJK 157 saat panik"
+      ],
       "requirements": null,
       "order": 2
     },
@@ -42,7 +50,11 @@
       "difficulty": 2,
       "minutes": 12,
       "summary": "Pinjaman cair lima menit dengan bunga “0%”. Yang tidak tertulis: izin kontak, pencairan kurang, dan teror ke seluruh daftar kontakmu.",
-      "learning": ["Izin kontak adalah alat teror", "Cek legalitas pinjol di OJK", "Cara melapor saat sudah terjerat"],
+      "learning": [
+        "Izin kontak adalah alat teror",
+        "Cek legalitas pinjol di OJK",
+        "Cara melapor saat sudah terjerat"
+      ],
       "requirements": null,
       "order": 3
     },
@@ -56,7 +68,11 @@
       "difficulty": 1,
       "minutes": 10,
       "summary": "Barang incaran 40% lebih murah, penjual buru-buru memindahkan transaksi ke chat pribadi dan mengirim tautan checkout palsu.",
-      "learning": ["Desakan pindah platform adalah red flag", "Domain dan metode pembayaran harus diperiksa", "Escrow melindungi pembeli"],
+      "learning": [
+        "Desakan pindah platform adalah red flag",
+        "Domain dan metode pembayaran harus diperiksa",
+        "Escrow melindungi pembeli"
+      ],
       "requirements": null,
       "order": 4
     },
@@ -70,7 +86,11 @@
       "difficulty": 2,
       "minutes": 11,
       "summary": "Tawaran kerja luar negeri bergaji besar tanpa wawancara. Surat penawarannya penuh typo, dan biaya visa diminta ke rekening pribadi.",
-      "learning": ["Perusahaan sah tidak memungut biaya rekrutmen", "Periksa izin penempatan resmi", "Data paspor adalah aset berharga"],
+      "learning": [
+        "Perusahaan sah tidak memungut biaya rekrutmen",
+        "Periksa izin penempatan resmi",
+        "Data paspor adalah aset berharga"
+      ],
       "requirements": null,
       "order": 5
     },
@@ -84,7 +104,11 @@
       "difficulty": 2,
       "minutes": 11,
       "summary": "Gaji mingguan hanya dengan menyewakan rekening. Uang asing mulai masuk, dan kamu diminta meneruskannya — pintu masuk pencucian uang.",
-      "learning": ["Menyewakan rekening adalah tindak pidana", "Mutasi asing tak dikenal harus dilaporkan", "Menutup rekening lebih baik daripada menunggu"],
+      "learning": [
+        "Menyewakan rekening adalah tindak pidana",
+        "Mutasi asing tak dikenal harus dilaporkan",
+        "Menutup rekening lebih baik daripada menunggu"
+      ],
       "requirements": null,
       "order": 6
     },
@@ -98,7 +122,11 @@
       "difficulty": 3,
       "minutes": 22,
       "summary": "Lima bab percakapan dengan “Bagas”: perkenalan, perhatian, krisis, permintaan pertama, dan eskalasi. Kamu yang memilih, cerita yang menjawab.",
-      "learning": ["Love bombing dan isolasi berjalan bertahap", "Video call singkat tidak membuktikan identitas", "Verifikasi foto dan jangan kirim uang"],
+      "learning": [
+        "Love bombing dan isolasi berjalan bertahap",
+        "Video call singkat tidak membuktikan identitas",
+        "Verifikasi foto dan jangan kirim uang"
+      ],
       "requirements": null,
       "order": 7
     },
@@ -112,9 +140,31 @@
       "difficulty": 2,
       "minutes": 12,
       "summary": "SMS paket tertahan dan halaman kurir palsu yang meminta data kartu serta OTP. Lihat sendiri akibatnya tiga hari kemudian.",
-      "learning": ["Periksa domain sebelum mengisi data", "Kurir resmi tidak meminta OTP atau PIN kartu", "Langkah pemulihan: blokir kartu, ubah sandi, aktifkan 2FA"],
+      "learning": [
+        "Periksa domain sebelum mengisi data",
+        "Kurir resmi tidak meminta OTP atau PIN kartu",
+        "Langkah pemulihan: blokir kartu, ubah sandi, aktifkan 2FA"
+      ],
       "requirements": null,
       "order": 8
+    },
+    {
+      "id": "tiket-konser",
+      "type": "sim",
+      "title": "Tiket yang Tak Pernah Ada",
+      "modus": "Tiket Konser",
+      "app": "chatriang",
+      "cover": "./assets/img/scenarios/tiket-konser.svg",
+      "difficulty": 2,
+      "minutes": 10,
+      "summary": "Dua tiket konser dijual setengah harga, lalu penjual mendesak DP dan mengirim halaman e-tiket palsu. Periksa bukti kepemilikan sebelum uang berpindah.",
+      "learning": [
+        "Tiket resmi punya kode dan status pemesanan",
+        "DP ke rekening pribadi menghilangkan perlindungan",
+        "Halaman e-tiket tidak pernah meminta CVV"
+      ],
+      "requirements": null,
+      "order": 9
     }
   ],
   "minigames": [

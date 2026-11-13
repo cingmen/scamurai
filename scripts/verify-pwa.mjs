@@ -529,6 +529,89 @@ async function main() {
       'kartu pengingat latihan di beranda',
     );
 
+    await evalValue(`location.hash = '#/skenario/tiket-konser'`);
+    const newScenarioIntro = await waitFor(
+      `(() => ({
+        hash: location.hash,
+        title: document.querySelector('#app h1')?.textContent?.trim() || '',
+        cover: document.querySelector('#app img')?.getAttribute('src') || '',
+        text: document.querySelector('#app')?.innerText || '',
+      }))()`,
+      (value) => value?.hash === '#/skenario/tiket-konser'
+        && value.title.includes('Tiket yang Tak Pernah Ada')
+        && value.cover.includes('tiket-konser.svg'),
+      'pengantar skenario tiket konser',
+    );
+    const startedNewScenario = await evalValue(`(() => {
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => node.textContent.trim() === 'Mulai simulasi');
+      if (!button) return false;
+      button.click();
+      return true;
+    })()`);
+    const newScenarioFirstStep = await waitFor(
+      `({ hash: location.hash, text: document.querySelector('#app')?.innerText || '' })`,
+      (value) => value?.hash === '#/main/tiket-konser' && value.text.includes('Sabtu, 19.04'),
+      'langkah pertama skenario tiket konser',
+    );
+    const clickNewScenarioButton = async (needle, label) => {
+      const clicked = await evalValue(`(() => {
+        const button = [...document.querySelectorAll('#app button')]
+          .find((node) => node.textContent.includes(${JSON.stringify(needle)}));
+        if (!button) return false;
+        button.click();
+        return true;
+      })()`);
+      if (!clicked) throw new Error(`Tombol ${label} tidak ditemukan.`);
+    };
+    await waitFor(
+      `document.querySelector('.c-lesson')?.innerText || ''`,
+      (text) => text.includes('Tiket resmi selalu bisa dilacak'),
+      'pelajaran tiket konser',
+    );
+    await clickNewScenarioButton('Mengerti', 'pelajaran tiket');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Rani_Tiket') && text.includes('Rp 750.000'),
+      'tawaran tiket konser',
+    );
+    await clickNewScenarioButton('Lanjut', 'chat tiket');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Periksa tawaran ini'),
+      'red flag tiket konser',
+    );
+    await clickNewScenarioButton('Lanjut', 'red flag tiket');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Rani menunggu jawabanmu'),
+      'pilihan tiket konser',
+    );
+    await clickNewScenarioButton('Minta e-tiket', 'pilihan cek tiket');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('link e-tiket'),
+      'chat link e-tiket',
+    );
+    await clickNewScenarioButton('Lanjut', 'chat link e-tiket');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('TixKita') && text.includes('CVV'),
+      'halaman e-tiket palsu',
+    );
+    await clickNewScenarioButton('Isi data dan bayar', 'halaman e-tiket');
+    await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.includes('Halaman meminta data kartu'),
+      'pilihan e-tiket',
+    );
+    await clickNewScenarioButton('Tutup halaman', 'pilihan tutup e-tiket');
+    const newScenarioEnding = await waitFor(
+      `document.querySelector('.c-ending')?.innerText || ''`,
+      (text) => text.includes('Kamu memilih jalur resmi'),
+      'ending aman tiket konser',
+    );
+
     const offlineData = await evalValue(`(async () => {
       const response = await fetch('./data/scenarios/${SCENARIO_ID}.json');
       const body = await response.json();
@@ -567,6 +650,10 @@ async function main() {
       && reminderSettings.intervalDays === 3
       && practiceReminder.found === true
       && practiceReminder.href.includes(practiceReminder.scenario)
+      && newScenarioIntro.title.includes('Tiket yang Tak Pernah Ada')
+      && startedNewScenario === true
+      && newScenarioFirstStep.hash === '#/main/tiket-konser'
+      && newScenarioEnding.includes('Kamu memilih jalur resmi')
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -596,6 +683,11 @@ async function main() {
         certificateState: { name: certificateState.name, score: certificateState.score, code: certificateState.code },
         reminderSettings,
         practiceReminder,
+        newScenarioFound: newScenarioIntro.title.includes('Tiket yang Tak Pernah Ada'),
+        newScenarioCover: newScenarioIntro.cover,
+        newScenarioStarted: startedNewScenario === true,
+        newScenarioFirstStep: newScenarioFirstStep.text.includes('Sabtu, 19.04'),
+        newScenarioEnding: newScenarioEnding.includes('Kamu memilih jalur resmi'),
         data: offlineData,
         networkFailures: pageFailures.length,
       },

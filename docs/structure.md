@@ -89,7 +89,7 @@ scamurai/                       ← root repo (di-deploy via GitHub Pages)
     │   └── wa-engine.js        ← mesin grup WA: jadwal pesan, balasan dinamis, deteksi "keluar/lapor"
     ├── screens/                ← satu modul per layar; ekspor fungsi render(container, params) → cleanup
     │   ├── home.js             ← beranda dojo: sabuk, lanjut bermain, daftar cepat
-    │   ├── scenario-select.js  ← galeri 8 skenario + status selesai
+    │   ├── scenario-select.js  ← galeri skenario + status selesai
     │   ├── scenario-brief.js   ← pengantar skenario (tujuan, aturan, mulai)
     │   ├── sim-player.js       ← host PhoneFrame + jalankan sim-engine untuk skenario non-VN
     │   ├── vn-player.js        ← host PhoneFrame + jalankan vn-engine (love scam)

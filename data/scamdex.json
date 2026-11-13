@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-05",
+  "updatedAt": "2026-11-13",
   "cards": [
     {
       "id": "task-scam",
@@ -227,6 +227,39 @@
           "name": "Varian: Akibat Beruntun",
           "unlockEnding": "kena-pulih",
           "desc": "Data yang diketik dipakai berlapis: kartu, pinjol atas nama korban, lalu telepon yang memakai data itu untuk terlihat meyakinkan."
+        }
+      ]
+    },
+    {
+      "id": "tiket-konser",
+      "name": "Tiket Konser Palsu",
+      "alias": "DP tiket di luar platform",
+      "icon": "./assets/img/scenarios/tiket-konser.svg",
+      "severity": 2,
+      "psychology": "Harga murah dan waktu konser yang mendekat membuat orang takut kehilangan kesempatan. Penjual membangun kepercayaan lewat sapaan ramah, lalu meminta uang sebelum bukti tiket.",
+      "flags": [
+        "Harga tiket jauh di bawah harga resmi",
+        "DP ke rekening pribadi sebelum e-tiket diterima",
+        "Akun penjual tanpa riwayat atau verifikasi",
+        "Halaman e-tiket meminta CVV atau data kartu",
+        "Hitung mundur dan desakan agar cepat membayar"
+      ],
+      "verify": [
+        "Minta kode pesanan dan cek langsung di aplikasi resmi penjual tiket.",
+        "Bandingkan nama pemesan dan status tiket, bukan desain gambar.",
+        "Gunakan pembayaran platform yang menahan dana sampai tiket terbukti."
+      ],
+      "report": [
+        "Simpan tangkapan layar chat, tautan, dan bukti transfer.",
+        "Laporkan akun ke platform serta Aduan Konten Komdigi/lapor.go.id.",
+        "Blokir kartu bila data kartu sudah diberikan."
+      ],
+      "variants": [
+        {
+          "id": "var-tiket-konser",
+          "name": "Varian: Checkout E-Tiket Palsu",
+          "unlockEnding": "kena-data",
+          "desc": "Halaman e-tiket meminta CVV dan transfer tambahan. Tiket tidak pernah diterbitkan; data kartu bisa dipakai untuk transaksi lain."
         }
       ]
     }

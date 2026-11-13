@@ -1,0 +1,405 @@
+{
+  "id": "tiket-konser",
+  "type": "sim",
+  "title": "Tiket yang Tak Pernah Ada",
+  "modus": "Tiket Konser",
+  "difficulty": 2,
+  "app": "chatriang",
+  "brief": {
+    "goal": "Kamu melihat dua tiket konser dijual jauh di bawah harga resmi. Penjualnya ramah dan mendesak DP cepat. Uji apakah kamu bisa memisahkan tiket asli dari janji manis.",
+    "rules": [
+      "Harga di bawah pasar adalah alasan untuk memeriksa, bukan untuk bergegas.",
+      "Tiket resmi punya kode dan riwayat pemesanan yang bisa diverifikasi.",
+      "Jangan mengirim DP ke rekening pribadi di luar platform resmi.",
+      "Semua penjual, nomor, dan halaman di sini fiktif."
+    ],
+    "saldoAwal": 5000000
+  },
+  "steps": [
+    {
+      "type": "chat",
+      "dir": "narator",
+      "text": "Sabtu, 19.04 · 12 hari sebelum konser",
+      "delayMs": 500
+    },
+    {
+      "type": "lesson",
+      "title": "Tiket resmi selalu bisa dilacak",
+      "body": "Tiket konser yang sah punya nomor pesanan, nama pemesan, dan status di akun platform resmi. Jangan menilai keaslian dari desain gambar atau janji penjual. Sebelum membayar, minta kode tiket dan cek langsung di kanal resmi.",
+      "refDex": "Tiket Konser Palsu"
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Rani_Tiket",
+      "time": "19.06",
+      "text": "Halo kak! Aku punya 2 tiket Tulus kategori Festival, jual cepat Rp 750.000/pasang. Harga resmi Rp 1.500.000. Bisa transfer DP sekarang, nanti e-tiket aku kirim. Serius mau?",
+      "auto": false
+    },
+    {
+      "type": "flag-tap",
+      "header": {
+        "title": "ChatRiang",
+        "sub": "Chat dengan Rani_Tiket"
+      },
+      "hint": "Periksa tawaran ini sebelum menjawab.",
+      "blocks": [
+        {
+          "text": "Rani_Tiket · 19.06",
+          "head": true
+        },
+        {
+          "text": "2 tiket Tulus kategori Festival, jual cepat Rp 750.000/pasang. Harga resmi Rp 1.500.000."
+        },
+        {
+          "text": "Bisa transfer DP sekarang, nanti e-tiket aku kirim. Serius mau?"
+        }
+      ],
+      "hotspots": [
+        {
+          "flagId": "tk-harga",
+          "x": 54,
+          "y": 44,
+          "title": "Harga setengah dari harga resmi",
+          "why": "Tiket konser populer jarang dijual rugi. Harga terlalu murah adalah umpan agar kamu mengabaikan prosedur verifikasi.",
+          "do": "Bandingkan dengan harga dan status tiket di kanal resmi."
+        },
+        {
+          "flagId": "tk-dp",
+          "x": 55,
+          "y": 73,
+          "title": "DP dulu, e-tiket menyusul",
+          "why": "Membayar sebelum menerima tiket atau bukti kepemilikan berarti kamu menanggung seluruh risiko. Penipu bisa menghilang setelah DP masuk.",
+          "do": "Gunakan pembayaran yang menahan dana sampai tiket terbukti sah."
+        },
+        {
+          "flagId": "tk-akun",
+          "x": 30,
+          "y": 16,
+          "title": "Akun penjual tanpa identitas jelas",
+          "why": "Nama akun dan sapaan ramah mudah dibuat. Tanpa riwayat transaksi atau verifikasi, tidak ada yang bisa ditagih saat masalah muncul.",
+          "do": "Cek riwayat penjual di platform resmi dan minta bukti pesanan."
+        },
+        {
+          "flagId": "tk-nama-konser",
+          "x": 35,
+          "y": 33,
+          "title": "Nama konser ditulis dengan benar",
+          "decoy": true,
+          "why": "Nama konser adalah informasi publik. Menyebutnya dengan benar tidak membuktikan tiket itu ada.",
+          "do": "Fokus pada bukti kepemilikan dan jalur pembayaran, bukan nama acara."
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "prompt": "Rani menunggu jawabanmu.",
+      "critical": true,
+      "options": [
+        {
+          "id": "dp",
+          "label": "Transfer DP sekarang, mumpung murah",
+          "goto": 5
+        },
+        {
+          "id": "cek",
+          "label": "Minta e-tiket dan cek kode resminya dulu",
+          "goto": 7
+        },
+        {
+          "id": "lapor",
+          "label": "Blokir dan laporkan akun penjual",
+          "goto": 13
+        }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": {
+        "title": "Bank Jayakarta",
+        "sub": "Transfer baru"
+      },
+      "data": {
+        "title": "Transfer DP tiket",
+        "recipient": "Rani Kusuma",
+        "account": "7731 0098 4421",
+        "amount": 750000,
+        "fee": 6500,
+        "note": "DP 2 tiket Tulus",
+        "warning": "Rekening tujuan adalah rekening pribadi, bukan rekening platform tiket. Dana tidak dilindungi escrow."
+      },
+      "button": {
+        "label": "Transfer DP sekarang",
+        "goto": 6
+      }
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "DP masuk, tiket tidak pernah datang",
+      "text": "Kamu mentransfer Rp 750.000. Rani mengirim stiker centang, lalu berhenti membalas. Akunnya hilang beberapa jam kemudian. Karena pembayaran dilakukan di luar platform, tidak ada perlindungan pembeli."
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Rani_Tiket",
+      "time": "19.09",
+      "text": "Kalau mau lebih aman, aku kirim link e-tiket resmi ya. Isi nama dan data pembayaran di sana, nanti tiket langsung diterbitkan. Jangan sampai kehabisan, ini link terakhir.",
+      "auto": false
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": {
+        "title": "BrowserMini",
+        "sub": "E-tiket Tulus"
+      },
+      "url": "https://tixkita-event.xyz/order/tulus-2",
+      "secure": true,
+      "page": {
+        "logo": "TixKita · E-Tiket Resmi",
+        "lines": [
+          "2 tiket Tulus · Festival · Rp 750.000",
+          "E-tiket akan diterbitkan setelah pembayaran dikonfirmasi.",
+          "Sisa waktu pembayaran 08.42."
+        ],
+        "form": [
+          {
+            "placeholder": "Nama pemesan",
+            "label": "Nama pemesan"
+          },
+          {
+            "placeholder": "Nomor kartu",
+            "label": "Nomor kartu"
+          },
+          {
+            "placeholder": "CVV",
+            "label": "CVV"
+          }
+        ],
+        "countdown": "Sisa waktu 08.42",
+        "foot": "TixKita tidak pernah meminta CVV melalui halaman e-tiket."
+      },
+      "inspect": {
+        "real": "tixkita.co.id",
+        "notes": [
+          "Domain memakai tanda hubung dan akhiran .xyz — bukan domain resmi penjual tiket.",
+          "Halaman meminta CVV, padahal kode tiket tidak membutuhkannya.",
+          "Tidak ada nomor pesanan atau nama pemesan yang bisa diverifikasi."
+        ]
+      },
+      "hint": "Halaman ini terlihat resmi. Periksa alamat dan permintaan datanya.",
+      "hotspots": [
+        {
+          "flagId": "tk-domain",
+          "x": 50,
+          "y": 23,
+          "title": "Domain tixkita-event.xyz",
+          "why": "Domain resmi bukan gabungan kata dengan tanda hubung dan akhiran acak. Penipu membuat nama yang terbaca mirip.",
+          "do": "Buka aplikasi atau situs resmi penjual tiket dan cek pesanan di sana."
+        },
+        {
+          "flagId": "tk-cvv",
+          "x": 56,
+          "y": 67,
+          "title": "CVV diminta untuk e-tiket",
+          "why": "CVV adalah kunci kartu. Penerbitan tiket tidak membutuhkan CVV; permintaan ini adalah tanda pencurian data kartu.",
+          "do": "Jangan isi data kartu. Tutup halaman dan hubungi kanal resmi."
+        },
+        {
+          "flagId": "tk-countdown",
+          "x": 65,
+          "y": 83,
+          "title": "Hitung mundur 08.42",
+          "why": "Batas waktu palsu membuat kamu tidak sempat memeriksa domain atau bertanya kepada orang lain.",
+          "do": "Abaikan tenggat dan verifikasi lewat aplikasi resmi."
+        },
+        {
+          "flagId": "tk-logo",
+          "x": 26,
+          "y": 14,
+          "title": "Logo TixKita",
+          "decoy": true,
+          "why": "Logo mudah ditiru. Keberadaan logo tidak membuktikan halaman itu resmi.",
+          "do": "Periksa domain dan data yang diminta, bukan logonya."
+        }
+      ],
+      "button": {
+        "label": "Isi data dan bayar",
+        "goto": 9
+      }
+    },
+    {
+      "type": "choice",
+      "prompt": "Halaman meminta data kartu. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        {
+          "id": "isi",
+          "label": "Isi data kartu dan bayar sekarang",
+          "goto": 10
+        },
+        {
+          "id": "tutup",
+          "label": "Tutup halaman dan cek tiket lewat aplikasi resmi",
+          "goto": 12
+        },
+        {
+          "id": "lapor",
+          "label": "Simpan bukti, laporkan, dan blokir penjual",
+          "goto": 13
+        }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": {
+        "title": "Bank Jayakarta",
+        "sub": "Pembayaran e-tiket"
+      },
+      "data": {
+        "title": "Pembayaran e-tiket",
+        "recipient": "TixKita Event",
+        "account": "9001 7788 2210",
+        "amount": 1500000,
+        "fee": 6500,
+        "note": "Pembelian 2 tiket Tulus",
+        "warning": "Halaman ini meminta CVV dan transfer ke rekening yang tidak terverifikasi. Pembayaran kartu tidak dilindungi."
+      },
+      "button": {
+        "label": "Bayar sekarang",
+        "goto": 11
+      }
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena-data",
+      "title": "Data kartu dan uangmu diambil",
+      "text": "Kamu mengisi data kartu dan membayar Rp 1.500.000. Beberapa jam kemudian muncul transaksi lain di kartu. E-tiket tidak pernah diterbitkan, dan nomor penjual tidak aktif. Data kartu yang kamu berikan bisa dipakai untuk pembelian lain."
+    },
+    {
+      "type": "consequence",
+      "endingId": "aman",
+      "title": "Kamu memilih jalur resmi",
+      "text": "Kamu menutup halaman palsu dan membuka aplikasi resmi penjual tiket. Tidak ada pesanan atas nama Rani, dan kode tiket yang ia sebut tidak terdaftar. Kamu menyelamatkan uang dan data kartumu."
+    },
+    {
+      "type": "consequence",
+      "endingId": "lapor",
+      "title": "Bukti disimpan, akun diblokir",
+      "text": "Kamu menyimpan tangkapan layar, tautan, dan nomor rekening, lalu melaporkan akun Rani ke platform dan kanal aduan. Laporanmu membantu calon pembeli lain yang sedang dirayu dengan tiket murah."
+    }
+  ],
+  "endings": {
+    "kena": {
+      "label": "Transfer DP ke rekening pribadi",
+      "saldoDelta": -750000,
+      "rank": 0,
+      "tone": "bad",
+      "dexCard": "tiket-konser"
+    },
+    "kena-data": {
+      "label": "Checkout palsu dan data kartu",
+      "saldoDelta": -1500000,
+      "rank": 0,
+      "tone": "bad",
+      "dexCard": "tiket-konser",
+      "dexVariant": "var-tiket-konser"
+    },
+    "aman": {
+      "label": "Verifikasi tiket lewat kanal resmi",
+      "saldoDelta": 0,
+      "rank": 3,
+      "tone": "best",
+      "dexCard": "tiket-konser"
+    },
+    "lapor": {
+      "label": "Laporkan dan blokir penjual",
+      "saldoDelta": 0,
+      "rank": 2,
+      "tone": "good",
+      "dexCard": "tiket-konser"
+    }
+  },
+  "debrief": {
+    "anatomi": [
+      {
+        "t": "19.06",
+        "judul": "Harga umpan",
+        "naskah": "2 tiket Rp 750.000, harga resmi Rp 1.500.000.",
+        "tujuanPenipu": "Membuat korban merasa mendapat kesempatan langka dan mengabaikan verifikasi."
+      },
+      {
+        "t": "19.09",
+        "judul": "DP sebelum barang",
+        "naskah": "Transfer DP sekarang, e-tiket menyusul.",
+        "tujuanPenipu": "Mengambil uang sebelum korban melihat bukti kepemilikan tiket."
+      },
+      {
+        "t": "19.12",
+        "judul": "Checkout palsu",
+        "naskah": "Isi nama, nomor kartu, dan CVV di halaman e-tiket.",
+        "tujuanPenipu": "Mengambil data kartu yang bisa dipakai untuk transaksi lain."
+      },
+      {
+        "t": "H+1",
+        "judul": "Menghilang",
+        "naskah": "Akun dan nomor penjual tidak aktif.",
+        "tujuanPenipu": "Kabur sebelum korban menyadari tidak ada tiket."
+      }
+    ],
+    "aliran": {
+      "alt": "Diagram aliran tiket konser palsu: korban ke rekening pribadi dan data kartu",
+      "nodes": [
+        {
+          "id": "korban",
+          "label": "Kamu · transfer DP"
+        },
+        {
+          "id": "rekening",
+          "label": "Rekening pribadi penjual",
+          "tone": "danger"
+        },
+        {
+          "id": "data",
+          "label": "Data kartu di halaman palsu",
+          "tone": "danger"
+        },
+        {
+          "id": "hilang",
+          "label": "Akun dihapus / ditarik",
+          "tone": "danger"
+        }
+      ],
+      "edges": [
+        {
+          "from": "korban",
+          "to": "rekening",
+          "label": "DP di luar platform"
+        },
+        {
+          "from": "korban",
+          "to": "data",
+          "label": "checkout palsu"
+        },
+        {
+          "from": "rekening",
+          "to": "hilang",
+          "label": "sulit dilacak"
+        }
+      ]
+    },
+    "pulihkan": [
+      "Hubungi bank sekarang; minta pemblokiran kartu dan penahanan transaksi bila baru terjadi.",
+      "Simpan tangkapan layar chat, tautan, nomor rekening, dan bukti transfer.",
+      "Laporkan akun dan tautan ke platform, Aduan Konten Komdigi, dan lapor.go.id.",
+      "Cek rekening penerima di cekrekening.id dan jangan mengirim uang tambahan.",
+      "Jika data kartu sudah diberikan, awasi mutasi dan aktifkan verifikasi dua langkah."
+    ],
+    "linkPhisquest": true
+  }
+}
