@@ -205,6 +205,13 @@ async function main() {
           const saved = JSON.parse(localStorage.getItem(key) || '{}');
           saved.schemaVersion = 1;
           saved.profile = { ...(saved.profile || {}), onboarded: true, rhythm: 'normal' };
+          saved.progress = {
+            ...(saved.progress || {}),
+            'task-scam': { ...(saved.progress?.['task-scam'] || {}), status: 'selesai', debriefDone: true },
+            'bank-otp': { ...(saved.progress?.['bank-otp'] || {}), status: 'selesai', debriefDone: true },
+            'marketplace': { ...(saved.progress?.['marketplace'] || {}), status: 'selesai', debriefDone: true },
+            'phishing': { ...(saved.progress?.['phishing'] || {}), status: 'selesai', debriefDone: true },
+          };
           localStorage.setItem(key, JSON.stringify(saved));
         } catch {}
         window.__scamuraiPerf = { lcp: 0, cls: 0 };
@@ -389,6 +396,64 @@ async function main() {
       'soal pertama kuis kelas tanpa timer',
     );
 
+    await evalValue(`location.hash = '#/ujian'`);
+    const finalExamIntro = await waitFor(
+      `document.querySelector('#app')?.innerText || ''`,
+      (text) => text.toLowerCase().includes('ujian akhir') && text.includes('20 soal'),
+      'pengantar ujian akhir 20 soal',
+    );
+    const startedFinalExam = await evalValue(`(() => {
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => node.textContent.trim() === 'Mulai ujian');
+      if (!button) return false;
+      button.click();
+      return true;
+    })()`);
+    if (!startedFinalExam) throw new Error('Tombol Mulai ujian tidak ditemukan.');
+    const finalExamRun = await evalValue(`(async () => {
+      const norm = (text) => String(text || '').trim();
+      const data = await fetch('./data/exam/final-exam.json').then((response) => response.json());
+      for (let i = 0; i < 20; i += 1) {
+        const prompt = norm(document.querySelector('.c-exam-q')?.textContent);
+        const question = data.questions.find((item) => norm(item.prompt) === prompt);
+        if (!question) throw new Error('Soal ujian tidak cocok dengan data: ' + prompt);
+        if (question.type === 'pilihan') {
+          const options = [...document.querySelectorAll('.c-exam-option')];
+          options[question.answer]?.click();
+        } else if (question.type === 'urutan') {
+          for (const item of question.items) {
+            const pool = [...document.querySelectorAll('.c-exam-option')];
+            const label = (node) => {
+              const text = norm(node.textContent);
+              return text.startsWith('+') ? text.slice(1).trim() : text;
+            };
+            const button = pool.find((node) => label(node) === norm(item));
+            if (!button) throw new Error('Item urutan tidak ditemukan: ' + item);
+            button.click();
+          }
+        } else {
+          const spots = [...document.querySelectorAll('.c-exam-hotspot-area')];
+          const correct = question.hotspots.findIndex((spot) => spot.correct);
+          spots[correct]?.click();
+        }
+        const next = [...document.querySelectorAll('#app button')]
+          .find((node) => /^(Lanjut|Selesai & nilai)$/.test(norm(node.textContent)));
+        if (!next) throw new Error('Tombol lanjut ujian tidak ditemukan. q=' + prompt + ' buttons=' + [...document.querySelectorAll('#app button')].map((node) => norm(node.textContent)).join('|'));
+        next.click();
+      }
+      return {
+        score: document.querySelector('.c-exam-result__score')?.textContent?.trim() || '',
+        result: document.querySelector('.c-exam-result')?.innerText || '',
+      };
+    })()`);
+    await waitFor(
+      `document.querySelector('.c-exam-result__score')?.textContent?.trim() || ''`,
+      (value) => value === '100',
+      'skor ujian 100 setelah 20 jawaban',
+    );
+    await evalValue(`new Promise((resolve) => setTimeout(resolve, 400))`);
+    const finalExamState = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').exam || {}`);
+
     const offlineData = await evalValue(`(async () => {
       const response = await fetch('./data/scenarios/${SCENARIO_ID}.json');
       const body = await response.json();
@@ -411,6 +476,10 @@ async function main() {
       && schoolQuizIntro.length > 0
       && schoolQuiz.question.length > 0
       && schoolQuiz.timer === false
+      && finalExamIntro.length > 0
+      && finalExamRun.score === '100'
+      && finalExamState.passed === true
+      && finalExamState.best === 100
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -430,6 +499,10 @@ async function main() {
         schoolQuizFound: schoolQuizIntro.includes('Kuis kelas') && schoolQuizIntro.includes('10 soal'),
         schoolQuizQuestionFound: schoolQuiz.question.length > 0,
         schoolQuizTimer: schoolQuiz.timer,
+        finalExamFound: finalExamIntro.toLowerCase().includes('ujian akhir') && finalExamIntro.includes('20 soal'),
+        finalExamScore: finalExamRun.score,
+        finalExamPassed: finalExamState.passed === true,
+        finalExamBest: finalExamState.best,
         data: offlineData,
         networkFailures: pageFailures.length,
       },
@@ -438,7 +511,7 @@ async function main() {
     console.log(JSON.stringify(report, null, 2));
 
     if (!pass) throw new Error('Verifikasi offline gagal: shell, rute, data, atau aset tidak lengkap.');
-    console.log(`\nPWA OK — ${PAGE_URL} memuat shell, skenario ${SCENARIO_ID} (${offlineData.steps} langkah), Pusat Bantuan, kartu PhisQuest, dan kuis kelas 10 soal saat offline.`);
+    console.log(`\nPWA OK — ${PAGE_URL} memuat shell, skenario ${SCENARIO_ID} (${offlineData.steps} langkah), Pusat Bantuan, kartu PhisQuest, kuis kelas 10 soal, dan ujian akhir 20 soal saat offline.`);
   } finally {
     await dispose();
   }
