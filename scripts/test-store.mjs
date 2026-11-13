@@ -188,6 +188,32 @@ test('backup valid bisa dipulihkan; backup korup/future ditolak tanpa mengubah s
   assert.equal(JSON.parse(storage.getItem(NS)).profile.name, 'Pulih');
 });
 
+test('state sertifikat lama dimigrasikan dengan passScore dan tetap terpisah', async () => {
+  const raw = JSON.stringify({
+    schemaVersion: 1,
+    exam: { passed: true, best: 90, attempts: 1 },
+    certificate: { name: 'Rani', code: 'SCM-ABCD-2026', date: '2026-11-13T00:00:00.000Z', score: 90 },
+  });
+  const { store, storage } = await loadStore(raw);
+  const state = store.all();
+  assert.equal(state.exam.passScore, 80);
+  assert.equal(state.exam.passed, true);
+  assert.equal(state.certificate.name, 'Rani');
+  assert.equal(state.certificate.code, 'SCM-ABCD-2026');
+  assert.equal(state.certificate.score, 90);
+  assert.equal(storage.getItem(BACKUP), null, 'migrasi field default tidak perlu dicadangkan');
+});
+
+test('passScore rusak tidak bisa membuka sertifikat palsu', async () => {
+  const raw = JSON.stringify({
+    schemaVersion: 1,
+    exam: { passed: true, best: 100, attempts: 1, passScore: 999 },
+  });
+  const { store, storage } = await loadStore(raw);
+  assert.equal(store.all().exam.passScore, 80);
+  assert.ok(backupRaw(storage), 'field rusak harus dinormalkan dan dicadangkan');
+});
+
 test('state sekolah lama mendapat kuis kelas tanpa kehilangan nama kelas', async () => {
   const raw = JSON.stringify({
     schemaVersion: 1,

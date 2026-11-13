@@ -396,6 +396,13 @@ async function main() {
       'soal pertama kuis kelas tanpa timer',
     );
 
+    await evalValue(`location.hash = '#/sertifikat'`);
+    const certificateRejected = await waitFor(
+      `({ hash: location.hash, text: document.querySelector('#app')?.innerText || '' })`,
+      (value) => value.hash === '#/ujian' && value.text.toLowerCase().includes('ujian akhir'),
+      'sertifikat ditolak sebelum lulus',
+    );
+
     await evalValue(`location.hash = '#/ujian'`);
     const finalExamIntro = await waitFor(
       `document.querySelector('#app')?.innerText || ''`,
@@ -454,6 +461,37 @@ async function main() {
     await evalValue(`new Promise((resolve) => setTimeout(resolve, 400))`);
     const finalExamState = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').exam || {}`);
 
+    await evalValue(`location.hash = '#/sertifikat'`);
+    const certificateRoute = await waitFor(
+      `(() => ({
+        hash: location.hash,
+        heading: document.querySelector('#app h1')?.textContent?.trim() || '',
+        canvas: Boolean(document.querySelector('.c-cert-preview canvas')),
+        width: document.querySelector('.c-cert-preview canvas')?.width || 0,
+        height: document.querySelector('.c-cert-preview canvas')?.height || 0,
+      }))()`,
+      (value) => value.hash === '#/sertifikat'
+        && value.canvas
+        && value.width === 1200
+        && value.height === 850,
+      'sertifikat setelah lulus',
+    );
+    const certificateAction = await evalValue(`(async () => {
+      const input = document.querySelector('#cert-name');
+      if (!input) return { clicked: false, code: '' };
+      input.value = 'Rani Uji';
+      const button = [...document.querySelectorAll('#app button')]
+        .find((node) => node.textContent.trim() === 'Unduh PNG');
+      if (!button) return { clicked: false, code: '' };
+      button.click();
+      await new Promise((resolve) => setTimeout(resolve, 700));
+      return {
+        clicked: true,
+        code: document.querySelector('.c-cert-meta .u-mono')?.textContent?.trim() || '',
+      };
+    })()`);
+    const certificateState = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').certificate || {}`);
+
     const offlineData = await evalValue(`(async () => {
       const response = await fetch('./data/scenarios/${SCENARIO_ID}.json');
       const body = await response.json();
@@ -480,6 +518,14 @@ async function main() {
       && finalExamRun.score === '100'
       && finalExamState.passed === true
       && finalExamState.best === 100
+      && certificateRejected.hash === '#/ujian'
+      && certificateRoute.width === 1200
+      && certificateRoute.height === 850
+      && certificateAction.clicked === true
+      && certificateAction.code.startsWith('SCM-')
+      && certificateState.name === 'Rani Uji'
+      && certificateState.score === 100
+      && certificateState.code === certificateAction.code
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -503,6 +549,10 @@ async function main() {
         finalExamScore: finalExamRun.score,
         finalExamPassed: finalExamState.passed === true,
         finalExamBest: finalExamState.best,
+        certificateRejected: certificateRejected.hash === '#/ujian',
+        certificateCanvas: certificateRoute.canvas ? `${certificateRoute.width}x${certificateRoute.height}` : null,
+        certificateIssued: certificateAction.clicked === true && certificateAction.code.startsWith('SCM-'),
+        certificateState: { name: certificateState.name, score: certificateState.score, code: certificateState.code },
         data: offlineData,
         networkFailures: pageFailures.length,
       },

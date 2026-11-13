@@ -2,7 +2,7 @@
 // Uji logika ujian: pool 10/20, anti-repetisi, dan penilaian tiga tipe soal.
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { buildExamPool, isAnswerCorrect, gradeExam } from '../js/core/exam.js';
+import { buildExamPool, isAnswerCorrect, gradeExam, hasPassedFinalExam } from '../js/core/exam.js';
 
 const root = new URL('..', import.meta.url);
 const data = JSON.parse(await readFile(new URL('data/exam/final-exam.json', root), 'utf8'));
@@ -47,4 +47,10 @@ const nearlyExhausted = buildExamPool(questions, {
 assert.equal(nearlyExhausted.length, 10, 'pool harus tetap 10 saat stok baru tinggal 5');
 assert.equal(new Set(nearlyExhausted.map(id)).size, 10, 'pool cadangan tetap unik');
 
-console.log('✓ pool 10 soal kuis kelas, 20 soal ujian akhir, anti-repetisi, dan penilaian tiga tipe lulus.');
+assert.equal(hasPassedFinalExam({ passed: true, best: 80, attempts: 1, passScore: 80 }), true);
+assert.equal(hasPassedFinalExam({ passed: true, best: 79, attempts: 1, passScore: 80 }), false);
+assert.equal(hasPassedFinalExam({ passed: true, best: 90, attempts: 0, passScore: 80 }), false);
+assert.equal(hasPassedFinalExam({ passed: false, best: 100, attempts: 1, passScore: 80 }), false);
+assert.equal(hasPassedFinalExam({ passed: true, best: 90, attempts: 2 }), true);
+
+console.log('✓ pool 10/20 soal, anti-repetisi, penilaian tiga tipe, dan kelayakan sertifikat lulus.');

@@ -3,6 +3,7 @@
 import { emit } from './core/events.js';
 import { get, all } from './core/store.js';
 import { showToast } from './components/toast.js';
+import { hasPassedFinalExam } from './core/exam.js';
 import { closeModal } from './components/modal.js';
 import { h, replace } from './core/dom.js';
 
@@ -48,7 +49,7 @@ const ROUTES = [
     name: 'sertifikat',
     pattern: /^\/sertifikat\/?$/,
     load: () => import('./screens/certificate.js'),
-    guard: () => Boolean(get('exam.passed')),
+    guard: () => hasPassedFinalExam(get('exam', {})),
     guardFail: { to: '#/ujian', message: 'Lulus ujian akhir dulu untuk membuat sertifikat.' },
   },
   { name: 'bantuan', pattern: /^\/bantuan\/?$/, load: () => import('./screens/bantuan.js') },

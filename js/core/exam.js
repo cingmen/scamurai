@@ -30,3 +30,11 @@ export function gradeExam(pool, answers) {
     score: Math.round((correct / pool.length) * 100),
   };
 }
+
+/** Sertifikat hanya sah bila ujian benar-benar lulus, bukan hanya flag passed. */
+export function hasPassedFinalExam(exam = {}, fallbackPassScore = 80) {
+  const best = Number(exam.best) || 0;
+  const passScore = Number(exam.passScore) || fallbackPassScore;
+  const attempts = Number(exam.attempts) || 0;
+  return Boolean(exam.passed) && attempts > 0 && best >= passScore;
+}

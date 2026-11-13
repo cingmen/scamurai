@@ -271,6 +271,7 @@ export async function render(root, { params, path } = {}) {
       [`${statePrefix}.passed`, Boolean(stateGet('passed', false)) || passed],
       [`${statePrefix}.lastPool`, pool.map((question) => question.id)],
     ]);
+    if (!schoolMode) setMany([['exam.passScore', passScore]]);
     renderResult({ score, correct, passed, auto });
   }
 

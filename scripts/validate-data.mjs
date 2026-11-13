@@ -357,6 +357,9 @@ try {
         fail('data/exam/final-exam.json', `soal ${i}: flag-gambar butuh hotspots`);
       }
     });
+    if (!Number.isFinite(Number(exam.passScore)) || Number(exam.passScore) < 1 || Number(exam.passScore) > 100) {
+      fail('data/exam/final-exam.json', 'passScore wajib 1–100');
+    }
     if (!exam.school || !Number.isInteger(exam.school.poolSize) || exam.school.poolSize < 5) {
       fail('data/exam/final-exam.json', 'school.poolSize wajib minimal 5');
     }

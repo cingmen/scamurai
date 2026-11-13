@@ -32,7 +32,7 @@ export function defaultState() {
     progress: {},
     vn: { saves: [null, null] },
     dex: {},
-    exam: { attempts: 0, best: 0, passed: false, lastPool: [] },
+    exam: { attempts: 0, best: 0, passed: false, lastPool: [], passScore: 80 },
     certificate: { name: '', code: '', date: '', score: 0 },
     wa: { bestExitTurn: null, reported: false },
     sekolah: {
@@ -119,6 +119,13 @@ function normalizeState(raw) {
   }
   if (!Array.isArray(next.exam.lastPool)) {
     next.exam.lastPool = [];
+    repaired = true;
+  }
+  const passScore = Number(next.exam.passScore);
+  if (Number.isFinite(passScore) && passScore > 0 && passScore <= 100) {
+    next.exam.passScore = passScore;
+  } else {
+    next.exam.passScore = base.exam.passScore;
     repaired = true;
   }
   if (!Array.isArray(next.sekolah.packagesDone)) {

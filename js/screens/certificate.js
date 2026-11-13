@@ -2,11 +2,12 @@
 import { get, setMany } from '../core/store.js';
 import { h, clear } from '../core/dom.js';
 import { certCode, dateID } from '../core/format.js';
+import { hasPassedFinalExam } from '../core/exam.js';
 import { renderCertificate, shareCanvas, downloadCanvas } from '../components/share.js';
 import { showToast } from '../components/toast.js';
 
 export async function render(root) {
-  const passed = Boolean(get('exam.passed', false));
+  const passed = hasPassedFinalExam(get('exam', {}));
   clear(root);
 
   if (!passed) {
