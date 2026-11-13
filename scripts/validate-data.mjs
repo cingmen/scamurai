@@ -181,7 +181,10 @@ function reachableEndings(steps) {
     if (seen.has(index) || index < 0 || index >= steps.length) continue;
     seen.add(index);
     const step = steps[index];
-    if (step.type === 'consequence' && step.endingId) endings.add(step.endingId);
+    if (step.type === 'consequence') {
+      if (step.endingId) endings.add(step.endingId);
+      continue;
+    }
 
     const targets = [];
     if (Number.isInteger(step.goto)) targets.push(step.goto);

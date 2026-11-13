@@ -839,6 +839,41 @@ async function main() {
       'ending aman menu cloning',
     );
 
+    await evalValue(`location.hash = '#/studio'`);
+    const studioIntro = await waitFor(
+      `(() => ({
+        hash: location.hash,
+        title: document.querySelector('#app h1')?.textContent?.trim() || '',
+        hasJson: Boolean(document.querySelector('[data-studio-json]')),
+        hasExport: Boolean(document.querySelector('[data-studio-export]')),
+      }))()`,
+      (value) => value?.hash === '#/studio'
+        && value.title.includes('Studio skenario')
+        && value.hasJson
+        && value.hasExport,
+      'studio skenario',
+    );
+    const studioLoaded = await evalValue(`(() => {
+      const button = document.querySelector('[data-studio-template]');
+      if (!button) return false;
+      button.click();
+      return true;
+    })()`);
+    const studioValid = await waitFor(
+      `document.querySelector('[data-studio-status]')?.innerText || ''`,
+      (text) => text.includes('Paket valid') && text.includes('14 langkah'),
+      'validasi contoh studio',
+    );
+    const studioRejects = await evalValue(`(() => {
+      const field = document.querySelector('[data-studio-json]');
+      const button = document.querySelector('[data-studio-validate]');
+      if (!field || !button) return '';
+      field.value = '{';
+      field.dispatchEvent(new Event('input', { bubbles: true }));
+      button.click();
+      return document.querySelector('[data-studio-status]')?.innerText || '';
+    })()`);
+
     const offlineData = await evalValue(`(async () => {
       const response = await fetch('./data/scenarios/${SCENARIO_ID}.json');
       const body = await response.json();
@@ -896,6 +931,10 @@ async function main() {
       && menuIntro.title.includes('Menu yang Tidak Pernah Ada')
       && startedMenu === true
       && menuEnding.includes('Pesanan lewat kanal resmi')
+      && studioIntro.title.includes('Studio skenario')
+      && studioLoaded === true
+      && studioValid.includes('Paket valid')
+      && studioRejects.includes('JSON tidak valid')
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -943,6 +982,11 @@ async function main() {
         menuScenarioFound: menuIntro.title.includes('Menu yang Tidak Pernah Ada'),
         menuScenarioStarted: startedMenu === true,
         menuScenarioEnding: menuEnding.includes('Pesanan lewat kanal resmi'),
+        studio: {
+          loaded: studioLoaded === true,
+          valid: studioValid.includes('Paket valid'),
+          rejectsInvalidJson: studioRejects.includes('JSON tidak valid'),
+        },
         data: offlineData,
         networkFailures: pageFailures.length,
       },

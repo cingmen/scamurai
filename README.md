@@ -6,6 +6,7 @@ Dojo simulasi anti-penipuan berbahasa Indonesia. Kamu memainkan penipuan sungguh
 
 ## Isi
 
+- **Studio skenario:** editor JSON komunitas dengan validasi 14 langkah, consequence, ketercapaian ending, dan ekspor paket `.scenario.json`.
 - **13 skenario:** Task Scam, Bank & OTP, Pinjol Ilegal, Marketplace, Kerja Luar Negeri, Money Mule, Love Scam (visual novel 5 bab), Phishing, Tiket Konser, QRIS Palsu, Voice Clone, Investasi Crypto, dan Menu Cloning.
 - **Dojo grup:** observasi 4 hari dalam grup investasi palsu (42 beat, 7 aktor).
 - **ScamDEX:** 13 kartu modus + varian yang terbuka dari ending tertentu.

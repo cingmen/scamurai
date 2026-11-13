@@ -1,6 +1,6 @@
 // Service Worker — offline penuh (app-logic.md §11).
 // Naikkan CACHE_VERSION setiap rilis agar cache lama tergantikan.
-const CACHE_VERSION = 'scamurai-v2.1.0';
+const CACHE_VERSION = 'scamurai-v2.2.0';
 
 const SHELL = [
   './',
@@ -67,6 +67,7 @@ const SHELL = [
   './data/scenarios/voice-clone.json',
   './data/scenarios/crypto-invest.json',
   './data/scenarios/menu-cloning.json',
+  './data/studio/template.json',
   './js/main.js',
   './js/router.js',
   './js/core/events.js',
@@ -79,6 +80,7 @@ const SHELL = [
   './js/core/dom.js',
   './js/core/progress.js',
   './js/core/reminder.js',
+  './js/core/scenario-package.js',
   './js/engines/sim-engine.js',
   './js/engines/step-renderers.js',
   './js/engines/app-views.js',
@@ -98,6 +100,7 @@ const SHELL = [
   './js/screens/bantuan.js',
   './js/screens/about.js',
   './js/screens/settings.js',
+  './js/screens/studio.js',
   './js/screens/sekolah.js',
   './js/components/phone-frame.js',
   './js/components/statusbar.js',

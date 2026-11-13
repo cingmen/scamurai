@@ -317,6 +317,12 @@ export async function render(root) {
       : 'Penyimpanan diblokir (mode privat?). Progres tidak akan bertahan setelah tab ditutup.'),
   );
 
+  const studio = h('section', { class: 'c-card' },
+    h('h2', { class: 'section-title' }, 'Studio skenario'),
+    h('p', { class: 'u-small u-muted' }, 'Buat skenario komunitas dalam format JSON, validasi consequence dan ketercapaian ending, lalu unduh paket .scenario.json.'),
+    h('a', { class: 'c-btn c-btn--ghost c-btn--sm u-mt-3', href: '#/studio' }, 'Buka Studio skenario'),
+  );
+
   const about = h('section', { class: 'c-card' },
     h('h2', { class: 'section-title' }, 'Tentang data & privasi'),
     h('ul', { class: 'c-dex-list' },
@@ -379,6 +385,7 @@ export async function render(root) {
     schedule,
     recovery,
     backup,
+    studio,
     about,
     danger,
     h('div', { class: 'c-brief-actions' },

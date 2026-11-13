@@ -202,7 +202,7 @@
    - [x] Menu cloning — "Menu yang Tidak Pernah Ada" (14 langkah, 5 ending, menu/DP/biaya kurir palsu; diuji browser lokal/live 13 Nov 2026).
    - [x] Voice clone — "Suara yang Tidak Pernah Ada" (14 langkah, 5 ending, mekanik telepon + tautan verifikasi; diuji browser lokal/live 13 Nov 2026).
    - [x] Investasi crypto — "Cuan yang Tidak Pernah Ada" (14 langkah, 5 ending, dashboard palsu + pajak/recovery phrase; diuji browser lokal/live 13 Nov 2026).
-4. Editor skenario komunitas (belajar dari PhisQuest: validasi + ekspor paket).
+4. [x] Editor skenario komunitas: Studio skenario di `#/studio` dengan template 14 langkah, validasi consequence/ketercapaian ending/red flag/debrief, ekspor paket `.scenario.json`, dan uji validator negatif; diuji browser lokal/live 13 Nov 2026.
 5. Lokalisasi bahasa daerah & Inggris (`i18n/id.json` sudah siap struktur).
 6. [x] Integrasi "latihan terjadwal" (spaced repetition: pengingat PWA lokal). **Dipilih 13 Nov 2026 sebagai item pengganti karena item F7 tersisa membutuhkan perangkat/review manusia atau pengumuman komunitas. Pengingat lokal muncul di beranda setelah jeda 3/7/14 hari, dikonfigurasi di Pengaturan, dengan migrasi settings dan uji perilaku.**
 

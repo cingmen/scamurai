@@ -1,0 +1,182 @@
+{
+  "id": "contoh-undangan",
+  "type": "sim",
+  "title": "Contoh: Undangan yang Terlalu Murah",
+  "modus": "Komunitas",
+  "difficulty": 2,
+  "app": "chatriang",
+  "brief": {
+    "goal": "Contoh paket skenario komunitas: uji apakah kamu memeriksa kanal resmi sebelum membayar undangan acara.",
+    "rules": [
+      "Harga di bawah pasar bukan bukti keaslian.",
+      "Jangan mengirim DP ke rekening pribadi.",
+      "Semua nama dan nomor di sini fiktif."
+    ],
+    "saldoAwal": 3000000
+  },
+  "steps": [
+    {
+      "type": "chat",
+      "dir": "narator",
+      "text": "Sabtu, 10.12 · tawaran undangan acara",
+      "delayMs": 500
+    },
+    {
+      "type": "lesson",
+      "title": "Periksa kanal pembayaran",
+      "body": "Akun baru bisa memakai foto dan testimoni acara lain. Sebelum membayar, cek kanal resmi, alamat, dan nama penerima.",
+      "refDex": "Phishing"
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Undangan Kita",
+      "time": "10.12",
+      "text": "Promo undangan digital 70%! Paket lengkap Rp 150.000, tinggal bayar DP Rp 50.000 ke rekening pribadi. Slot tinggal 2.",
+      "auto": false
+    },
+    {
+      "type": "browser",
+      "app": "browser",
+      "header": { "title": "BrowserMini", "sub": "Undangan promo" },
+      "url": "https://undangankita-promo.xyz/paket",
+      "secure": true,
+      "page": {
+        "logo": "Undangan Kita · Promo",
+        "lines": [
+          "Paket digital lengkap Rp 150.000.",
+          "DP Rp 50.000 ke rekening pribadi.",
+          "Konon sudah dipakai 2.000 acara."
+        ],
+        "countdown": "Promo berakhir 00.47",
+        "foot": "Cek kanal resmi dan rekening usaha sebelum membayar."
+      },
+      "inspect": {
+        "real": "kanal resmi Undangan Kita yang kamu cari sendiri",
+        "notes": [
+          "Domain promo memakai akhiran .xyz.",
+          "DP diminta ke rekening pribadi.",
+          "Tidak ada alamat atau nomor resmi."
+        ]
+      },
+      "hint": "Periksa domain dan rekening sebelum membayar.",
+      "hotspots": [
+        { "flagId": "contoh-domain", "x": 52, "y": 22, "title": "Domain promo .xyz", "why": "Domain kampanye bukan kanal resmi.", "do": "Cari kanal resmi sendiri." },
+        { "flagId": "contoh-dp", "x": 55, "y": 66, "title": "DP ke rekening pribadi", "why": "Rekening pribadi bukan rekening usaha.", "do": "Jangan transfer." },
+        { "flagId": "contoh-countdown", "x": 61, "y": 84, "title": "Hitung mundur promo", "why": "Tenggat membuatmu tidak memeriksa.", "do": "Abaikan tenggat." },
+        { "flagId": "contoh-logo", "x": 28, "y": 16, "title": "Logo terlihat resmi", "decoy": true, "why": "Logo mudah ditiru.", "do": "Periksa domain, bukan logo." }
+      ],
+      "button": { "label": "Pesan sekarang", "goto": 4 }
+    },
+    {
+      "type": "choice",
+      "prompt": "Akun meminta DP ke rekening pribadi. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        { "id": "bayar", "label": "Bayar DP agar slot terkunci", "goto": 5 },
+        { "id": "verifikasi", "label": "Cek kanal resmi sebelum membayar", "goto": 9 },
+        { "id": "lapor", "label": "Simpan bukti dan laporkan akun", "goto": 12 }
+      ]
+    },
+    {
+      "type": "app-ui",
+      "app": "bank",
+      "view": "transfer",
+      "header": { "title": "Bank Jayakarta", "sub": "DP undangan" },
+      "data": {
+        "title": "DP undangan digital",
+        "recipient": "Rina Kartika",
+        "account": "8821 4400 7712",
+        "amount": 50000,
+        "fee": 6500,
+        "note": "DP undangan",
+        "warning": "Rekening tujuan adalah rekening pribadi."
+      },
+      "button": { "label": "Transfer DP", "goto": 6 }
+    },
+    {
+      "type": "chat",
+      "from": "them",
+      "sender": "Undangan Kita",
+      "time": "10.17",
+      "text": "DP masuk. Untuk mengaktifkan undangan, isi data kartu di halaman pembayaran berikut.",
+      "auto": false
+    },
+    {
+      "type": "choice",
+      "prompt": "Halaman meminta data kartu dan OTP. Apa yang kamu lakukan?",
+      "critical": true,
+      "options": [
+        { "id": "bayar", "label": "Isi kartu agar undangan aktif", "goto": 8 },
+        { "id": "data", "label": "Kirim OTP dan data kartu", "goto": 10 },
+        { "id": "tutup", "label": "Tutup halaman dan cek kanal resmi", "goto": 11 }
+      ]
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena",
+      "title": "DP untuk kanal palsu",
+      "text": "DP Rp 50.000 hilang dan undangan tidak pernah dikirim. Akun memakai foto acara lain dan memblokir kamu."
+    },
+    {
+      "type": "consequence",
+      "endingId": "aman",
+      "title": "Cek kanal resmi lebih dulu",
+      "text": "Kamu menemukan kanal resmi dan tidak membayar DP ke rekening pribadi. Tidak ada uang yang hilang."
+    },
+    {
+      "type": "consequence",
+      "endingId": "kena-data",
+      "title": "Kartu dan OTP diambil",
+      "text": "Data kartu dan OTP kamu dipakai untuk transaksi lain. DP juga tidak kembali."
+    },
+    {
+      "type": "consequence",
+      "endingId": "hampir-kena",
+      "title": "Berhenti sebelum kartu diisi",
+      "text": "Kamu menutup halaman sebelum mengisi kartu. DP kemungkinan hilang, tetapi data kartu selamat."
+    },
+    {
+      "type": "lesson",
+      "title": "Simpan bukti sebelum melapor",
+      "body": "Catat nama akun, nomor, rekening, dan tautan. Laporkan ke platform dan kanal aduan resmi."
+    },
+    {
+      "type": "consequence",
+      "endingId": "lapor",
+      "title": "Bukti disimpan dan dilaporkan",
+      "text": "Kamu menyimpan bukti dan melaporkan akun. Teman-temanmu juga diperingatkan."
+    }
+  ],
+  "endings": {
+    "kena": { "label": "DP hilang", "saldoDelta": -50000, "rank": 0, "tone": "bad" },
+    "kena-data": { "label": "Data kartu dicuri", "saldoDelta": -50000, "rank": 0, "tone": "bad" },
+    "hampir-kena": { "label": "Berhenti sebelum kartu", "saldoDelta": -50000, "rank": 1, "tone": "neutral" },
+    "aman": { "label": "Cek kanal resmi", "saldoDelta": 0, "rank": 3, "tone": "best" },
+    "lapor": { "label": "Laporkan akun", "saldoDelta": 0, "rank": 2, "tone": "good" }
+  },
+  "debrief": {
+    "anatomi": [
+      { "t": "10.12", "judul": "Harga terlalu murah", "naskah": "Promo 70% dan slot terbatas.", "tujuanPenipu": "Membuat korban berebut tanpa memeriksa." },
+      { "t": "10.15", "judul": "DP pribadi", "naskah": "Transfer ke rekening pribadi.", "tujuanPenipu": "Memindahkan uang ke rekening yang cepat dikosongkan." },
+      { "t": "10.17", "judul": "Data kartu", "naskah": "Isi kartu dan OTP.", "tujuanPenipu": "Mencuri data transaksi setelah korban berkomitmen." }
+    ],
+    "aliran": {
+      "alt": "Aliran contoh: promo, DP, data kartu",
+      "nodes": [
+        { "id": "promo", "label": "Promo palsu" },
+        { "id": "dp", "label": "DP pribadi", "tone": "danger" },
+        { "id": "kartu", "label": "Data kartu", "tone": "danger" }
+      ],
+      "edges": [
+        { "from": "promo", "to": "dp", "label": "slot" },
+        { "from": "dp", "to": "kartu", "label": "aktivasi" }
+      ]
+    },
+    "pulihkan": [
+      "Hubungi bank untuk memblokir kartu.",
+      "Simpan bukti transaksi dan tautan.",
+      "Laporkan akun dan rekening penerima."
+    ]
+  }
+}
