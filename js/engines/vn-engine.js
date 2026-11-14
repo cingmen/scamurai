@@ -303,7 +303,12 @@ export function createVNEngine(scenario, { resume = true } = {}) {
     reset,
     jumpToChapter,
     isEnded: () => ended,
-    ending: () => (ended ? resolveEnding(currentNode() || {}) : null),
+    // Pemutar VN memanggil ending() saat node ending dirender, sebelum
+    // finish() sempat menandai ended. Node ending tetap harus menghasilkan
+    // ID ending yang sama agar label tidak jatuh ke "Cerita selesai".
+    ending: () => (ended || currentNode()?.type === 'ending'
+      ? resolveEnding(currentNode() || {})
+      : null),
   };
 }
 
