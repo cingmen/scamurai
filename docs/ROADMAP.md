@@ -28,13 +28,13 @@
 **Tujuan:** repo hidup di GitHub Pages dengan kerangka aplikasi, bingkai ponsel, router, dan store — tanpa konten skenario.
 
 **Tugas:**
-- [ ] Buat repo `scamurai`, struktur folder persis `structure.md` §2; `.github/workflows/validate.yml` (jalankan `validate-data.mjs`).
-- [ ] `index.html` + `js/main.js` bootstrap; hash router dengan rute kosong (placeholder tiap layar); guard dasar.
-- [ ] `tokens.css` + `base.css` dari `styles.md` §3 (dua tema + 3 skala font).
-- [ ] Komponen `PhoneFrame` + `StatusBar` + watermark SIMULASI; latar dojo desktop.
-- [ ] `store.js` + `events.js` + `loader.js` (fetch JSON + cache); `format.js`.
-- [ ] `manifest.json` registry (8 skenario, status "segera") + layar beranda statis pertama.
-- [ ] Deploy GitHub Pages (project page), uji path relatif di `/scamurai/`.
+- [x] Buat repo `scamurai`, struktur folder persis `structure.md` §2; `.github/workflows/validate.yml` (jalankan `validate-data.mjs`).
+- [x] `index.html` + `js/main.js` bootstrap; hash router dengan rute kosong (placeholder tiap layar); guard dasar.
+- [x] `tokens.css` + `base.css` dari `styles.md` §3 (dua tema + 3 skala font).
+- [x] Komponen `PhoneFrame` + `StatusBar` + watermark SIMULASI; latar dojo desktop.
+- [x] `store.js` + `events.js` + `loader.js` (fetch JSON + cache); `format.js`.
+- [x] `manifest.json` registry (8 skenario, status "segera") + layar beranda statis pertama.
+- [x] Deploy GitHub Pages (project page), uji path relatif di `/scamurai/`.
 
 **DoD:**
 1. Buka URL Pages → beranda tampil, tema sumi/washi bisa ganti, skala font 3 tingkat bekerja.
@@ -47,13 +47,13 @@
 **Tujuan:** satu skenario lengkap end-to-end membuktikan seluruh pola (data → engine → render → state → debrief) sebelum mass-producing konten.
 
 **Tugas:**
-- [ ] `sim-engine.js` + `step-renderers.js` untuk tipe: `chat`, `sms`, `choice`, `consequence`, `lesson` (tipe lain menyusul).
-- [ ] Komponen `ChatBubble`, `ChoiceList`, `Toast`, `Modal`, `ProgressBar`.
-- [ ] `data/scenarios/task-scam.json` lengkap: brief, ≥14 langkah, 3 ending, debrief anatomi + pulihkan (aliran uang menyusul F4).
-- [ ] Layar `scenario-brief` + `sim-player` + `debrief` (versi pertama: teks + timeline).
-- [ ] Saldo Dojo awal + efek `saldoDelta`; resume `lastStep`; keluar-tengah-jalan dengan konfirmasi.
-- [ ] Onboarding 3 layar + kalibrasi ritme (`santai/normal/nyata`).
-- [ ] SFX dasar (`tap`, `success`, `danger`) + `sfx.js`/`haptics.js`.
+- [x] `sim-engine.js` + `step-renderers.js` untuk tipe: `chat`, `sms`, `choice`, `consequence`, `lesson` (tipe lain menyusul).
+- [x] Komponen `ChatBubble`, `ChoiceList`, `Toast`, `Modal`, `ProgressBar`.
+- [x] `data/scenarios/task-scam.json` lengkap: brief, ≥14 langkah, 3 ending, debrief anatomi + pulihkan (aliran uang menyusul F4).
+- [x] Layar `scenario-brief` + `sim-player` + `debrief` (versi pertama: teks + timeline).
+- [x] Saldo Dojo awal + efek `saldoDelta`; resume `lastStep`; keluar-tengah-jalan dengan konfirmasi.
+- [x] Onboarding 3 layar + kalibrasi ritme (`santai/normal/nyata`).
+- [x] SFX dasar (`tap`, `success`, `danger`) + `sfx.js`/`haptics.js`.
 
 **DoD:**
 1. Main Task Scam dari brief → simulasi → ending → debrief tanpa jalan buntu; 3 ending bisa dicapai.
@@ -66,12 +66,12 @@
 **Tujuan:** mesin visual novel berfungsi penuh dan skenario love scam jadi flagship.
 
 **Tugas:**
-- [ ] `vn-engine.js`: graph traversal, variabel `trust/awareness`, evaluator kondisi aman (tanpa `eval`), ending matrix.
-- [ ] Komponen VN: bubble narasi, typewriter + skip, riwayat scroll-back, autosave + 2 slot manual, pilih bab.
-- [ ] `data/scenarios/love-scam.json`: 5 bab × 8–15 node; cabang sesuai PRD §9.3.
-- [ ] Aset: foto profil & foto tiruan (WebP), video "deepfake" 8–10 detik buatan (atau animasi CSS fallback tanpa video).
-- [ ] Mekanik videocall node; flag "panggilan selalu singkat".
-- [ ] Debrief VN: naskah manipulasi per bab dipasangkan dengan pilihan pengguna.
+- [x] `vn-engine.js`: graph traversal, variabel `trust/awareness`, evaluator kondisi aman (tanpa `eval`), ending matrix.
+- [x] Komponen VN: bubble narasi, typewriter + skip, riwayat scroll-back, autosave + 2 slot manual, pilih bab.
+- [x] `data/scenarios/love-scam.json`: 5 bab × 8–15 node; cabang sesuai PRD §9.3.
+- [x] Aset: foto profil & foto tiruan (SVG ringan), animasi videocall CSS tanpa video eksternal.
+- [x] Mekanik videocall node; flag "panggilan selalu singkat".
+- [x] Debrief VN: naskah manipulasi per bab dipasangkan dengan pilihan pengguna.
 
 **DoD:**
 1. Keempat ending tercapai dengan kombinasi pilihan berbeda (diuji manual + tabel jalur).
@@ -84,11 +84,11 @@
 **Tujuan:** minigame observasi grup multi-peserta dan mekanik red flag pada layar hidup.
 
 **Tugas:**
-- [ ] `wa-engine.js` (beat berjadwal, percepat 4×, jeda pilihan pengguna, respons dinamis `bertanya`).
-- [ ] `data/minigames/wa-grup.json`: ≥ 40 beat, 6 aktor (admin, 4 shill, 1 skeptis), respons manipulasi klasik.
-- [ ] Komponen label shill; layar `minigame-wa` + debrief peran tiap aktor.
-- [ ] Tipe step `flag-tap` + `app-ui` di `step-renderers`; komponen `FlagTap` (hotspot koordinat + `data-flag` DOM); integrasi ke task-scam (retrofit 4 hotspot).
-- [ ] Statistik flag (`stats.flagsTotal/Correct`) + rekap di debrief.
+- [x] `wa-engine.js` (beat berjadwal, percepat 4×, jeda pilihan pengguna, respons dinamis `bertanya`).
+- [x] `data/minigames/wa-grup.json`: ≥ 40 beat, 6 aktor (admin, 4 shill, 1 skeptis), respons manipulasi klasik.
+- [x] Komponen label shill; layar `minigame-wa` + debrief peran tiap aktor.
+- [x] Tipe step `flag-tap` + `app-ui` di `step-renderers`; komponen `FlagTap` (hotspot koordinat + `data-flag` DOM); integrasi ke task-scam (retrofit 4 hotspot).
+- [x] Statistik flag (`stats.flagsTotal/Correct`) + rekap di debrief.
 
 **DoD:**
 1. Sesi grup 10–15 menit bisa selesai; keluar/lapor dicatat; debrief menampilkan peran shill.
@@ -100,12 +100,12 @@
 **Tujuan:** lapisan meta yang mengikat skenario-skenario menjadi satu perjalanan dojo.
 
 **Tugas:**
-- [ ] `data/scamdex.json` (8 kartu + varian) + layar `scamdex` (grid, detail, ikon terkunci).
-- [ ] Logika buka kartu per ending + varian (app-logic §8.1).
-- [ ] `hitungSabuk()` + penerapan di beranda (banner sabuk) & sertifikat.
-- [ ] Saldo lintas skenario + "pemulihan 25% saat debrief penuh" (app-logic §8.3).
-- [ ] `components/badge-card.js`, `flow-diagram.js` (aliran uang debrief), lengkapi debrief task-scam & love-scam dengan diagram.
-- [ ] Pengaturan lengkap: tema, font, ritme, sfx, haptics, Kenji tips, reset, **ekspor/impor kode progres**.
+- [x] `data/scamdex.json` (8 kartu + varian) + layar `scamdex` (grid, detail, ikon terkunci).
+- [x] Logika buka kartu per ending + varian (app-logic §8.1).
+- [x] `hitungSabuk()` + penerapan di beranda (banner sabuk) & sertifikat.
+- [x] Saldo lintas skenario + "pemulihan 25% saat debrief penuh" (app-logic §8.3).
+- [x] `components/badge-card.js`, `flow-diagram.js` (aliran uang debrief), lengkapi debrief task-scam & love-scam dengan diagram.
+- [x] Pengaturan lengkap: tema, font, ritme, sfx, haptics, Kenji tips, reset, **ekspor/impor kode progres**.
 
 **DoD:**
 1. Kartu terbuka permanen; varian bonus terbuka sesuai ending (uji 3 varian).
@@ -155,19 +155,19 @@
 
 **Tugas:**
 - [x] `sw.js` precache penuh (shell + data + aset kunci), strategi per jenis (app-logic §11), banner "versi baru tersedia".
-- [x] Audit performa: gambar WebP/AVIF final, audio < 20 KB/berkas, bundle inti < 150 KB gzip; Lighthouse ≥ 90/95/95/100 (perf/a11y/best-practice/seo) di halaman utama. **Catatan 11 Nov 2026: target Lighthouse tercapai (live median 95/100/100/100; CLS 0) dan anggaran aset dijaga `npm run audit:assets`: audio terbesar 19,0 KB, raster terbesar 273,0 KB, aplikasi 102,1 KB gzip.**
+- [x] Audit performa: aset gambar SVG/raster final, audio < 20 KB/berkas, bundle inti < 150 KB gzip; Lighthouse ≥ 90/95/95/100 (perf/a11y/best-practice/seo) di halaman utama. **Catatan 14 Nov 2026: target Lighthouse tercapai (live median 95/100/100/100; CLS 0) dan anggaran aset dijaga `npm run audit:assets`: audio terbesar 19,0 KB, raster terbesar 273,1 KB, aplikasi 114,9 KB gzip.**
 - [x] Persistensi tahan versi: payload schema lebih baru dilindungi dari overwrite, backup berformat riwayat bisa dilihat/diunduh/dipulihkan dari Pengaturan dengan konfirmasi.
 - [ ] QA penuh checklist `app-logic.md` §15 + uji perangkat: Android kelas bawah, iOS Safari ≥ 15, desktop 2 browser.
 - [ ] Review konten oleh 1 praktisi keamanan/komunitas + uji kegunaan 5 lansia & 5 remaja; catat & perbaiki temuan kritis.
 - [x] Konten final: glosarium beranda, README (cara kontribusi, disclaimer etika), halaman Tentang (kredit, lisensi MIT, sumber statistik), `404.html`.
-- [ ] Rilis v1.0.0: tag git + catatan rilis; umumkan ke komunitas (termasuk PhisQuest cross-link balik). **Ditahan: F7 belum 100% (review/uji manusia dan audit aset final belum). Tag `v1.0.0` lama sudah ada di `c0ab2c1`; tag publik itu tidak dipindahkan karena memindahkannya destruktif, dan catatan rilis/pengumuman belum dibuat.**
+- [ ] Rilis v1.0.0: tag git + catatan rilis; umumkan ke komunitas (termasuk PhisQuest cross-link balik). **Ditahan: F7 belum 100% (review/uji manusia belum). Tag `v1.0.0` lama sudah ada di `c0ab2c1`; tag publik itu tidak dipindahkan karena memindahkannya destruktif, dan catatan rilis/pengumuman belum dibuat.**
 
 **Catatan audit performa 5 November 2026 (baseline `923c80e`):**
 - Lighthouse live bersih: **89/96/100/100**, FCP 1,2 s, LCP 1,8 s, TBT 400 ms, CLS 0.
 - Trace: long task **381 ms**; layout pertama **173 ms untuk 330 objek**; paint 27 ms.
 - Percobaan yang diuji dan direvert karena memperburuk metrik: CSS lazy + penundaan SW → live **80** (TBT 700 ms); `content-visibility` grid → live **88** (TBT 440 ms).
 - **Pembaruan 9 November 2026:** prerender shell beranda menghasilkan live 5 run **88/97/91/97/95 (median 95)** dengan A11y/BP/SEO 100 dan CLS 0; tiga run lokal **85/94/95 (median 94)**, TBT 0 ms pada dua run terakhir. Target performa ≥90 tercapai; F7 tetap terbuka untuk review/QA manusia.
-- **Pembaruan 11 November 2026:** audit anggaran aset masuk `npm run check`; batas audio 20 KB/berkas, raster 300 KB, SVG 100 KB, dan aplikasi 150 KB gzip. Pengukuran saat ini: audio terbesar 19,0 KB, raster terbesar 273,0 KB, aplikasi 102,1 KB gzip.
+- **Pembaruan 11 November 2026:** audit anggaran aset masuk `npm run check`; batas audio 20 KB/berkas, raster 300 KB, SVG 100 KB, dan aplikasi 150 KB gzip. Pengukuran saat ini: audio terbesar 19,0 KB, raster terbesar 273,1 KB, aplikasi 114,9 KB gzip.
 
 **DoD rilis:**
 1. Semua checklist QA & gaya (styles.md §11) lolos.
