@@ -87,6 +87,10 @@ function collect(value, out) {
 
 const dataStrings = new Set();
 for (const file of walkJson('data')) collect(JSON.parse(readFileSync(file, 'utf8')), dataStrings);
+const leakageMarkers = {
+  en: /\b(yang|kamu|tidak|dengan|untuk|dari|akan|bisa|sudah|kalau|biar|saja|aku|kita|mereka|adalah|ini|itu|atau|juga|hanya|semua|dalam|karena|saya|Rp)\b/,
+  'jv-ID': /\b(the|you|your|we|our|with|this|that|thank|homepage|download|review|full box|in-app)\b/i,
+};
 for (const locale of ['en', 'jv-ID']) {
   const catalog = JSON.parse(readFileSync(join('i18n', `${locale}.json`), 'utf8'));
   assert.equal(catalog.draft, true);
@@ -95,10 +99,14 @@ for (const locale of ['en', 'jv-ID']) {
   assert.deepEqual(missing, [], `${locale}: konten data belum lengkap (${missing.length})`);
   const empty = Object.entries(catalog.strings).filter(([source, value]) => source.trim() && !value);
   assert.deepEqual(empty, [], `${locale}: ada terjemahan kosong (${empty.length})`);
+  const leaked = Object.entries(catalog.strings)
+    .filter(([source, value]) => value !== source && leakageMarkers[locale].test(value))
+    .map(([source, value]) => ({ source, value }));
+  assert.deepEqual(leaked, [], `${locale}: ada potongan bahasa sumber tersisa (${leaked.length})`);
 }
 const idCatalog = JSON.parse(readFileSync('i18n/id.json', 'utf8'));
 assert.equal(idCatalog.locale, 'id');
 assert.equal(idCatalog.draft, false);
 assert.ok(Object.keys(idCatalog.strings).length > 1000);
 
-console.log('✓ i18n: pemilihan locale, fallback id→key, pola, dan data bersarang lulus.');
+console.log('✓ i18n: pemilihan locale, fallback id→key, pola, data bersarang, dan tidak ada bocoran bahasa sumber lulus.');

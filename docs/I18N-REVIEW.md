@@ -72,7 +72,8 @@ Katalog yang direview:
 
    Uji juga `en` dan `jv-ID`; pastikan tidak ada layar kosong, `consoleErrors`
    kosong, dan pilihan bahasa tetap setelah reload. Skrip ini juga memindai
-   rute utama dan gagal bila teks sumber Indonesia masih tampil di locale
+   rute utama serta setiap langkah dialog ketiga belas skenario, lalu gagal
+   bila teks sumber Indonesia atau bocoran bahasa masih tampil di locale
    yang seharusnya sudah diterjemahkan.
 8. **Catat temuan.** Temuan kritis (istilah keamanan salah, langkah berbahaya
    menjadi ambigu, atau teks Indonesia yang membingungkan) harus diperbaiki

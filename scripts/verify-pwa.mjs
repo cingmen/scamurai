@@ -924,11 +924,9 @@ async function main() {
         window.__i18nScan = { id, locale: localeCatalog };
         return true;
       })()`);
-      const routes = ['#/', '#/skenario', '#/skenario/task-scam', '#/scamdex', '#/bantuan', '#/tentang', '#/latihan', '#/sekolah', '#/studio', '#/pengaturan', '#/ujian'];
       const leftovers = [];
-      for (const route of routes) {
-        await evalValue(`location.hash = ${JSON.stringify(route)}`);
-        await sleep(300);
+      const scenarios = [];
+      const scanCurrent = async (meta) => {
         const found = await evalValue(`(() => {
           const scan = window.__i18nScan;
           if (!scan) return [{ source: '[catalog]', translated: '' }];
@@ -945,8 +943,8 @@ async function main() {
             const text = walker.currentNode.nodeValue.trim();
             if (text) texts.add(text);
           }
-          document.querySelectorAll('[title], [aria-label], [placeholder], [alt]').forEach((node) => {
-            for (const attr of ['title', 'aria-label', 'placeholder', 'alt']) {
+          document.querySelectorAll('[title], [aria-label], [placeholder], [alt], [value], [aria-valuetext]').forEach((node) => {
+            for (const attr of ['title', 'aria-label', 'placeholder', 'alt', 'value', 'aria-valuetext']) {
               const text = (node.getAttribute(attr) || '').trim();
               if (text) texts.add(text);
             }
@@ -956,13 +954,156 @@ async function main() {
             if (translated === source) continue;
             if (texts.has(source)) leftovers.push({ source, translated });
           }
+          const marker = scan.locale.locale === 'en'
+            ? /\b(yang|kamu|tidak|dengan|untuk|dari|akan|bisa|sudah|kalau|biar|saja|aku|kita|mereka|adalah|ini|itu|atau|juga|hanya|semua|dalam|karena|saya|Rp)\b/
+            : /\b(the|you|your|we|our|with|this|that|thank|homepage|download|review|full box|in-app)\b/i;
+          for (const text of texts) {
+            if (!marker.test(text)) continue;
+            leftovers.push({ source: '[marker]', translated: text.slice(0, 180) });
+          }
           return leftovers;
         })()`);
-        for (const item of found || []) leftovers.push({ route, ...item });
+        for (const item of found || []) leftovers.push({ ...meta, ...item });
+      };
+
+      const routes = ['#/', '#/skenario', '#/scamdex', '#/bantuan', '#/tentang', '#/latihan', '#/sekolah', '#/studio', '#/pengaturan', '#/ujian'];
+      for (const route of routes) {
+        await evalValue(`location.hash = ${JSON.stringify(route)}`);
+        await sleep(300);
+        await scanCurrent({ route });
       }
-      return leftovers;
+
+      const allIds = await evalValue(`fetch('./data/manifest.json').then((r) => r.json()).then((d) => (d.scenarios || []).map((s) => s.id))`);
+      const requestedIds = String(process.env.I18N_SCENARIOS || '').split(',').map((id) => id.trim()).filter(Boolean);
+      const ids = requestedIds.length ? allIds.filter((id) => requestedIds.includes(id)) : allIds;
+      const walkScenario = async (scenarioId) => {
+        const raw = await evalValue(`fetch('./data/scenarios/${scenarioId}.json').then((r) => r.json())`);
+        await evalValue(`window.__i18nScenarioRaw = ${JSON.stringify(raw)}`);
+        await evalValue(`location.hash = '#/skenario/${scenarioId}'`);
+        await waitFor(
+          `document.querySelector('.c-brief-actions .c-btn--primary')?.textContent?.trim() || ''`,
+          Boolean,
+          `pengantar ${scenarioId} (${locale})`,
+          8000,
+        );
+        const started = await evalValue(`(() => {
+          const button = document.querySelector('.c-brief-actions .c-btn--primary');
+          if (!button) return false;
+          button.click();
+          return true;
+        })()`);
+        if (!started) return { scenario: scenarioId, type: raw.type || 'sim', steps: 0, ended: false, error: 'tombol mulai tidak ditemukan' };
+        await waitFor(
+          `location.hash`,
+          (hash) => hash.startsWith('#/main/') || hash.startsWith('#/vn/'),
+          `rute ${scenarioId}`,
+          8000,
+        );
+
+        const seen = new Set();
+        let ended = false;
+        let error = '';
+        for (let iteration = 0; iteration < 120; iteration += 1) {
+          await sleep(110);
+          const state = await evalValue(`(() => {
+            const progress = document.querySelector('#app .c-progress[role="progressbar"]');
+            return {
+              hash: location.hash,
+              progress: progress?.getAttribute('aria-valuenow') || '',
+              ending: Boolean(document.querySelector('#app .c-ending')),
+              body: (document.querySelector('#app')?.innerText || '').slice(0, 120),
+            };
+          })()`);
+          const step = state.progress ? Number(state.progress) : `node-${iteration + 1}`;
+          const key = String(step);
+          if (!seen.has(key)) {
+            seen.add(key);
+            await scanCurrent({ scenario: scenarioId, step, hash: state.hash, sample: state.body });
+          }
+          if (state.ending) {
+            ended = true;
+            break;
+          }
+          const action = await evalValue(`(() => {
+            const raw = window.__i18nScenarioRaw || {};
+            const visible = (node) => Boolean(node) && !node.disabled && node.getClientRects().length > 0;
+            const click = (selector) => {
+              const button = [...document.querySelectorAll(selector)].find(visible);
+              if (!button) return false;
+              button.click();
+              return true;
+            };
+            const modal = document.querySelector('.c-modal');
+            if (modal) {
+              const button = [...modal.querySelectorAll('button')].find(visible);
+              if (button) { button.click(); return { clicked: 'modal' }; }
+            }
+            const vnChoices = [...document.querySelectorAll('.c-vn-choice')].filter(visible);
+            if (vnChoices.length) {
+              vnChoices[0].click();
+              return { clicked: 'vn-choice' };
+            }
+            const choices = [...document.querySelectorAll('.c-sim-choices .c-choice')].filter(visible);
+            if (choices.length) {
+              const progress = document.querySelector('#app .c-progress[role="progressbar"]');
+              const index = Math.max(0, Number(progress?.getAttribute('aria-valuenow') || 1) - 1);
+              const step = (raw.steps || [])[index] || {};
+              const options = step.options || step.choices || [];
+              const distance = (from, seen = new Set()) => {
+                if (!Number.isInteger(from) || from < 0 || from >= (raw.steps || []).length || seen.has(from)) return 0;
+                seen.add(from);
+                const current = raw.steps[from];
+                const nextOptions = current?.options || current?.choices || [];
+                if (!nextOptions.length) return 1;
+                return 1 + Math.max(0, ...nextOptions.map((option) => distance(option.goto ?? from + 1, new Set(seen))));
+              };
+              let best = 0;
+              let bestDistance = -1;
+              options.forEach((option, optionIndex) => {
+                const score = distance(option.goto ?? index + 1, new Set([index]));
+                if (score > bestDistance) { best = optionIndex; bestDistance = score; }
+              });
+              const button = choices[Math.min(best, choices.length - 1)];
+              button.click();
+              return { clicked: 'choice', option: best };
+            }
+            if (click('.c-call__round--accept')) return { clicked: 'call-accept' };
+            if (click('.c-vn-videocall .c-btn')) return { clicked: 'videocall' };
+            const progress = document.querySelector('#app .c-progress[role="progressbar"]');
+            const current = (raw.steps || [])[Math.max(0, Number(progress?.getAttribute('aria-valuenow') || 1) - 1)] || {};
+            if (current.type === 'app-ui' && click('.c-phone__body .c-btn--primary')) return { clicked: 'app-ui-primary' };
+            if (click('.c-phone__foot .c-btn')) return { clicked: 'foot' };
+            if (click('.c-phone__body .c-btn--primary')) return { clicked: 'body-primary' };
+            if (click('.c-phone__body .c-btn')) return { clicked: 'body' };
+            const dialogue = document.querySelector('.c-vn-dialogue');
+            if (dialogue) { dialogue.click(); return { clicked: 'vn-advance' }; }
+            return { clicked: '' };
+          })()`);
+          if (!action.clicked) {
+            if (state.hash.startsWith('#/main/') || state.hash.startsWith('#/vn/')) {
+              await sleep(180);
+              continue;
+            }
+            error = `tidak ada kontrol progres di ${state.hash}`;
+            break;
+          }
+        }
+        return { scenario: scenarioId, type: raw.type || 'sim', steps: seen.size, ended, ...(error ? { error } : {}) };
+      };
+
+      for (const scenarioId of ids) {
+        const result = await walkScenario(scenarioId);
+        console.error(`[i18n-ui] ${locale} ${scenarioId}: ${result.steps} langkah, selesai=${result.ended}${result.error ? `, ${result.error}` : ''}`);
+        scenarios.push(result);
+        if (!result.ended) {
+          leftovers.push({ scenario: scenarioId, step: 'selesai', source: '[tidak selesai]', translated: result.error || 'skenario tidak mencapai ending' });
+        }
+      }
+      return { leftovers, scenarios };
     };
-    const enLeftovers = await scanI18nUi('en');
+
+    const enScan = await scanI18nUi('en');
+    const enLeftovers = enScan.leftovers;
     await evalValue(`location.hash = '#/skenario/task-scam'`);
     const enScenario = await waitFor(
       `document.querySelector('#app h1')?.textContent?.trim() || ''`,
@@ -1005,7 +1146,8 @@ async function main() {
       'locale jv-ID setelah reload',
     );
     const jvStored = await evalValue(`JSON.parse(localStorage.getItem('scamurai.v1') || '{}').settings?.locale || ''`);
-    const jvLeftovers = await scanI18nUi('jv-ID');
+    const jvScan = await scanI18nUi('jv-ID');
+    const jvLeftovers = jvScan.leftovers;
     await evalValue(`location.hash = '#/skenario/task-scam'`);
     const jvScenario = await waitFor(
       `document.querySelector('#app h1')?.textContent?.trim() || ''`,
@@ -1047,8 +1189,8 @@ async function main() {
       'beranda id kembali identik',
     );
     const i18n = {
-      en: { lang: 'en', stored: enStored, title: enScenario, step: enStep.includes(enWords.step), settings: enSettings.includes(enWords.language || 'Language'), leftovers: enLeftovers },
-      jv: { lang: 'jv-ID', stored: jvStored, title: jvScenario, step: jvStep.includes(jvWords.step), leftovers: jvLeftovers },
+      en: { lang: 'en', stored: enStored, title: enScenario, step: enStep.includes(enWords.step), settings: enSettings.includes(enWords.language || 'Language'), leftovers: enLeftovers, scenarios: enScan.scenarios },
+      jv: { lang: 'jv-ID', stored: jvStored, title: jvScenario, step: jvStep.includes(jvWords.step), leftovers: jvLeftovers, scenarios: jvScan.scenarios },
       id: { lang: 'id', stored: idStored, heading: idHome === offlineShell.heading },
     };
 
@@ -1103,8 +1245,10 @@ async function main() {
       && studioRejects.includes('JSON tidak valid')
       && i18n.en.lang === 'en' && i18n.en.stored === 'en' && i18n.en.step && i18n.en.settings
       && i18n.en.leftovers.length === 0
+      && i18n.en.scenarios.length === 13 && i18n.en.scenarios.every((item) => item.ended)
       && i18n.jv.lang === 'jv-ID' && i18n.jv.stored === 'jv-ID' && i18n.jv.step
       && i18n.jv.leftovers.length === 0
+      && i18n.jv.scenarios.length === 13 && i18n.jv.scenarios.every((item) => item.ended)
       && i18n.id.lang === 'id' && i18n.id.stored === 'id' && i18n.id.heading
       && offlineData.status === 200
       && offlineData.cssStatus === 200
@@ -1166,7 +1310,13 @@ async function main() {
     };
     console.log(JSON.stringify(report, null, 2));
 
-    if (!pass) throw new Error('Verifikasi offline gagal: shell, rute, data, atau aset tidak lengkap.');
+    if (!pass) {
+      const details = [
+        ...enLeftovers.map((item) => `en ${item.scenario || item.route || ''} langkah ${item.step || ''}: ${JSON.stringify(item.source)}`),
+        ...jvLeftovers.map((item) => `jv ${item.scenario || item.route || ''} langkah ${item.step || ''}: ${JSON.stringify(item.source)}`),
+      ];
+      throw new Error(`Verifikasi offline gagal: shell, rute, data, aset, atau lokalisasi tidak lengkap.${details.length ? `\nSisa teks: ${details.join('\n')}` : ''}`);
+    }
     console.log(`\nPWA OK — ${PAGE_URL} memuat shell, skenario ${SCENARIO_ID} (${offlineData.steps} langkah), Pusat Bantuan, kartu PhisQuest, kuis kelas 10 soal, dan ujian akhir 20 soal saat offline.`);
   } finally {
     await dispose();
