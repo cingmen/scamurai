@@ -13,6 +13,7 @@ import { spawn } from 'node:child_process';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { buildCoveragePlans } from './coverage-plans.mjs';
 
 const PAGE_URL = process.argv[2] || 'http://localhost:4173/';
 const SCENARIO_ID = process.argv[3] || 'bank-otp';
@@ -153,6 +154,13 @@ async function main() {
   const { cdp, dispose } = await launchChrome();
   const consoleErrors = [];
   const pageFailures = [];
+
+  const manifest = JSON.parse(await readFile(new URL('../data/manifest.json', import.meta.url), 'utf8'));
+  const scenarioData = {};
+  for (const meta of manifest.scenarios || []) {
+    scenarioData[meta.id] = JSON.parse(await readFile(new URL(`../data/scenarios/${meta.id}.json`, import.meta.url), 'utf8'));
+  }
+  const coveragePlans = buildCoveragePlans(manifest, scenarioData);
 
   try {
     const { targetId } = await cdp.send('Target.createTarget', { url: 'about:blank' });
@@ -1194,6 +1202,215 @@ async function main() {
       id: { lang: 'id', stored: idStored, heading: idHome === offlineShell.heading },
     };
 
+    // Cakupan cabang: setiap opsi pilihan disentuh lewat UI, bukan hanya jalur
+    // terpanjang. Rencana berasal dari data; bila data berubah dan ada opsi yang
+    // tidak lagi tercakup, pemeriksaan ini gagal.
+    const branchErrors = [];
+    const clickedChoices = new Set();
+    const reachedEndings = new Set();
+    const branchScenarios = [];
+    const visible = `Boolean(node) && !node.disabled && node.getClientRects().length > 0`;
+    const clickPlanAction = async (planType, action) => {
+      if (planType === 'vn') {
+        return evalValue(`(() => {
+          const visible = (node) => ${visible};
+          const ending = document.querySelector('#app .c-ending');
+          if (ending) return { done: true };
+          const choices = [...document.querySelectorAll('.c-vn-choice')].filter(visible);
+          if (choices.length) {
+            const index = ${Number.isInteger(action?.choiceIndex) ? action.choiceIndex : 0};
+            const button = choices[Math.min(index, choices.length - 1)];
+            button?.click();
+            return { done: false, kind: 'vn-choice', choice: index };
+          }
+          const video = document.querySelector('.c-vn-videocall .c-btn');
+          if (video && !document.querySelector('.c-vn-videocall')?.hidden) {
+            video.click();
+            return { done: false, kind: 'videocall' };
+          }
+          const dialogue = document.querySelector('.c-vn-dialogue');
+          if (dialogue) { dialogue.click(); return { done: false, kind: 'vn-advance' }; }
+          return { done: false, kind: '' };
+        })()`);
+      }
+      const result = await evalValue(`(() => {
+        const visible = (node) => ${visible};
+        const click = (selector, index = 0) => {
+          const nodes = [...document.querySelectorAll(selector)].filter(visible);
+          const node = nodes[Math.min(index, nodes.length - 1)];
+          if (!node) return false;
+          node.click();
+          return true;
+        };
+        const ending = document.querySelector('#app .c-ending');
+        if (ending) return { done: true, kind: 'ending' };
+        const kind = ${JSON.stringify(action?.kind || '')};
+        const choice = ${Number.isInteger(action?.choice) ? action.choice : 0};
+        if (kind === 'choice' || kind === 'call-choice') return { done: false, kind, choice, clicked: click('.c-sim-choices .c-choice', choice) };
+        if (kind === 'otp-reject') return { done: false, kind, clicked: click('.c-phone__foot .c-btn--danger') };
+        if (kind === 'call-decline') return { done: false, kind, clicked: click('.c-call__round--decline') };
+        if (kind === 'call-accept') return { done: false, kind, clicked: click('.c-call__round--accept') };
+        if (kind === 'otp-submit') {
+          const pad = document.querySelector('.c-keypad');
+          const keys = [...(pad?.querySelectorAll('button') || [])].filter(visible);
+          const numberKeys = keys.filter((button) => /^[0-9]$/.test(button.textContent.trim()));
+          for (let i = 0; i < 6 && numberKeys.length; i += 1) numberKeys[0].click();
+          const submit = pad?.parentElement?.querySelector('button.c-btn--primary');
+          if (submit && !submit.disabled) { submit.click(); return { done: false, kind, clicked: true }; }
+          return { done: false, kind, clicked: false };
+        }
+        if (kind === 'browser-close') return { done: false, kind, clicked: click('.c-sim-choices .c-btn--ghost') };
+        if (kind === 'browser-primary') return { done: false, kind, clicked: click('.c-sim-choices .c-btn--primary') };
+        if (kind === 'app-ui') return { done: false, kind, clicked: click('.c-phone__body .c-btn--primary') || click('.c-phone__foot .c-btn--primary') };
+        if (kind === 'flag-skip' || kind === 'permission-continue') return { done: false, kind, clicked: click('.c-phone__foot .c-btn--primary') };
+        return { done: false, kind, clicked: click('.c-phone__foot .c-btn--primary') || click('.c-phone__body .c-btn--primary') };
+      })()`);
+      return result;
+    };
+
+    const branchFilter = String(process.env.BRANCH_SCENARIOS || '').split(',').map((id) => id.trim()).filter(Boolean);
+    const branchPlans = branchFilter.length
+      ? coveragePlans.filter((plan) => branchFilter.includes(plan.scenario))
+      : coveragePlans;
+    for (const plan of branchPlans) {
+      const scenarioBranch = {
+        scenario: plan.scenario,
+        type: plan.type,
+        paths: plan.paths.length,
+        choices: 0,
+        endings: 0,
+        errors: [],
+      };
+      for (let pathIndex = 0; pathIndex < plan.paths.length; pathIndex += 1) {
+        const path = plan.paths[pathIndex];
+        // Autosave VN dapat menyimpan simpul ending dari jalur sebelumnya.
+        // Mulai setiap jalur dari awal agar ending yang dicapai benar-benar
+        // berasal dari pilihan jalur ini, bukan resume simpul lama.
+        if (plan.type === 'vn') {
+          await evalValue(`(() => {
+            const key = 'scamurai.v1';
+            const saved = JSON.parse(localStorage.getItem(key) || '{}');
+            if (saved.vn?.saves) delete saved.vn.saves[0];
+            localStorage.setItem(key, JSON.stringify(saved));
+            return true;
+          })()`);
+        }
+        await evalValue(`location.hash = '#/skenario/${plan.scenario}'`);
+        await waitFor(
+          `document.querySelector('.c-brief-actions .c-btn--primary')?.textContent?.trim() || ''`,
+          Boolean,
+          `pengantar cabang ${plan.scenario}`,
+          10000,
+        );
+        await evalValue(`document.querySelector('.c-brief-actions .c-btn--primary')?.click()`);
+        await waitFor(
+          `location.hash`,
+          (hash) => hash.startsWith('#/main/') || hash.startsWith('#/vn/'),
+          `rute cabang ${plan.scenario}`,
+          8000,
+        );
+        let pointer = 0;
+        let ended = false;
+        const iterationLimit = plan.type === 'vn' ? 220 : Math.max(path.actions.length + 100, 160);
+        for (let iteration = 0; iteration < iterationLimit; iteration += 1) {
+          await sleep(100);
+          const state = await evalValue(`(() => {
+            const progress = document.querySelector('#app .c-progress[role="progressbar"]');
+            return {
+              hash: location.hash,
+              step: progress ? Math.max(0, Number(progress.getAttribute('aria-valuenow') || 1) - 1) : -1,
+              ending: Boolean(document.querySelector('#app .c-ending')),
+            };
+          })()`);
+          if (state.ending) { ended = true; break; }
+          const action = path.actions[pointer];
+          if (!action && plan.type !== 'vn') break;
+          if (process.env.DEBUG_BRANCH) {
+            console.error(`[branch] ${plan.scenario} jalur ${pathIndex} iter ${iteration} state=${state.step} ptr=${pointer} action=${action?.kind || '-'}:${action?.edge ?? action?.choice ?? ''}`);
+          }
+          if (plan.type === 'sim' && Number.isInteger(action.step) && state.step !== action.step) {
+            // Langkah otomatis bisa maju sebelum klik. Lewati aksi yang sudah
+            // terlewati, tetapi jangan mengorbankan urutan rencana.
+            if (state.step > action.step) { pointer += 1; continue; }
+            if (state.step < action.step) { await sleep(80); continue; }
+          }
+          const clicked = await clickPlanAction(plan.type, action);
+          if (plan.type === 'sim' && clicked?.kind === 'choice' && clicked.clicked) {
+            clickedChoices.add(`${plan.scenario}:${action.step}:${action.choiceId}`);
+          }
+          if (plan.type === 'vn' && clicked?.kind === 'vn-choice') {
+            clickedChoices.add(`${plan.scenario}:${action.nodeId}:${action.choiceId}`);
+            pointer += 1;
+          }
+          if (!clicked || clicked.done) { if (clicked?.done) ended = true; break; }
+          if (!clicked.kind) { scenarioBranch.errors.push(`rencana ${pathIndex} langkah ${iteration}: kontrol tidak ditemukan`); break; }
+          if (plan.type === 'sim') {
+            if (clicked.clicked === false) continue;
+            pointer += 1;
+          }
+        }
+        await sleep(180);
+        const endingText = await evalValue(`document.querySelector('#app .c-ending h2')?.textContent?.trim() || ''`);
+        if (!ended && !endingText) {
+          scenarioBranch.errors.push(`jalur ${pathIndex} tidak mencapai ending`);
+        } else {
+          const expected = String(path.endingLabel || '').trim();
+          if (expected && endingText && endingText !== expected) {
+            scenarioBranch.errors.push(`jalur ${pathIndex} ending tidak cocok: UI=${JSON.stringify(endingText)} rencana=${JSON.stringify(expected)}`);
+          } else if (path.endingId) {
+            reachedEndings.add(`${plan.scenario}:${path.endingId}`);
+          }
+          scenarioBranch.endings += 1;
+        }
+      }
+      scenarioBranch.choices = [...clickedChoices].filter((key) => key.startsWith(`${plan.scenario}:`)).length;
+      branchScenarios.push(scenarioBranch);
+    }
+
+    const expectedChoices = new Set();
+    for (const plan of coveragePlans) {
+      const scenario = scenarioData[plan.scenario];
+      if (plan.type === 'sim') {
+        (scenario.steps || []).forEach((step, index) => {
+          (step.options || []).forEach((option, optionIndex) => {
+            if (step.type === 'choice' || step.type === 'timer-choice') {
+              expectedChoices.add(`${plan.scenario}:${index}:${option.id || optionIndex}`);
+            }
+          });
+        });
+      } else {
+        (scenario.chapters || []).forEach((chapter) => {
+          (chapter.nodes || []).forEach((node) => {
+            (node.choices || []).forEach((choice, index) => {
+              expectedChoices.add(`${plan.scenario}:${node.id}:${choice.id || index}`);
+            });
+          });
+        });
+      }
+    }
+    const expectedEndings = new Set();
+    for (const meta of manifest.scenarios || []) {
+      for (const endingId of Object.keys(scenarioData[meta.id]?.endings || {})) {
+        expectedEndings.add(`${meta.id}:${endingId}`);
+      }
+    }
+    const missingChoices = [...expectedChoices].filter((key) => !clickedChoices.has(key));
+    const missingEndings = [...expectedEndings].filter((key) => !reachedEndings.has(key));
+    if (missingChoices.length) branchErrors.push(`opsi belum disentuh: ${missingChoices.join(', ')}`);
+    if (missingEndings.length) branchErrors.push(`ending belum tercapai: ${missingEndings.join(', ')}`);
+    for (const item of branchScenarios) branchErrors.push(...item.errors.map((error) => `${item.scenario}: ${error}`));
+    const branches = {
+      scenarios: branchScenarios,
+      expectedChoices: expectedChoices.size,
+      clickedChoices: clickedChoices.size,
+      expectedEndings: expectedEndings.size,
+      reachedEndings: reachedEndings.size,
+      missingChoices,
+      missingEndings,
+      errors: branchErrors,
+      plans: coveragePlans.map((plan) => ({ scenario: plan.scenario, paths: plan.paths.length })),
+    };
+
     const pass = networkBlocked === true
       && offlineShell.controlled
       && offlineShell.heading.length > 0
@@ -1250,6 +1467,10 @@ async function main() {
       && i18n.jv.leftovers.length === 0
       && i18n.jv.scenarios.length === 13 && i18n.jv.scenarios.every((item) => item.ended)
       && i18n.id.lang === 'id' && i18n.id.stored === 'id' && i18n.id.heading
+      && branches.missingChoices.length === 0
+      && branches.missingEndings.length === 0
+      && branches.errors.length === 0
+      && branches.scenarios.every((item) => item.paths > 0 && item.endings === item.paths)
       && offlineData.status === 200
       && offlineData.cssStatus === 200
       && offlineData.steps >= 14;
@@ -1303,6 +1524,7 @@ async function main() {
           rejectsInvalidJson: studioRejects.includes('JSON tidak valid'),
         },
         i18n,
+        branches,
         data: offlineData,
         networkFailures: pageFailures.length,
       },
@@ -1314,6 +1536,7 @@ async function main() {
       const details = [
         ...enLeftovers.map((item) => `en ${item.scenario || item.route || ''} langkah ${item.step || ''}: ${JSON.stringify(item.source)}`),
         ...jvLeftovers.map((item) => `jv ${item.scenario || item.route || ''} langkah ${item.step || ''}: ${JSON.stringify(item.source)}`),
+        ...branchErrors,
       ];
       throw new Error(`Verifikasi offline gagal: shell, rute, data, aset, atau lokalisasi tidak lengkap.${details.length ? `\nSisa teks: ${details.join('\n')}` : ''}`);
     }
